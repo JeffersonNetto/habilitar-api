@@ -1,0 +1,57 @@
+﻿{
+   "ContextClassName": "HabilitarContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "ProjectRootNamespace": "Habilitar_API",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[Empresa]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Exercicio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Funcao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[GrupoExercicio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Perfil]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PerfilFuncao]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Unidade]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UnidadeMedida]",
+         "ObjectType": 0
+      }
+   ],
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": false,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNodaTime": false,
+   "UseSpatial": false
+}
