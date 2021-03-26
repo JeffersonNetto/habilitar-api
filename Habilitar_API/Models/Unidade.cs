@@ -11,8 +11,8 @@ namespace Habilitar_API.Models
         public int Id { get; set; }
         public string Descricao { get; set; }
         public string Email { get; set; }
-        public string Ddd { get; set; }
         public string Telefone { get; set; }
+        public string Ip { get; set; }
         public bool Ativo { get; set; }
         public int EmpresaId { get; set; }
         public DateTime DataCriacao { get; set; }

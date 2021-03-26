@@ -10,14 +10,23 @@ namespace Habilitar_API.Data
 {
     public partial class HabilitarContext : DbContext
     {
-        public HabilitarContext() { }
+        public HabilitarContext()
+        {
+        }
 
-        public HabilitarContext(DbContextOptions<HabilitarContext> options) : base(options) { }
+        public HabilitarContext(DbContextOptions<HabilitarContext> options) : base(options)
+        {
+        }
 
         public virtual DbSet<Empresa> Empresa { get; set; }
         public virtual DbSet<Exercicio> Exercicio { get; set; }
+        public virtual DbSet<Fisioterapeuta> Fisioterapeuta { get; set; }
         public virtual DbSet<Funcao> Funcao { get; set; }
         public virtual DbSet<GrupoExercicio> GrupoExercicio { get; set; }
+        public virtual DbSet<Intervalo> Intervalo { get; set; }
+        public virtual DbSet<Meta> Meta { get; set; }
+        public virtual DbSet<Paciente> Paciente { get; set; }
+        public virtual DbSet<PacienteMeta> PacienteMeta { get; set; }
         public virtual DbSet<Perfil> Perfil { get; set; }
         public virtual DbSet<PerfilFuncao> PerfilFuncao { get; set; }
         public virtual DbSet<Unidade> Unidade { get; set; }
@@ -38,6 +47,11 @@ namespace Habilitar_API.Data
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Nome)
                     .IsRequired()
@@ -62,6 +76,59 @@ namespace Habilitar_API.Data
 
                 entity.Property(e => e.Observacao)
                     .HasMaxLength(200)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Fisioterapeuta>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Cpf)
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataNascimento).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Senha)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Sexo)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Sobrenome)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Telefone)
+                    .IsRequired()
+                    .HasMaxLength(11)
                     .IsUnicode(false);
             });
 
@@ -95,6 +162,108 @@ namespace Habilitar_API.Data
                 entity.Property(e => e.Observacao).HasMaxLength(200);
             });
 
+            modelBuilder.Entity<Intervalo>(entity =>
+            {
+                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Descricao)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Meta>(entity =>
+            {
+                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Paciente>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Cpf)
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataNascimento).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nome)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Senha)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Sexo)
+                    .IsRequired()
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength(true);
+
+                entity.Property(e => e.Sobrenome)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Telefone)
+                    .IsRequired()
+                    .HasMaxLength(11)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PacienteMeta>(entity =>
+            {
+                entity.HasKey(e => new { e.PacienteId, e.MetaId });
+
+                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataConclusao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+
+                entity.Property(e => e.DataFinal).HasColumnType("date");
+
+                entity.Property(e => e.DataInicial).HasColumnType("date");
+
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<Perfil>(entity =>
             {
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
@@ -124,13 +293,6 @@ namespace Habilitar_API.Data
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
-                entity.Property(e => e.Ddd)
-                    .IsRequired()
-                    .HasMaxLength(2)
-                    .IsUnicode(false)
-                    .HasColumnName("DDD")
-                    .IsFixedLength(true);
-
                 entity.Property(e => e.Descricao)
                     .IsRequired()
                     .HasMaxLength(150)
@@ -140,9 +302,14 @@ namespace Habilitar_API.Data
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.Ip)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Telefone)
                     .IsRequired()
-                    .HasMaxLength(9)
+                    .HasMaxLength(11)
                     .IsUnicode(false);
             });
 

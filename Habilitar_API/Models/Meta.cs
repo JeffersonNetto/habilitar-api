@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace Habilitar_API.Models
 {
-    public partial class Empresa
+    public partial class Meta
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Cnpj { get; set; }
+        public int ExercicioId { get; set; }
+        public int Repeticoes { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }

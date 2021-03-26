@@ -1,4 +1,5 @@
 ﻿{
+   "CodeGenerationMode": 0,
    "ContextClassName": "HabilitarContext",
    "ContextNamespace": null,
    "DefaultDacpacSchema": null,
@@ -21,11 +22,31 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Fisioterapeuta]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Funcao]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[GrupoExercicio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Intervalo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Meta]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Paciente]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PacienteMeta]",
          "ObjectType": 0
       },
       {
@@ -45,13 +66,18 @@
          "ObjectType": 0
       }
    ],
+   "UiHint": "5d34837d1ed1.Habilitar",
    "UseBoolPropertiesWithoutDefaultSql": false,
-   "UseDatabaseNames": false,
+   "UseDatabaseNames": true,
    "UseDbContextSplitting": false,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
    "UseInflector": false,
    "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
    "UseNodaTime": false,
+   "UseNullableReferences": false,
    "UseSpatial": false
 }
