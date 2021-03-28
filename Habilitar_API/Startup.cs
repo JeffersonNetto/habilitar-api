@@ -1,5 +1,6 @@
 using FluentValidation.AspNetCore;
 using Habilitar_API.Data;
+using Habilitar_API.IoC;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -67,7 +68,9 @@ namespace Habilitar_API
                     UseDefaultCredentials = false,
                     DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network
                 });
-            
+
+            services.RegisterServices();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Habilitar_API", Version = "v1" });
