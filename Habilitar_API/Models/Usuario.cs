@@ -24,8 +24,6 @@ namespace Habilitar_API.Models
             GrupoUsuarioCriacao = new HashSet<Grupo>();
             IntervaloUsuarioAtualizacao = new HashSet<Intervalo>();
             IntervaloUsuarioCriacao = new HashSet<Intervalo>();
-            InverseUsuarioAtualizacao = new HashSet<Usuario>();
-            InverseUsuarioCriacao = new HashSet<Usuario>();
             LogAcesso = new HashSet<LogAcesso>();
             LogErro = new HashSet<LogErro>();
             MetaFisioterapeuta = new HashSet<Meta>();
@@ -50,8 +48,8 @@ namespace Habilitar_API.Models
         public int Id { get; set; }
         public string Login { get; set; }
         public string Senha { get; set; }
-        public int PessoaId { get; set; }
-        public int UnidadeId { get; set; }
+        public int? PessoaId { get; set; }
+        public int? UnidadeId { get; set; }
         public bool Profissional { get; set; }
         public bool Fisioterapeuta { get; set; }
         public string Conselho { get; set; }
@@ -64,8 +62,6 @@ namespace Habilitar_API.Models
 
         public virtual Pessoa Pessoa { get; set; }
         public virtual Unidade Unidade { get; set; }
-        public virtual Usuario UsuarioAtualizacao { get; set; }
-        public virtual Usuario UsuarioCriacao { get; set; }
         public virtual ICollection<Empresa> EmpresaUsuarioAtualizacao { get; set; }
         public virtual ICollection<Empresa> EmpresaUsuarioCriacao { get; set; }
         public virtual ICollection<ExercicioGrupo> ExercicioGrupoUsuarioAtualizacao { get; set; }
@@ -80,8 +76,6 @@ namespace Habilitar_API.Models
         public virtual ICollection<Grupo> GrupoUsuarioCriacao { get; set; }
         public virtual ICollection<Intervalo> IntervaloUsuarioAtualizacao { get; set; }
         public virtual ICollection<Intervalo> IntervaloUsuarioCriacao { get; set; }
-        public virtual ICollection<Usuario> InverseUsuarioAtualizacao { get; set; }
-        public virtual ICollection<Usuario> InverseUsuarioCriacao { get; set; }
         public virtual ICollection<LogAcesso> LogAcesso { get; set; }
         public virtual ICollection<LogErro> LogErro { get; set; }
         public virtual ICollection<Meta> MetaFisioterapeuta { get; set; }

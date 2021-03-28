@@ -700,25 +700,12 @@ namespace Habilitar_API.Data
                 entity.HasOne(d => d.Pessoa)
                     .WithMany(p => p.Usuario)
                     .HasForeignKey(d => d.PessoaId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Usuario_Pessoa");
 
                 entity.HasOne(d => d.Unidade)
                     .WithMany(p => p.Usuario)
                     .HasForeignKey(d => d.UnidadeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Usuario_Unidade");
-
-                entity.HasOne(d => d.UsuarioAtualizacao)
-                    .WithMany(p => p.InverseUsuarioAtualizacao)
-                    .HasForeignKey(d => d.UsuarioAtualizacaoId)
-                    .HasConstraintName("FK_Usuario_UsuarioAtualizacao");
-
-                entity.HasOne(d => d.UsuarioCriacao)
-                    .WithMany(p => p.InverseUsuarioCriacao)
-                    .HasForeignKey(d => d.UsuarioCriacaoId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Usuario_UsuarioCriacao");
             });
 
             modelBuilder.Entity<UsuarioPerfil>(entity =>
