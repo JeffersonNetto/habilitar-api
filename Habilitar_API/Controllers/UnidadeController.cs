@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UnidadeController : ControllerBase
+    public class UnidadeController<T> : ControllerBase where T : Unidade
     {
-        private readonly IRepositoryBase<Unidade> _repository;
+        private readonly IRepositoryBase<T> _repository;
         private readonly IUnitOfWork _uow;
 
-        public UnidadeController(IRepositoryBase<Unidade> repository, IUnitOfWork uow)
+        public UnidadeController(IRepositoryBase<T> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -55,17 +55,17 @@ namespace Habilitar_API.Controllers
         // PUT: api/Unidade/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Unidade unidade)
+        public async Task<IActionResult> Put(int id, T obj)
         {
             try
             {
-                if (id != unidade.Id)
+                if (id != obj.Id)
                     return BadRequest();
 
-                _repository.Update(unidade);
+                _repository.Update(obj);
                 await _uow.Commit();
 
-                return Ok(await Get(unidade.Id));
+                return Ok(await Get(obj.Id));
             }
             catch (Exception ex)
             {
@@ -77,14 +77,14 @@ namespace Habilitar_API.Controllers
         // POST: api/Unidade
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Unidade>> Post(Unidade unidade)
+        public async Task<IActionResult> Post(T obj)
         {
             try
             {
-                await _repository.Add(unidade);
+                await _repository.Add(obj);
                 await _uow.Commit();
 
-                return CreatedAtAction("Post", await Get(unidade.Id));
+                return CreatedAtAction("Post", await Get(obj.Id));
             }
             catch (Exception ex)
             {
@@ -113,6 +113,5 @@ namespace Habilitar_API.Controllers
 
         private async Task<bool> Exists(int id) =>
             await _repository.Exists(id);
-
     }
 }

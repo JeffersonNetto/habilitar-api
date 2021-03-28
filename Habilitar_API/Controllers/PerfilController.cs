@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmpresaController<T> : ControllerBase where T : Empresa
+    public class PerfilController<T> : ControllerBase where T : Perfil
     {
         private readonly IRepositoryBase<T> _repository;
         private readonly IUnitOfWork _uow;
 
-        public EmpresaController(IRepositoryBase<T> repository, IUnitOfWork uow)
+        public PerfilController(IRepositoryBase<T> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;

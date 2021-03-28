@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExercicioController : ControllerBase
+    public class ExercicioController<T> : ControllerBase where T : Exercicio
     {
-        private readonly IRepositoryBase<Exercicio> _repository;
+        private readonly IRepositoryBase<T> _repository;
         private readonly IUnitOfWork _uow;
 
-        public ExercicioController(IRepositoryBase<Exercicio> repository, IUnitOfWork uow)
+        public ExercicioController(IRepositoryBase<T> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -55,17 +55,17 @@ namespace Habilitar_API.Controllers
         // PUT: api/Exercicio/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Exercicio exercicio)
+        public async Task<IActionResult> Put(int id, T obj)
         {
             try
             {
-                if (id != exercicio.Id)
+                if (id != obj.Id)
                     return BadRequest();
 
-                _repository.Update(exercicio);
+                _repository.Update(obj);
                 await _uow.Commit();
 
-                return Ok(await Get(exercicio.Id));
+                return Ok(await Get(obj.Id));
             }
             catch (Exception ex)
             {
@@ -77,14 +77,14 @@ namespace Habilitar_API.Controllers
         // POST: api/Exercicio
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Exercicio>> Post(Exercicio exercicio)
+        public async Task<IActionResult> Post(T obj)
         {
             try
             {
-                await _repository.Add(exercicio);
+                await _repository.Add(obj);
                 await _uow.Commit();
 
-                return CreatedAtAction("Post", await Get(exercicio.Id));
+                return CreatedAtAction("Post", await Get(obj.Id));
             }
             catch (Exception ex)
             {

@@ -9,18 +9,18 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmpresaController<T> : ControllerBase where T : Empresa
+    public class GrupoController<T> : ControllerBase where T : Grupo
     {
         private readonly IRepositoryBase<T> _repository;
         private readonly IUnitOfWork _uow;
 
-        public EmpresaController(IRepositoryBase<T> repository, IUnitOfWork uow)
+        public GrupoController(IRepositoryBase<T> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
         }
 
-        // GET: api/Empresa
+        // GET: api/Unidade
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -36,7 +36,7 @@ namespace Habilitar_API.Controllers
             }
         }
 
-        // GET: api/Empresa/5
+        // GET: api/Unidade/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
@@ -52,7 +52,7 @@ namespace Habilitar_API.Controllers
             }
         }
 
-        // PUT: api/Empresa/5
+        // PUT: api/Unidade/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, T obj)
@@ -74,7 +74,7 @@ namespace Habilitar_API.Controllers
             }
         }
 
-        // POST: api/Empresa
+        // POST: api/Unidade
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<IActionResult> Post(T obj)
@@ -93,7 +93,7 @@ namespace Habilitar_API.Controllers
             }
         }
 
-        // DELETE: api/Empresa/5
+        // DELETE: api/Unidade/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
