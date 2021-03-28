@@ -22,7 +22,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Fisioterapeuta]",
+         "Name": "[dbo].[ExercicioGrupo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ExercicioMetrica]",
          "ObjectType": 0
       },
       {
@@ -30,7 +34,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[GrupoExercicio]",
+         "Name": "[dbo].[Grupo]",
          "ObjectType": 0
       },
       {
@@ -38,15 +42,31 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[LogAcesso]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LogErro]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Meta]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Paciente]",
+         "Name": "[dbo].[Metrica]",
          "ObjectType": 0
       },
       {
          "Name": "[dbo].[PacienteMeta]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PacienteMetaDiaria]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PacienteMetaDiariaLog]",
          "ObjectType": 0
       },
       {
@@ -58,11 +78,19 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Pessoa]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[Unidade]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UnidadeMedida]",
+         "Name": "[dbo].[Usuario]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[UsuarioPerfil]",
          "ObjectType": 0
       }
    ],

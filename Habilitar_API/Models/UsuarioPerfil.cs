@@ -6,15 +6,16 @@ using System.Collections.Generic;
 
 namespace Habilitar_API.Models
 {
-    public partial class PerfilFuncao
+    public partial class UsuarioPerfil
     {
+        public int UsuarioId { get; set; }
         public int PerfilId { get; set; }
-        public int FuncaoId { get; set; }
+        public string Ip { get; set; }
         public DateTime DataCriacao { get; set; }
         public int UsuarioCriacaoId { get; set; }
 
-        public virtual Funcao Funcao { get; set; }
         public virtual Perfil Perfil { get; set; }
+        public virtual Usuario Usuario { get; set; }
         public virtual Usuario UsuarioCriacao { get; set; }
     }
 }

@@ -6,8 +6,15 @@ using System.Collections.Generic;
 
 namespace Habilitar_API.Models
 {
-    public partial class UnidadeMedida
+    public partial class Metrica
     {
+        public Metrica()
+        {
+            ExercicioMetrica = new HashSet<ExercicioMetrica>();
+            Meta = new HashSet<Meta>();
+            PacienteMeta = new HashSet<PacienteMeta>();
+        }
+
         public short Id { get; set; }
         public string Descricao { get; set; }
         public string Sigla { get; set; }
@@ -17,5 +24,11 @@ namespace Habilitar_API.Models
         public int UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public int? UsuarioAtualizacaoId { get; set; }
+
+        public virtual Usuario UsuarioAtualizacao { get; set; }
+        public virtual Usuario UsuarioCriacao { get; set; }
+        public virtual ICollection<ExercicioMetrica> ExercicioMetrica { get; set; }
+        public virtual ICollection<Meta> Meta { get; set; }
+        public virtual ICollection<PacienteMeta> PacienteMeta { get; set; }
     }
 }

@@ -8,15 +8,31 @@ namespace Habilitar_API.Models
 {
     public partial class Exercicio
     {
+        public Exercicio()
+        {
+            ExercicioGrupo = new HashSet<ExercicioGrupo>();
+            ExercicioMetrica = new HashSet<ExercicioMetrica>();
+            Meta = new HashSet<Meta>();
+            PacienteMeta = new HashSet<PacienteMeta>();
+        }
+
         public int Id { get; set; }
+        public string Nome { get; set; }
+        public string NomePopular { get; set; }
         public string Descricao { get; set; }
-        public string DescricaoPopular { get; set; }
-        public string Observacao { get; set; }
+        public string Url { get; set; }
+        public string Ip { get; set; }
         public bool Ativo { get; set; }
-        public int GrupoExercicioId { get; set; }
         public DateTime DataCriacao { get; set; }
         public int UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public int? UsuarioAtualizacaoId { get; set; }
+
+        public virtual Usuario UsuarioAtualizacao { get; set; }
+        public virtual Usuario UsuarioCriacao { get; set; }
+        public virtual ICollection<ExercicioGrupo> ExercicioGrupo { get; set; }
+        public virtual ICollection<ExercicioMetrica> ExercicioMetrica { get; set; }
+        public virtual ICollection<Meta> Meta { get; set; }
+        public virtual ICollection<PacienteMeta> PacienteMeta { get; set; }
     }
 }

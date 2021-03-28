@@ -8,6 +8,11 @@ namespace Habilitar_API.Models
 {
     public partial class Funcao
     {
+        public Funcao()
+        {
+            PerfilFuncao = new HashSet<PerfilFuncao>();
+        }
+
         public int Id { get; set; }
         public string Descricao { get; set; }
         public string Observacao { get; set; }
@@ -16,5 +21,9 @@ namespace Habilitar_API.Models
         public int UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public int? UsuarioAtualizacaoId { get; set; }
+
+        public virtual Usuario UsuarioAtualizacao { get; set; }
+        public virtual Usuario UsuarioCriacao { get; set; }
+        public virtual ICollection<PerfilFuncao> PerfilFuncao { get; set; }
     }
 }

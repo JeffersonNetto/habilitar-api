@@ -8,17 +8,44 @@ namespace Habilitar_API.Models
 {
     public partial class PacienteMeta
     {
-        public Guid PacienteId { get; set; }
-        public int MetaId { get; set; }
+        public PacienteMeta()
+        {
+            PacienteMetaDiaria = new HashSet<PacienteMetaDiaria>();
+        }
+
+        public int Id { get; set; }
+        public int PessoaId { get; set; }
+        public int? MetaId { get; set; }
+        public int FisioterapeutaId { get; set; }
         public DateTime DataInicial { get; set; }
         public DateTime DataFinal { get; set; }
-        public double PorcentagemConcluida { get; set; }
-        public DateTime DataConclusao { get; set; }
+        public int ExercicioId { get; set; }
+        public int QtdSeries { get; set; }
+        public short MetricaId { get; set; }
+        public int MetricaQtd { get; set; }
+        public short IntervaloId { get; set; }
+        public bool Domingo { get; set; }
+        public bool SegundaFeira { get; set; }
+        public bool TercaFeira { get; set; }
+        public bool QuartaFeira { get; set; }
+        public bool QuintaFeira { get; set; }
+        public bool SextaFeira { get; set; }
+        public bool Sabado { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
         public int UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public int? UsuarioAtualizacaoId { get; set; }
+
+        public virtual Exercicio Exercicio { get; set; }
+        public virtual Usuario Fisioterapeuta { get; set; }
+        public virtual Intervalo Intervalo { get; set; }
+        public virtual Meta Meta { get; set; }
+        public virtual Metrica Metrica { get; set; }
+        public virtual Pessoa Pessoa { get; set; }
+        public virtual Usuario UsuarioAtualizacao { get; set; }
+        public virtual Usuario UsuarioCriacao { get; set; }
+        public virtual ICollection<PacienteMetaDiaria> PacienteMetaDiaria { get; set; }
     }
 }

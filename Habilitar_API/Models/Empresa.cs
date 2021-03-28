@@ -8,8 +8,15 @@ namespace Habilitar_API.Models
 {
     public partial class Empresa
     {
+        public Empresa()
+        {
+            Meta = new HashSet<Meta>();
+            Unidade = new HashSet<Unidade>();
+        }
+
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string NomeFantasia { get; set; }
+        public string RazaoSocial { get; set; }
         public string Cnpj { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
@@ -17,5 +24,10 @@ namespace Habilitar_API.Models
         public int UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public int? UsuarioAtualizacaoId { get; set; }
+
+        public virtual Usuario UsuarioAtualizacao { get; set; }
+        public virtual Usuario UsuarioCriacao { get; set; }
+        public virtual ICollection<Meta> Meta { get; set; }
+        public virtual ICollection<Unidade> Unidade { get; set; }
     }
 }

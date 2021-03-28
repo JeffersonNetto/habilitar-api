@@ -6,16 +6,23 @@ using System.Collections.Generic;
 
 namespace Habilitar_API.Models
 {
-    public partial class Intervalo
+    public partial class Pessoa
     {
-        public Intervalo()
+        public Pessoa()
         {
-            Meta = new HashSet<Meta>();
             PacienteMeta = new HashSet<PacienteMeta>();
+            Usuario = new HashSet<Usuario>();
         }
 
-        public short Id { get; set; }
-        public string Descricao { get; set; }
+        public int Id { get; set; }
+        public string Nome { get; set; }
+        public string Sobrenome { get; set; }
+        public DateTime DataNascimento { get; set; }
+        public string Sexo { get; set; }
+        public string Cpf { get; set; }
+        public string Telefone { get; set; }
+        public string IntegracaoId { get; set; }
+        public string Email { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
@@ -25,7 +32,7 @@ namespace Habilitar_API.Models
 
         public virtual Usuario UsuarioAtualizacao { get; set; }
         public virtual Usuario UsuarioCriacao { get; set; }
-        public virtual ICollection<Meta> Meta { get; set; }
         public virtual ICollection<PacienteMeta> PacienteMeta { get; set; }
+        public virtual ICollection<Usuario> Usuario { get; set; }
     }
 }

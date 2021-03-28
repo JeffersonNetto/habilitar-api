@@ -8,16 +8,29 @@ namespace Habilitar_API.Models
 {
     public partial class Unidade
     {
+        public Unidade()
+        {
+            Usuario = new HashSet<Usuario>();
+        }
+
         public int Id { get; set; }
-        public string Descricao { get; set; }
+        public string Nome { get; set; }
         public string Email { get; set; }
         public string Telefone { get; set; }
+        public string Cnes { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public int EmpresaId { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
-        public int EmpresaId { get; set; }
         public DateTime DataCriacao { get; set; }
         public int UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public int? UsuarioAtualizacaoId { get; set; }
+
+        public virtual Empresa Empresa { get; set; }
+        public virtual Usuario UsuarioAtualizacao { get; set; }
+        public virtual Usuario UsuarioCriacao { get; set; }
+        public virtual ICollection<Usuario> Usuario { get; set; }
     }
 }
