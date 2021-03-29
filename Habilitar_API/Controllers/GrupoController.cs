@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GrupoController<T> : ControllerBase where T : Grupo
+    public class GrupoController : ControllerBase
     {
-        private readonly IRepositoryBase<T> _repository;
+        private readonly IRepositoryBase<Grupo> _repository;
         private readonly IUnitOfWork _uow;
 
-        public GrupoController(IRepositoryBase<T> repository, IUnitOfWork uow)
+        public GrupoController(IRepositoryBase<Grupo> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -55,7 +55,7 @@ namespace Habilitar_API.Controllers
         // PUT: api/Unidade/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, T obj)
+        public async Task<IActionResult> Put(int id, Grupo obj)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Habilitar_API.Controllers
         // POST: api/Unidade
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(T obj)
+        public async Task<IActionResult> Post(Grupo obj)
         {
             try
             {

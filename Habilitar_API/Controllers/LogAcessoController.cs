@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LogAcessoController<T> : ControllerBase where T : LogAcesso
+    public class LogAcessoController : ControllerBase
     {
-        private readonly IRepositoryBase<T> _repository;
+        private readonly IRepositoryBase<LogAcesso> _repository;
         private readonly IUnitOfWork _uow;
 
-        public LogAcessoController(IRepositoryBase<T> repository, IUnitOfWork uow)
+        public LogAcessoController(IRepositoryBase<LogAcesso> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -55,7 +55,7 @@ namespace Habilitar_API.Controllers
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, T obj)
+        public async Task<IActionResult> Put(int id, LogAcesso obj)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Habilitar_API.Controllers
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(T obj)
+        public async Task<IActionResult> Post(LogAcesso obj)
         {
             try
             {

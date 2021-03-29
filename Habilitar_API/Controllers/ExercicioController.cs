@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExercicioController<T> : ControllerBase where T : Exercicio
+    public class ExercicioController : ControllerBase
     {
-        private readonly IRepositoryBase<T> _repository;
+        private readonly IRepositoryBase<Exercicio> _repository;
         private readonly IUnitOfWork _uow;
 
-        public ExercicioController(IRepositoryBase<T> repository, IUnitOfWork uow)
+        public ExercicioController(IRepositoryBase<Exercicio> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -55,7 +55,7 @@ namespace Habilitar_API.Controllers
         // PUT: api/Exercicio/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, T obj)
+        public async Task<IActionResult> Put(int id, Exercicio obj)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Habilitar_API.Controllers
         // POST: api/Exercicio
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(T obj)
+        public async Task<IActionResult> Post(Exercicio obj)
         {
             try
             {

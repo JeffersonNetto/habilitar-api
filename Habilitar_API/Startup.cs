@@ -55,8 +55,9 @@ namespace Habilitar_API
                 _.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
             })
             .AddFluentValidation();
-
-            services.AddDbContext<HabilitarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Conexao")), ServiceLifetime.Scoped);
+            
+            services.AddDbContext<HabilitarContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("Conexao"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
             services
                 .AddFluentEmail(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br")

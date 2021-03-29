@@ -9,12 +9,12 @@ namespace Habilitar_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PerfilController<T> : ControllerBase where T : Perfil
+    public class PerfilController : ControllerBase
     {
-        private readonly IRepositoryBase<T> _repository;
+        private readonly IRepositoryBase<Perfil> _repository;
         private readonly IUnitOfWork _uow;
 
-        public PerfilController(IRepositoryBase<T> repository, IUnitOfWork uow)
+        public PerfilController(IRepositoryBase<Perfil> repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -55,7 +55,7 @@ namespace Habilitar_API.Controllers
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, T obj)
+        public async Task<IActionResult> Put(int id, Perfil obj)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace Habilitar_API.Controllers
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(T obj)
+        public async Task<IActionResult> Post(Perfil obj)
         {
             try
             {

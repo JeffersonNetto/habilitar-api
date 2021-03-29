@@ -11,8 +11,18 @@ namespace Habilitar_API.IoC
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRepositoryBase<Empresa>, EmpresaRepository>();
-            services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();
             services.AddScoped<IRepositoryBase<Exercicio>, ExercicioRepository>();
+            services.AddScoped<IRepositoryBase<Funcao>, FuncaoRepository>();
+            services.AddScoped<IRepositoryBase<Grupo>, GrupoRepository>();
+            services.AddScoped<IRepositoryBase<Intervalo>, IntervaloRepository>();
+            services.AddScoped<IRepositoryBase<LogAcesso>, LogAcessoRepository>();
+            services.AddScoped<IRepositoryBase<LogErro>, LogErroRepository>();
+            services.AddScoped<IRepositoryBase<Meta>, MetaRepository>();
+            services.AddScoped<IRepositoryBase<Metrica>, MetricaRepository>();
+            services.AddScoped<IRepositoryBase<Perfil>, PerfilRepository>();
+            services.AddScoped<IRepositoryBase<Pessoa>, PessoaRepository>();
+            services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();            
+            services.AddScoped<IRepositoryBase<Usuario>, UsuarioRepository>();                                                            
             services.AddMemoryCache();
         }
     }
