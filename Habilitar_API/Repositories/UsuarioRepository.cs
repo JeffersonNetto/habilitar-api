@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace Habilitar_API.Repositories
 {
-    public class UsuarioRepository : IRepositoryBase<Usuario>
+    public interface IUsuarioRepository : IRepositoryBase<Usuario>
+    {
+        Task<Usuario> Login(Usuario obj);
+    }
+
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly HabilitarContext _context;
 
@@ -29,7 +34,14 @@ namespace Habilitar_API.Repositories
         public async Task<Usuario> GetById<T>(T id) =>
             await _context.Usuario
             .AsNoTracking()
+            .Include(_ => _.Pessoa)
             .FirstOrDefaultAsync(_ => _.Id.Equals(id));
+
+        public async Task<Usuario> Login(Usuario obj) =>        
+            await _context.Usuario
+            .AsNoTracking()
+            .Include(_ => _.Pessoa)
+            .FirstOrDefaultAsync(_ => _.Login == obj.Login && _.Senha == obj.Senha);        
 
         public void Remove(Usuario obj) =>
             _context.Usuario.Remove(obj);

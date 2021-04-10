@@ -56,8 +56,9 @@ namespace Habilitar_API
             })
             .AddFluentValidation();
             
-            services.AddDbContext<HabilitarContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("Conexao"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
+            services.AddDbContext<HabilitarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Conexao"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
+
+            //services.AddDbContext<HabilitarContext>(options => options.UseInMemoryDatabase(databaseName: "Habilitar"), ServiceLifetime.Scoped);
 
             services
                 .AddFluentEmail(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br")
@@ -87,6 +88,8 @@ namespace Habilitar_API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Habilitar_API v1"));
             }
+
+            app.UseCors(_ => _.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseHttpsRedirection();
 

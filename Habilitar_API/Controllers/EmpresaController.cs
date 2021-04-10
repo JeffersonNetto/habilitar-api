@@ -84,7 +84,7 @@ namespace Habilitar_API.Controllers
                 await _repository.Add(obj);
                 await _uow.Commit();
 
-                return CreatedAtAction("Post", await Get(obj.Id));
+                return Created("Post", await _repository.GetById(obj.Id));                
             }
             catch (Exception ex)
             {

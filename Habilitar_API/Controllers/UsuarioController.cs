@@ -11,10 +11,10 @@ namespace Habilitar_API.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        private readonly IRepositoryBase<Usuario> _repository;
+        private readonly IUsuarioRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public UsuarioController(IRepositoryBase<Usuario> repository, IUnitOfWork uow)
+        public UsuarioController(IUsuarioRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -113,5 +113,26 @@ namespace Habilitar_API.Controllers
 
         private async Task<bool> Exists(int id) =>
             await _repository.Exists(id);
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(Usuario obj)
+        {
+            try
+            {
+                var usuario = await _repository.Login(obj);
+
+                if (usuario == null)
+                    return NotFound();
+
+                usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                await _uow.Rollback();
+                return BadRequest(ex);
+            }
+        }
     }
 }

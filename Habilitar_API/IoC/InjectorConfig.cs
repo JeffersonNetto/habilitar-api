@@ -22,7 +22,7 @@ namespace Habilitar_API.IoC
             services.AddScoped<IRepositoryBase<Perfil>, PerfilRepository>();
             services.AddScoped<IRepositoryBase<Pessoa>, PessoaRepository>();
             services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();            
-            services.AddScoped<IRepositoryBase<Usuario>, UsuarioRepository>();                                                            
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();                                                            
             services.AddMemoryCache();
         }
     }
