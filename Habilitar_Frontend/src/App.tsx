@@ -1,13 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Login from './components/login/Login';
+import { AuthProvider } from './context/AuthContext';
+import { Router } from 'react-router-dom';
+import Routes from './routes'
+import history from './history'
 
 function App() {
+  
   return (
-    <div>
-      <Login />
-    </div>
+    <AuthProvider>
+      <Router history={history}>
+        <Routes />
+      </Router>
+    </AuthProvider>
   )
 }
 

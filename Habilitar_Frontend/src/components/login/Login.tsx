@@ -12,13 +12,14 @@ import Alert from "@material-ui/lab/Alert";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Usuario from "../../models/Usuario";
 import LoginService from "../../services/LoginService";
-import { Retorno } from "../../Helpers/Retorno";
 import { Snackbar } from "@material-ui/core";
 import * as yup from 'yup';
 import { useFormik } from 'formik';
+import { Retorno } from '../../helpers/Retorno'
+import { Context } from '../../context/AuthContext'
 
 const validationSchema = yup.object({
     login: yup.string().required("Informe seu login"),
@@ -72,6 +73,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default () => {
+
+  const { authenticated, handleLogin } = useContext(Context);
     
   const classes = useStyles();
   
@@ -99,13 +102,13 @@ export default () => {
             Login: values.login,
             Senha: values.senha,
           };
-      
-          LoginService.EfetuarLogin(usuario)
+                          
+          handleLogin(usuario)
             .then((response: Retorno<Usuario>) => {
               setAlertMessage({ severity: "success", mensagem: response.Mensagem });
               setOpen(true);        
             })
-            .catch((error) => {
+            .catch((error: any) => {
               let err: Retorno<Usuario> = error.response.data;        
               setAlertMessage({ severity: "error", mensagem: err.Mensagem });
               setOpen(true);
