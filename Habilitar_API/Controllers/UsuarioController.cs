@@ -1,4 +1,5 @@
-﻿using Habilitar_API.Models;
+﻿using Habilitar_API.Helpers;
+using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
@@ -122,16 +123,16 @@ namespace Habilitar_API.Controllers
                 var usuario = await _repository.Login(obj);
 
                 if (usuario == null)
-                    return NotFound();
+                    return NotFound(new Retorno<Usuario> { Mensagem = "Usuário ou senha inválidos" });
 
                 usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
 
-                return Ok(usuario);
+                return Ok(new Retorno<Usuario> { Mensagem = "Login realizado com sucesso", Dados = usuario });
             }
             catch (Exception ex)
             {
                 await _uow.Rollback();
-                return BadRequest(ex);
+                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message ?? ex?.Message));
             }
         }
     }

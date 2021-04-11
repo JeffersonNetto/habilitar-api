@@ -1,20 +1,25 @@
 import Usuario from '../models/Usuario';
-import axios from '../../src/services/interceptor'
+import api from '../Interceptor/interceptor'
 
 const url = 'usuario/login'
 
-export const EfetuarLogin = async (usuario: Usuario) => {
+export default {
 
-    try {
-        const response = await axios.post(url, JSON.stringify(usuario), {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-        })        
-    } catch (error) {
-        console.log(error)
+    EfetuarLogin: async function (usuario: Usuario) {
+
+        try {
+            const response = await api.post(url, JSON.stringify(usuario), {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }
+            })
+
+            return response.data
+
+        } catch (error) {                                    
+            throw error
+        }
     }
-    
-}
 
+}
