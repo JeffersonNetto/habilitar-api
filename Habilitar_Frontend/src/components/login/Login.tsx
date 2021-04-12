@@ -14,17 +14,17 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState, useContext } from "react";
 import Usuario from "../../models/Usuario";
-import LoginService from "../../services/LoginService";
 import { Snackbar } from "@material-ui/core";
-import * as yup from 'yup';
-import { useFormik } from 'formik';
-import { Retorno } from '../../helpers/Retorno'
-import { Context } from '../../context/AuthContext'
+import * as yup from "yup";
+import { useFormik } from "formik";
+import { Retorno } from "../../helpers/Retorno";
+import { Context } from "../../context/AuthContext";
+import Loader from "../loader/Loader";
 
 const validationSchema = yup.object({
-    login: yup.string().required("Informe seu login"),
-    senha: yup.string().required("Informe sua senha"),
-})
+  login: yup.string().required("Informe seu login"),
+  senha: yup.string().required("Informe sua senha"),
+});
 
 function Copyright() {
   return (
@@ -73,16 +73,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default () => {
+  const { handleLogin } = useContext(Context);
 
-  const { authenticated, handleLogin } = useContext(Context);
-    
   const classes = useStyles();
-  
+
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState<any>({
     severity: "",
     mensagem: "",
-  });
+  });  
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -93,29 +93,33 @@ export default () => {
   };
 
   const formik = useFormik({
-      initialValues: {
-        login:"",
-        senha:"",
-      },
-      onSubmit: (values) => {
-        const usuario: Usuario = {
-            Login: values.login,
-            Senha: values.senha,
-          };
-                          
-          handleLogin(usuario)
-            .then((response: Retorno<Usuario>) => {
-              setAlertMessage({ severity: "success", mensagem: response.Mensagem });
-              setOpen(true);        
-            })
-            .catch((error: any) => {
-              let err: Retorno<Usuario> = error.response.data;        
-              setAlertMessage({ severity: "error", mensagem: err.Mensagem });
-              setOpen(true);
-            });
-      },
-      validationSchema: validationSchema
-  })
+    initialValues: {
+      login: "",
+      senha: "",
+    },
+    onSubmit: (values) => {
+      setLoading(true);
+      const usuario: Usuario = {
+        Login: values.login,
+        Senha: values.senha,
+      };
+
+      handleLogin(usuario)
+        .then((response: Retorno<Usuario>) => {
+          setAlertMessage({ severity: "success", mensagem: response.Mensagem });
+          setOpen(true);
+        })
+        .catch((error: any) => {
+          let err: Retorno<Usuario> = error.response.data;
+          setAlertMessage({ severity: "error", mensagem: err.Mensagem });
+          setOpen(true);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    },
+    validationSchema: validationSchema,
+  });
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -148,7 +152,7 @@ export default () => {
           <form className={classes.form} onSubmit={formik.handleSubmit}>
             <TextField
               variant="outlined"
-              margin="normal"              
+              margin="normal"
               fullWidth
               id="login"
               label="Login"
@@ -162,7 +166,7 @@ export default () => {
             />
             <TextField
               variant="outlined"
-              margin="normal"              
+              margin="normal"
               fullWidth
               name="senha"
               label="Senha"
@@ -184,11 +188,16 @@ export default () => {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
-              //onClick={handleSubmit}
+              className={classes.submit}              
             >
               Entrar
             </Button>
+            <Box
+              display="flex"                            
+              justifyContent="center"                            
+            >
+              <Loader loading={loading}></Loader>
+            </Box>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
