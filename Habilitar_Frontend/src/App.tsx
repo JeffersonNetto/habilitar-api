@@ -1,14 +1,13 @@
 import './App.css';
 import { AuthProvider } from './context/AuthContext';
-import { Router } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './routes'
-import history from './history'
 
 function App() {
   
   return (
     <AuthProvider>
-      <Router history={history}>
+      <Router>
         <Routes />
       </Router>
     </AuthProvider>

@@ -1,15 +1,15 @@
 import { Header } from "../header/Header";
 import { Sidenav } from "../sidenav/Sidenav";
-import { Content } from "../content/Content";
-import { Footer } from '../footer/Footer';
+import { Footer } from "../footer/Footer";
+import Dashboard from "../dashboard/Dashboard";
 
 export const Main = () => {
   return (
     <div>
       <Header></Header>
       <Sidenav></Sidenav>
-      <Content></Content>
+      <Dashboard />
       <Footer></Footer>
     </div>
   );
-}
+};

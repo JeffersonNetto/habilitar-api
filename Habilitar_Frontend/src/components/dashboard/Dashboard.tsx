@@ -13,7 +13,7 @@ import Badge from "@material-ui/core/Badge";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Link from "@material-ui/core/Link";
+
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
@@ -29,8 +29,11 @@ import LayersIcon from "@material-ui/icons/Layers";
 import AssignmentIcon from "@material-ui/icons/Assignment";
 import { useContext, useState } from "react";
 import { Context } from "../../context/AuthContext";
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Tooltip from '@material-ui/core/Tooltip';
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Tooltip from "@material-ui/core/Tooltip";
+import { Link, NavLink, Route, Switch, useHistory } from "react-router-dom";
+import Teste01 from "../teste01/Teste01";
+import CustomRoute from "../../helpers/CustomRoute";
 
 const mainListItems = (
   <div>
@@ -38,13 +41,17 @@ const mainListItems = (
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+      <NavLink to="/app/teste01">
+        <ListItemText primary="Dashboard" />
+      </NavLink>
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <Link to="/app/teste02">
+        <ListItemText primary="Orders" />
+      </Link>
     </ListItem>
     <ListItem button>
       <ListItemIcon>
@@ -172,10 +179,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
-
+function Dashboard() {
   const { handleLogout } = useContext(Context);  
-  
+
   const classes = useStyles();
   const [open, setOpen] = useState(true);
   const handleDrawerOpen = () => {
@@ -184,7 +190,7 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);  
 
   return (
     <div className={classes.root}>
@@ -213,7 +219,7 @@ export default function Dashboard() {
             noWrap
             className={classes.title}
           >
-            Dashboard
+            Habilitar
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -221,12 +227,10 @@ export default function Dashboard() {
             </Badge>
           </IconButton>
           <Tooltip title="Sair">
-          <IconButton             
-            onClick={handleLogout}   
-            color="inherit"                     
-          >
-            <ExitToAppIcon />
-          </IconButton></Tooltip>
+            <IconButton onClick={handleLogout} color="inherit">
+              <ExitToAppIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -246,19 +250,38 @@ export default function Dashboard() {
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>
+
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {/* Chart */}
+            <div>
+              <Switch>
+                <CustomRoute                  
+                  isPrivate={true}
+                  path="/app/teste01"
+                  component={() => {                    
+                    return <h1 style={{ color: "red" }}>Teste01</h1>;
+                  }}
+                />
+                <CustomRoute  
+                  isPrivate={true}                
+                  path="/app/teste02"
+                  render={() => {                    
+                    return <h1 style={{ color: "red" }}>Teste02</h1>;
+                  }}
+                />
+              </Switch>
+            </div>
+
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}></Paper>
             </Grid>
-            {/* Recent Deposits */}
+
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}></Paper>
             </Grid>
-            {/* Recent Orders */}
+
             <Grid item xs={12}>
               <Paper className={classes.paper}></Paper>
             </Grid>
@@ -269,3 +292,5 @@ export default function Dashboard() {
     </div>
   );
 }
+
+export default Dashboard;

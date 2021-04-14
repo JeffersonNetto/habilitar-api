@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import { Retorno } from "../../helpers/Retorno";
 import { Context } from "../../context/AuthContext";
 import Loader from "../loader/Loader";
+import { useHistory } from "react-router";
 
 const validationSchema = yup.object({
   login: yup.string().required("Informe seu login"),
@@ -74,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const { handleLogin } = useContext(Context);
+  const history = useHistory();
 
   const classes = useStyles();
 
@@ -108,6 +110,9 @@ export default () => {
         .then((response: Retorno<Usuario>) => {
           setAlertMessage({ severity: "success", mensagem: response.Mensagem });
           setOpen(true);
+          setTimeout(() => {
+            history.push('/');  
+          }, 1000);          
         })
         .catch((error: any) => {
           let err: Retorno<Usuario> = error.response.data;

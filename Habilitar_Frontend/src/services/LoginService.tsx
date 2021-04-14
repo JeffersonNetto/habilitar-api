@@ -1,14 +1,13 @@
 import Usuario from "../models/Usuario";
 import api from "../interceptor/http-interceptor";
 import { useState, useEffect } from "react";
-import history from "../history";
 
 const url = "usuario/login";
 
 export default function LoginService() {
 
   const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);           
 
   useEffect(() => {
     
@@ -34,8 +33,7 @@ export default function LoginService() {
 
       localStorage.setItem("token", JSON.stringify(Token));
       api.defaults.headers.Authorization = `Bearer ${Token}`;
-      setAuthenticated(true);
-      history.push("/");
+      setAuthenticated(true);      
 
       return data;
     } catch (error) {
@@ -46,8 +44,7 @@ export default function LoginService() {
   async function handleLogout() {
     setAuthenticated(false);
     localStorage.removeItem("token");
-    api.defaults.headers.Authorization = undefined;
-    history.push("/login");
+    api.defaults.headers.Authorization = undefined;         
   }
 
   return { authenticated, loading, handleLogin, handleLogout };

@@ -1,3 +1,5 @@
-import Dashboard from "../dashboard/Dashboard";
-
-export const Content = () => <Dashboard />
+export const Content = () => {
+  return (
+    <div></div>
+  );
+};

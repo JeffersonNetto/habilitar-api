@@ -1,32 +1,14 @@
-import { useContext } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Redirect, Route, Switch } from "react-router-dom";
+import Login from "./components/login/Login";
+import { Main } from "./components/main/Main";
+import CustomRoute from "./helpers/CustomRoute";
 
-import { Context } from './context/AuthContext'
-
-import Login from './components/login/Login';
-import { Main } from './components/main/Main';
-
-function CustomRoute({ isPrivate, ...rest }) {
-  
-  const { loading, authenticated } = useContext(Context);  
-
-  if (loading) {
-    return <h1>Loading...</h1>;
-  }
-
-  if (isPrivate && !authenticated) {
-    return <Redirect to="/login" />
-  }  
-
-  return <Route {...rest} />;
-}
-
-export default function Routes() {  
-
-  return (
-    <Switch>
-      <CustomRoute exact path="/login" component={Login} />
-      <CustomRoute isPrivate exact path="/" component={Main} />      
-    </Switch>
+export default function Routes() {
+  return (    
+      <Switch>
+        <Route exact path="/" render={() => <Redirect to="/app" />} />
+        <CustomRoute isPrivate={true} path="/app" component={Main} />
+        <CustomRoute path="/login" component={Login} />                      
+      </Switch>    
   );
 }
