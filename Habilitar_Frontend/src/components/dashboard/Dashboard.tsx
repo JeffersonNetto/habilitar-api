@@ -31,9 +31,10 @@ import { useContext, useState } from "react";
 import { Context } from "../../context/AuthContext";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Tooltip from "@material-ui/core/Tooltip";
-import { Link, NavLink, Route, Switch, useHistory } from "react-router-dom";
-import Teste01 from "../teste01/Teste01";
+import { Link, NavLink, Switch } from "react-router-dom";
 import CustomRoute from "../../helpers/CustomRoute";
+import { Usuarios } from "../../pages/Usuario/Usuarios";
+import { Fisioterapeutas } from "../../pages/Fisioterapeuta/Fisioterapeutas";
 
 const mainListItems = (
   <div>
@@ -41,7 +42,7 @@ const mainListItems = (
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <NavLink to="/app/teste01">
+      <NavLink to="/app/usuarios">
         <ListItemText primary="Dashboard" />
       </NavLink>
     </ListItem>
@@ -49,7 +50,7 @@ const mainListItems = (
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <Link to="/app/teste02">
+      <Link to="/app/fisioterapeutas">
         <ListItemText primary="Orders" />
       </Link>
     </ListItem>
@@ -180,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Dashboard() {
-  const { handleLogout } = useContext(Context);  
+  const { handleLogout } = useContext(Context);
 
   const classes = useStyles();
   const [open, setOpen] = useState(true);
@@ -190,7 +191,7 @@ function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);  
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
   return (
     <div className={classes.root}>
@@ -257,19 +258,15 @@ function Dashboard() {
           <Grid container spacing={3}>
             <div>
               <Switch>
-                <CustomRoute                  
+                <CustomRoute
                   isPrivate={true}
-                  path="/app/teste01"
-                  component={() => {                    
-                    return <h1 style={{ color: "red" }}>Teste01</h1>;
-                  }}
+                  path="/app/usuarios"
+                  component={Usuarios}
                 />
-                <CustomRoute  
-                  isPrivate={true}                
-                  path="/app/teste02"
-                  render={() => {                    
-                    return <h1 style={{ color: "red" }}>Teste02</h1>;
-                  }}
+                <CustomRoute
+                  isPrivate={true}
+                  path="/app/fisioterapeutas"
+                  component={Fisioterapeutas}
                 />
               </Switch>
             </div>

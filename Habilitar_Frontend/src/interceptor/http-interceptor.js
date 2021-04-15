@@ -1,38 +1,30 @@
-import axios from 'axios'
+import axios from "axios";
 
 const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-        'accept': 'application/json'
-    }    
-})
+  baseURL: process.env.REACT_APP_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+    accept: "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
+});
 
-axiosInstance.interceptors.request.use(async (config) => {
-    
+axiosInstance.interceptors.request.use(
+  async (config) => {
     if (
-        !config.url.endsWith('login') ||
-        !config.url.endsWith('refresh') ||
-        !config.url.endsWith('signup')
+      !config.url.endsWith("login") ||
+      !config.url.endsWith("refresh") ||
+      !config.url.endsWith("signup")
     ) {
-        //const userTokenExpiration = new Date(await AsyncStorage.getItem('userTokenExpiration'));
-        //const today = new Date();
-        //if (today > userTokenExpiration) {
-        // refresh the token here
-        //   const userRefreshToken = await AsyncStorage.getItem('userRefreshToken');
-        //} else {
-        //  const userToken = await AsyncStorage.getItem('userToken');
-        //  config.headers.Authorization = `Bearer ${userToken}`;
-        //}
-
-        config.headers.Authorization = `Bearer tokenaqui`;
-
-    }    
+      config.headers.Authorization = `Bearer tokenaqui`;
+    }
 
     return config;
-}, (error) => {
+  },
+  (error) => {
     // I cand handle a request with errors here
     return Promise.reject(error);
-});
+  }
+);
 
 export default axiosInstance;

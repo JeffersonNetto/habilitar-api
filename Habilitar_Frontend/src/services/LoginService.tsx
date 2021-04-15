@@ -1,16 +1,14 @@
-import Usuario from "../models/Usuario";
+import Usuario from "../models/Login";
 import api from "../interceptor/http-interceptor";
 import { useState, useEffect } from "react";
 
 const url = "usuario/login";
 
 export default function LoginService() {
-
   const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);           
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -22,18 +20,22 @@ export default function LoginService() {
   }, []);
 
   async function handleLogin(usuario: Usuario) {
-      
     try {
-      const { data, data: { Dados: { Token } } } = await api.post(url, JSON.stringify(usuario), {
+      const {
+        data,
+        data: {
+          Dados: { Token },
+        },
+      } = await api.post(url, JSON.stringify(usuario), {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-      });      
+      });
 
       localStorage.setItem("token", JSON.stringify(Token));
       api.defaults.headers.Authorization = `Bearer ${Token}`;
-      setAuthenticated(true);      
+      setAuthenticated(true);
 
       return data;
     } catch (error) {
@@ -44,7 +46,7 @@ export default function LoginService() {
   async function handleLogout() {
     setAuthenticated(false);
     localStorage.removeItem("token");
-    api.defaults.headers.Authorization = undefined;         
+    api.defaults.headers.Authorization = undefined;
   }
 
   return { authenticated, loading, handleLogin, handleLogout };

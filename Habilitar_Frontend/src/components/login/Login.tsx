@@ -13,7 +13,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState, useContext } from "react";
-import Usuario from "../../models/Usuario";
+import Usuario from "../../models/Login";
 import { Snackbar } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+export const Login = () => {
   const { handleLogin } = useContext(Context);
   const history = useHistory();
 
@@ -84,7 +84,7 @@ export default () => {
   const [alertMessage, setAlertMessage] = useState<any>({
     severity: "",
     mensagem: "",
-  });  
+  });
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -111,12 +111,17 @@ export default () => {
           setAlertMessage({ severity: "success", mensagem: response.Mensagem });
           setOpen(true);
           setTimeout(() => {
-            history.push('/');  
-          }, 1000);          
+            history.push("/");
+          }, 1000);
         })
         .catch((error: any) => {
-          let err: Retorno<Usuario> = error.response.data;
-          setAlertMessage({ severity: "error", mensagem: err.Mensagem });
+          let err: Retorno<Usuario> = error?.response?.data;
+          setAlertMessage({
+            severity: "error",
+            mensagem: err
+              ? err.Mensagem
+              : "Sistema temporariamente indisponível",
+          });
           setOpen(true);
         })
         .finally(() => {
@@ -193,14 +198,11 @@ export default () => {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}              
+              className={classes.submit}
             >
               Entrar
             </Button>
-            <Box
-              display="flex"                            
-              justifyContent="center"                            
-            >
+            <Box display="flex" justifyContent="center">
               <Loader loading={loading}></Loader>
             </Box>
             <Grid container>
