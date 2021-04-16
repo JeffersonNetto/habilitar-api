@@ -1,11 +1,9 @@
 import api from "../interceptor/http-interceptor";
 
-const url = "usuario";
-
-export const UsuarioService = () => {
+const ServiceBase = <T>(url: string) => {
   const GetAll = async () => {
     try {
-      const { data } = await api.get(url);
+      const { data } = await api.get<T[]>(url);
       return data;
     } catch (error) {
       throw error;
@@ -14,3 +12,5 @@ export const UsuarioService = () => {
 
   return { GetAll };
 };
+
+export default ServiceBase;
