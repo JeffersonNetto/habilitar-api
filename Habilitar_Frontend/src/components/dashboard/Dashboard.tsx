@@ -31,10 +31,11 @@ import { useContext, useState } from "react";
 import { Context } from "../../context/AuthContext";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Tooltip from "@material-ui/core/Tooltip";
-import { Link, NavLink, Switch } from "react-router-dom";
+import { Link, NavLink, Switch, withRouter } from "react-router-dom";
 import CustomRoute from "../../helpers/CustomRoute";
 import { Usuarios } from "../../pages/Usuario/Usuarios";
 import { Fisioterapeutas } from "../../pages/Fisioterapeuta/Fisioterapeutas";
+import { UsuarioForm } from "../../pages/Usuario/Usuario";
 
 const mainListItems = (
   <div>
@@ -254,40 +255,30 @@ function Dashboard() {
 
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            <div>
-              <Switch>
-                <CustomRoute
-                  isPrivate={true}
-                  path="/app/usuarios"
-                  component={Usuarios}
-                />
-                <CustomRoute
-                  isPrivate={true}
-                  path="/app/fisioterapeutas"
-                  component={Fisioterapeutas}
-                />
-              </Switch>
-            </div>
-
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}></Paper>
-            </Grid>
-
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}></Paper>
-            </Grid>
-
-            <Grid item xs={12}>
-              <Paper className={classes.paper}></Paper>
-            </Grid>
-          </Grid>
-          <Box pt={4}></Box>
+        <Container maxWidth="xl" className={classes.container}>
+          <Switch>
+            <CustomRoute
+              exact
+              isPrivate={true}
+              path="/app/usuarios"
+              component={Usuarios}
+            />
+            <CustomRoute
+              exact
+              isPrivate={true}
+              path="/app/usuarios/:id"
+              component={UsuarioForm}
+            />
+            <CustomRoute
+              isPrivate={true}
+              path="/app/fisioterapeutas"
+              component={Fisioterapeutas}
+            />
+          </Switch>
         </Container>
       </main>
     </div>
   );
 }
 
-export default Dashboard;
+export default withRouter(Dashboard);

@@ -4,7 +4,7 @@ import ServiceBase from "./ServiceBase";
 const url = "usuario";
 
 export const UsuarioService = () => {
-  const { GetAll } = ServiceBase<Usuario>(url);
+  const { GetAll, Insert } = ServiceBase<Usuario>(url);
 
-  return { GetAll };
+  return { GetAll, Insert };
 };

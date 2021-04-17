@@ -10,7 +10,16 @@ const ServiceBase = <T>(url: string) => {
     }
   };
 
-  return { GetAll };
+  const Insert = async (usuario: T) => {
+    try {
+      const { data } = await api.post<T>(url, usuario);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return { GetAll, Insert };
 };
 
 export default ServiceBase;
