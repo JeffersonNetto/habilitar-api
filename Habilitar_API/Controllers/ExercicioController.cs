@@ -1,8 +1,10 @@
-﻿using Habilitar_API.Models;
+﻿using Habilitar_API.Helpers;
+using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
@@ -27,8 +29,8 @@ namespace Habilitar_API.Controllers
             try
             {
                 var lst = await _repository.GetAll();
-
-                return Ok(lst);
+                
+                return Ok(new Retorno<List<Exercicio>> { Mensagem = "Exercícios obtidos com sucesso", Dados = lst });
             }
             catch (Exception ex)
             {

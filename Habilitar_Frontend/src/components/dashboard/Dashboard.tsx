@@ -36,6 +36,7 @@ import CustomRoute from "../../helpers/CustomRoute";
 import { Usuarios } from "../../pages/Usuario/Usuarios";
 import { Fisioterapeutas } from "../../pages/Fisioterapeuta/Fisioterapeutas";
 import { UsuarioForm } from "../../pages/Usuario/Usuario";
+import { Exercicios } from "../../pages/Exercicio/Exercicios";
 
 const mainListItems = (
   <div>
@@ -266,13 +267,24 @@ function Dashboard() {
             <CustomRoute
               exact
               isPrivate={true}
-              path="/app/usuarios/:id"
+              path="/app/usuarios/criar"
+              component={UsuarioForm}
+            />
+            <CustomRoute
+              exact
+              isPrivate={true}
+              path="/app/usuarios/editar/:id"
               component={UsuarioForm}
             />
             <CustomRoute
               isPrivate={true}
               path="/app/fisioterapeutas"
               component={Fisioterapeutas}
+            />
+            <CustomRoute
+              isPrivate={true}
+              path="/app/exercicios"
+              component={Exercicios}
             />
           </Switch>
         </Container>

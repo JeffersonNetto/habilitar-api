@@ -7,6 +7,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Link } from "react-router-dom";
+import { Retorno } from "../../helpers/Retorno";
 
 export const Usuarios = () => {
   const { GetAll } = UsuarioService();
@@ -27,7 +28,12 @@ export const Usuarios = () => {
         name: "",
         right: true,
         selector: (usuario) => (
-          <Link to={`/app/usuarios/${usuario.Id}`}>
+          <Link
+            to={{
+              pathname: `/app/usuarios/editar/${usuario.Id}`,
+              state: usuario,
+            }}
+          >
             <Tooltip title="Editar">
               <IconButton color="primary">
                 <EditIcon />
@@ -42,11 +48,8 @@ export const Usuarios = () => {
 
   useEffect(() => {
     GetAll()
-      .then((response) => {
-        console.log(response);
-        setTimeout(() => {
-          setUsuarios(response.Dados);
-        }, 1000);
+      .then((response: Retorno<Usuario[]>) => {
+        setUsuarios(response.Dados);
       })
       .catch((error) => {
         console.log(error);

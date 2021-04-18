@@ -7,25 +7,21 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { Retorno } from "../../helpers/Retorno";
 import Loader from "../../components/loader/Loader";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Usuario from "../../models/Usuario";
 import { UsuarioService } from "../../services/UsuarioService";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { GetIp } from "../../services/IpService";
 import { Pessoa } from "../../models/Pessoa";
 import { Context } from "../../context/AuthContext";
 import { Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
+import { useLocation } from "react-router";
 
 const validationSchema = yup.object({
   login: yup.string().required("Informe seu login"),
@@ -52,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+let usuario: Usuario;
+
 export const UsuarioForm = () => {
   const classes = useStyles();
   const { Insert } = UsuarioService();
@@ -67,8 +65,13 @@ export const UsuarioForm = () => {
   const [ip, SetIp] = useState("");
   const [pessoa, SetPessoa] = useState<Pessoa | null>(null);
 
+  const { pathname, state } = useLocation();
+
+  if (pathname.includes("editar")) {
+    usuario = state as Usuario;
+  }
+
   useEffect(() => {
-    console.log(usuarioLogado);
     GetIp().then((response) => {
       SetIp(response);
     });
@@ -97,9 +100,9 @@ export const UsuarioForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      login: "",
+      login: usuario.Login,
       senha: "",
-      conselho: "",
+      conselho: usuario.Conselho,
     },
     onSubmit: (values) => {
       setLoading(true);
