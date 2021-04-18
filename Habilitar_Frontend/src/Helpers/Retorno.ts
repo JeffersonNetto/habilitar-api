@@ -1,5 +1,5 @@
 export class Retorno<T> {
-    Mensagem?: string
-    Dados?: T
-    Erros: string[] = []
+  Mensagem?: string;
+  Dados?: T;
+  Erros: string[] = [];
 }

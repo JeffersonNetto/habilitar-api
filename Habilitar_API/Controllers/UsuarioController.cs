@@ -4,6 +4,7 @@ using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
@@ -29,7 +30,7 @@ namespace Habilitar_API.Controllers
             {
                 var lst = await _repository.GetAll();
 
-                return Ok(lst);
+                return Ok(new Retorno<List<Usuario>> { Mensagem = "Usuários obtidos com sucesso", Dados = lst });
             }
             catch (Exception ex)
             {
@@ -85,7 +86,9 @@ namespace Habilitar_API.Controllers
                 await _repository.Add(obj);
                 await _uow.Commit();
 
-                return CreatedAtAction("Post", await Get(obj.Id));
+                obj = await _repository.GetById(obj.Id);
+
+                return CreatedAtAction("Post", new Retorno<Usuario> { Mensagem = "Usuário criado com sucesso", Dados = obj  });
             }
             catch (Exception ex)
             {

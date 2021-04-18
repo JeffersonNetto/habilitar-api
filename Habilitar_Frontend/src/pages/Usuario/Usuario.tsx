@@ -7,7 +7,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { Retorno } from "../../helpers/Retorno";
 import Loader from "../../components/loader/Loader";
-import { useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Usuario from "../../models/Usuario";
 import { UsuarioService } from "../../services/UsuarioService";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,6 +21,11 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import { GetIp } from "../../services/IpService";
+import { Pessoa } from "../../models/Pessoa";
+import { Context } from "../../context/AuthContext";
+import { Snackbar } from "@material-ui/core";
+import Alert from "@material-ui/lab/Alert";
 
 const validationSchema = yup.object({
   login: yup.string().required("Informe seu login"),
@@ -52,13 +57,24 @@ export const UsuarioForm = () => {
   const { Insert } = UsuarioService();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const [pessoaId, setPessoaId] = useState(0);
   const [alertMessage, setAlertMessage] = useState<any>({
     severity: "",
     mensagem: "",
   });
 
-  const pessoas = [
+  const { usuarioLogado } = useContext(Context);
+
+  const [ip, SetIp] = useState("");
+  const [pessoa, SetPessoa] = useState<Pessoa | null>(null);
+
+  useEffect(() => {
+    console.log(usuarioLogado);
+    GetIp().then((response) => {
+      SetIp(response);
+    });
+  }, []);
+
+  const pessoas: Pessoa[] = [
     {
       Id: 1,
       Nome: "Jefferson",
@@ -79,40 +95,32 @@ export const UsuarioForm = () => {
     setOpen(false);
   };
 
-  const handleChange = (event: any) => {
-    let value: number = parseInt(event.target.value);
-    console.log(value);
-    setPessoaId(value);
-  };
-
   const formik = useFormik({
     initialValues: {
       login: "",
       senha: "",
       conselho: "",
-      pessoaId: 0,
     },
     onSubmit: (values) => {
-      console.log(values);
-      //setLoading(true);
+      setLoading(true);
       const usuario: Usuario = {
         Login: values.login,
         Senha: values.senha,
         Ativo: true,
         DataCriacao: new Date(),
-        Ip: "",
+        Ip: ip,
         Profissional: false,
         Fisioterapeuta: false,
-        UsuarioCriacaoId: 1,
-        Id: 1,
-        PessoaId: values.pessoaId,
+        UsuarioCriacaoId: usuarioLogado?.Id,
+        Id: 0,
+        PessoaId: pessoa?.Id,
         Conselho: values.conselho,
       };
 
       console.log("form", usuario);
 
       Insert(usuario)
-        .then((response: any) => {
+        .then((response) => {
           setAlertMessage({ severity: "success", mensagem: response.Mensagem });
           setOpen(true);
         })
@@ -136,6 +144,22 @@ export const UsuarioForm = () => {
   return (
     <Container component="main" maxWidth="xl">
       <CssBaseline />
+
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={alertMessage.severity}
+          variant="filled"
+        >
+          <div style={{ fontSize: "1rem" }}>{alertMessage.mensagem}</div>
+        </Alert>
+      </Snackbar>
+
       <div className={classes.paper}>
         <Typography component="h1" variant="h5">
           Usuário
@@ -159,6 +183,7 @@ export const UsuarioForm = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
+                type="password"
                 variant="outlined"
                 fullWidth
                 id="senha"
@@ -184,18 +209,20 @@ export const UsuarioForm = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              {/* <Autocomplete
+              <Autocomplete
                 fullWidth
                 id="pessoa"
-                options={pessoas}
-                getOptionLabel={(option) => {
-                  setPessoaId(option.Id);
-                  return option.Nome;
+                value={pessoa}
+                onChange={(event: any, newValue: Pessoa | null) => {
+                  SetPessoa(newValue);
                 }}
+                options={pessoas}
+                getOptionSelected={(option, value) => option?.Id === value?.Id}
+                getOptionLabel={(pessoa) => pessoa.Nome}
                 renderInput={(params) => (
                   <TextField {...params} label="Pessoa" variant="outlined" />
                 )}
-              /> */}
+              />
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControlLabel

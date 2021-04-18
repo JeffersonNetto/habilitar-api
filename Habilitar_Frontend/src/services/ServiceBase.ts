@@ -1,18 +1,19 @@
+import { Retorno } from "../helpers/Retorno";
 import api from "../interceptor/http-interceptor";
 
 const ServiceBase = <T>(url: string) => {
   const GetAll = async () => {
     try {
-      const { data } = await api.get<T[]>(url);
+      const { data } = await api.get<Retorno<T[]>>(url);
       return data;
     } catch (error) {
       throw error;
     }
   };
 
-  const Insert = async (usuario: T) => {
+  const Insert = async (body: T) => {
     try {
-      const { data } = await api.post<T>(url, usuario);
+      const { data } = await api.post<Retorno<T>>(url, body);
       return data;
     } catch (error) {
       throw error;

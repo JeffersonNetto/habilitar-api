@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export const Usuarios = () => {
   const { GetAll } = UsuarioService();
-  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [usuarios, setUsuarios] = useState<Usuario[] | undefined>([]);
   const columns = useMemo<IDataTableColumn<Usuario>[]>(
     () => [
       {
@@ -45,7 +45,7 @@ export const Usuarios = () => {
       .then((response) => {
         console.log(response);
         setTimeout(() => {
-          setUsuarios(response);
+          setUsuarios(response.Dados);
         }, 1000);
       })
       .catch((error) => {
