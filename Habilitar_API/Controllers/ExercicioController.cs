@@ -26,20 +26,13 @@ namespace Habilitar_API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
-                
-                return Ok(new Retorno<List<Exercicio>> { Mensagem = "Exercícios obtidos com sucesso", Dados = lst });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var lst = await _repository.GetAll();
+
+            return Ok(new Retorno<List<Exercicio>> { Mensagem = "Exercícios obtidos com sucesso", Dados = lst });
         }
 
         // GET: api/Exercicio/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}")]        
         public async Task<IActionResult> Get(int id)
         {
             try

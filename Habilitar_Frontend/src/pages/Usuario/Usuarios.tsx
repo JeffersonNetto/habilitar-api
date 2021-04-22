@@ -1,50 +1,29 @@
 import { useEffect, useMemo, useState } from "react";
 import Usuario from "../../models/Usuario";
 import { UsuarioService } from "../../services/UsuarioService";
-import DataTable, { IDataTableColumn } from "react-data-table-component";
+import MaterialTable from "material-table";
 import Loader from "../../components/loader/Loader";
 import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Retorno } from "../../helpers/Retorno";
+import { localization } from "../../helpers/material-table-localization";
 
 export const Usuarios = () => {
+  const history = useHistory();
   const { GetAll } = UsuarioService();
   const [usuarios, setUsuarios] = useState<Usuario[] | undefined>([]);
-  const columns = useMemo<IDataTableColumn<Usuario>[]>(
-    () => [
-      {
-        name: "Id",
-        selector: "Id",
-        sortable: true,
-      },
-      {
-        name: "Login",
-        selector: "Login",
-        sortable: true,
-      },
-      {
-        name: "",
-        right: true,
-        selector: (usuario) => (
-          <Link
-            to={{
-              pathname: `/app/usuarios/editar/${usuario.Id}`,
-              state: usuario,
-            }}
-          >
-            <Tooltip title="Editar">
-              <IconButton color="primary">
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-          </Link>
-        ),
-      },
-    ],
-    []
-  );
+  const columns = [
+    {
+      title: "Id",
+      field: "Id",
+    },
+    {
+      title: "Login",
+      field: "Login",
+    },
+  ];
 
   useEffect(() => {
     GetAll()
@@ -57,13 +36,27 @@ export const Usuarios = () => {
   }, []);
 
   return usuarios && usuarios.length > 0 ? (
-    <DataTable
+    <MaterialTable
       title="Usuários"
-      columns={columns}
       data={usuarios}
-      defaultSortField="title"
-      pagination
-      selectableRows
+      columns={columns}
+      localization={localization}
+      options={{
+        search: true,
+        sorting: true,
+        paging: true,
+        exportButton: true,
+      }}
+      actions={[
+        {
+          icon: "edit",
+          tooltip: "Editar",
+          onClick: (event, rowData) => {
+            const usuario = rowData as Usuario;
+            history.push(`/app/usuarios/editar/${usuario.Id}`, usuario);
+          },
+        },
+      ]}
     />
   ) : (
     <div>

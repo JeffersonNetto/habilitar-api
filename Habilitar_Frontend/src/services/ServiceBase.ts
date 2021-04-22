@@ -20,7 +20,16 @@ const ServiceBase = <T>(url: string) => {
     }
   };
 
-  return { GetAll, Insert };
+  const Update = async (id: number, body: T) => {
+    try {
+      const { data } = await api.put<Retorno<T>>(`${url}${id}`, body);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return { GetAll, Insert, Update };
 };
 
 export default ServiceBase;

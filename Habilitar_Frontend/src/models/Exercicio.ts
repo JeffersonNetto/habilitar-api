@@ -1,7 +1,7 @@
 export default class Exercicio {
   Id!: number;
   Nome!: string;
-  NomePopular!: string;
+  NomePopular: string | undefined;
   Descricao!: string;
   Url!: string;
   Ip!: string;

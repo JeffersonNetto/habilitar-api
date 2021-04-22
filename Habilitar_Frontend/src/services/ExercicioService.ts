@@ -1,10 +1,10 @@
 import Exercicio from "../models/Exercicio";
 import ServiceBase from "./ServiceBase";
 
-const url = "exercicio";
+const url = "exercicio/";
 
 export const ExercicioService = () => {
-  const { GetAll, Insert } = ServiceBase<Exercicio>(url);
+  const { GetAll, Insert, Update } = ServiceBase<Exercicio>(url);
 
-  return { GetAll, Insert };
+  return { GetAll, Insert, Update };
 };

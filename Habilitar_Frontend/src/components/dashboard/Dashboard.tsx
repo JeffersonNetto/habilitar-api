@@ -35,8 +35,9 @@ import { Link, NavLink, Switch, withRouter } from "react-router-dom";
 import CustomRoute from "../../helpers/CustomRoute";
 import { Usuarios } from "../../pages/Usuario/Usuarios";
 import { Fisioterapeutas } from "../../pages/Fisioterapeuta/Fisioterapeutas";
-import { UsuarioForm } from "../../pages/Usuario/Usuario";
+import { UsuarioForm } from "../../pages/Usuario/UsuarioForm";
 import { Exercicios } from "../../pages/Exercicio/Exercicios";
+import { ExercicioForm } from "../../pages/Exercicio/ExercicioForm";
 
 const mainListItems = (
   <div>
@@ -45,15 +46,15 @@ const mainListItems = (
         <DashboardIcon />
       </ListItemIcon>
       <NavLink to="/app/usuarios">
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="Usuários" />
       </NavLink>
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <Link to="/app/fisioterapeutas">
-        <ListItemText primary="Orders" />
+      <Link to="/app/exercicios">
+        <ListItemText primary="Exercícios" />
       </Link>
     </ListItem>
     <ListItem button>
@@ -282,9 +283,16 @@ function Dashboard() {
               component={Fisioterapeutas}
             />
             <CustomRoute
+              exact
               isPrivate={true}
               path="/app/exercicios"
               component={Exercicios}
+            />
+            <CustomRoute
+              exact
+              isPrivate={true}
+              path="/app/exercicios/editar/:id"
+              component={ExercicioForm}
             />
           </Switch>
         </Container>
