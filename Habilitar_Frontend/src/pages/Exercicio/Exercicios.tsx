@@ -6,11 +6,33 @@ import { ExercicioService } from "../../services/ExercicioService";
 import Loader from "../../components/loader/Loader";
 import { localization } from "../../helpers/material-table-localization";
 import { useHistory } from "react-router";
+import { ExclusaoDialog } from "../../components/dialog/ExclusaoDialog";
 
 export const Exercicios = () => {
   const history = useHistory();
   const [exercicios, setExercicios] = useState<Exercicio[]>([]);
-  const { GetAll } = ExercicioService();
+  const { GetAll, Delete } = ExercicioService();
+  const [open, setOpen] = useState(false);
+  const [exercicioExcluir, setExercicioExcluir] = useState<Exercicio>();
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDelete = () => {
+    setOpen(false);
+    // Delete(exercicioExcluir!.Id)
+    //   .then((response: Retorno<Exercicio>) => {
+    //     console.log(response);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+  };
 
   useEffect(() => {
     GetAll()
@@ -34,6 +56,10 @@ export const Exercicios = () => {
       field: "Nome",
     },
     {
+      title: "Nome Popular",
+      field: "NomePopular",
+    },
+    {
       title: "Descrição",
       field: "Descricao",
     },
@@ -41,6 +67,13 @@ export const Exercicios = () => {
 
   return exercicios && exercicios.length > 0 ? (
     <div>
+      <ExclusaoDialog
+        open={open}
+        handleClose={handleClose}
+        handleDelete={handleDelete}
+        descricao="Confirma a exclusão do exercício "
+        nome={exercicioExcluir?.Nome}
+      />
       <MaterialTable
         title="Exercícios"
         data={exercicios}
@@ -62,6 +95,16 @@ export const Exercicios = () => {
               history.push(`/app/exercicios/editar/${exercicio.Id}`, exercicio);
             },
           },
+          (rowData) => ({
+            icon: "delete",
+            tooltip: "Excluir",
+            onClick: (event, rowData) => {
+              let exercicio = rowData as Exercicio;
+              setExercicioExcluir(exercicio);
+              handleClickOpen();
+            },
+            disabled: !rowData.Ativo,
+          }),
         ]}
       />
     </div>

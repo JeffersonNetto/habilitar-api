@@ -11,6 +11,15 @@ const ServiceBase = <T>(url: string) => {
     }
   };
 
+  const Get = async (id: number) => {
+    try {
+      const { data } = await api.get<Retorno<T>>(`${url}${id}`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const Insert = async (body: T) => {
     try {
       const { data } = await api.post<Retorno<T>>(url, body);
@@ -29,7 +38,16 @@ const ServiceBase = <T>(url: string) => {
     }
   };
 
-  return { GetAll, Insert, Update };
+  const Delete = async (id: number) => {
+    try {
+      const { data } = await api.delete<Retorno<T>>(`${url}${id}`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return { GetAll, Get, Insert, Update, Delete };
 };
 
 export default ServiceBase;

@@ -4,7 +4,7 @@ import ServiceBase from "./ServiceBase";
 const url = "exercicio/";
 
 export const ExercicioService = () => {
-  const { GetAll, Insert, Update } = ServiceBase<Exercicio>(url);
+  const { GetAll, Insert, Update, Delete } = ServiceBase<Exercicio>(url);
 
-  return { GetAll, Insert, Update };
+  return { GetAll, Insert, Update, Delete };
 };
