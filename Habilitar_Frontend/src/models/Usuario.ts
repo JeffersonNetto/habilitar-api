@@ -1,17 +1,11 @@
-export default class Usuario {
-  Id!: number;
+import Entity from "./Entity";
+export default class Usuario extends Entity {
   Login!: string;
   Senha!: string;
   PessoaId?: number;
   UnidadeId?: number;
   Profissional!: boolean;
   Fisioterapeuta!: boolean;
-  Conselho?: string;
-  Ip!: string;
-  Ativo: boolean = true;
-  DataCriacao: Date = new Date();
-  UsuarioCriacaoId!: number;
-  DataAtualizacao?: Date;
-  UsuarioAtualizacaoId?: number;
-  Token?: string;
+  Conselho: string | undefined;
+  Token: string | undefined;
 }

@@ -1,13 +1,7 @@
-export default class Exercicio {
-  Id!: number;
+import Entity from "./Entity";
+export default class Exercicio extends Entity {
   Nome!: string;
   NomePopular: string | undefined;
   Descricao!: string;
   Url!: string;
-  Ip!: string;
-  Ativo!: boolean;
-  DataCriacao!: Date;
-  UsuarioCriacaoId!: number;
-  DataAtualizacao?: Date;
-  UsuarioAtualizacaoId?: number;
 }

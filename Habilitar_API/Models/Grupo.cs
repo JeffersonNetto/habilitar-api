@@ -15,7 +15,7 @@ namespace Habilitar_API.Models
 
         public int Id { get; set; }
         public string Descricao { get; set; }
-        public byte[] Observacao { get; set; }
+        public string Observacao { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
         public int UsuarioCriacaoId { get; set; }
