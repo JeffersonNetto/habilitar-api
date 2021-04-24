@@ -3,13 +3,13 @@ using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UnidadeController : ControllerBase
+    [Route("api/[controller]")]    
+    public class UnidadeController : MainController
     {
         private readonly IRepositoryBase<Unidade> _repository;
         private readonly IUnitOfWork _uow;
@@ -22,17 +22,17 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Unidade
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<Unidade>>> Get()
         {
             try
             {
                 var lst = await _repository.GetAll();
 
-                return Ok(lst);
+                return CustomSuccessResponse(200, "Unidades obtidas com sucesso", lst);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return CustomFailResponse(400, ex?.Message ?? ex?.InnerException?.Message);
             }
         }
 

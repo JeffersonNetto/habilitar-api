@@ -1,5 +1,4 @@
-﻿using Habilitar_API.Helpers;
-using Habilitar_API.Models;
+﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ExercicioController : ControllerBase
+    [Route("api/[controller]")]    
+    public class ExercicioController : MainController
     {
         private readonly IRepositoryBase<Exercicio> _repository;
         private readonly IUnitOfWork _uow;
@@ -24,11 +22,11 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Exercicio
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<Exercicio>>> Get()
         {
             var lst = await _repository.GetAll();
 
-            return Ok(new Retorno<List<Exercicio>> { Mensagem = "Exercícios obtidos com sucesso", Dados = lst });
+            return CustomSuccessResponse(200, "Exercícios obtidos com sucesso", lst);            
         }
 
         // GET: api/Exercicio/5

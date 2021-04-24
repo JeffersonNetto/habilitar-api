@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 
 [assembly: ApiConventionType(typeof(DefaultApiConventions))]
@@ -28,7 +30,7 @@ namespace Habilitar_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors();            
 
             var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
             services.AddAuthentication(x =>
@@ -56,22 +58,24 @@ namespace Habilitar_API
                 _.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
                 _.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
             })
-            .AddFluentValidation();
+            .AddFluentValidation(_ => _.RegisterValidatorsFromAssemblyContaining<Startup>());
             
-            services.AddDbContext<HabilitarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Conexao"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
+            services.AddDbContext<HabilitarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
             //services.AddDbContext<HabilitarContext>(options => options.UseInMemoryDatabase(databaseName: "Habilitar"), ServiceLifetime.Scoped);
 
             services
-                .AddFluentEmail(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br")
+                .AddFluentEmail(Configuration["Email:Address"] ?? "habilitar@outlook.com.br")
                 .AddRazorRenderer()
-                .AddSmtpSender(new System.Net.Mail.SmtpClient("smtp.live.com", 587)
+                .AddSmtpSender(new SmtpClient("smtp.live.com", 587)
                 {
-                    Credentials = new System.Net.NetworkCredential(Configuration["emailAddress"] ?? "erameu.brecho@outlook.com.br", Configuration["emailPassword"] ?? "Tfa159357*"),
+                    Credentials = new NetworkCredential(Configuration["Email:Address"] ?? "habilitar@outlook.com.br", Configuration["Email:Password"] ?? "123456"),
                     EnableSsl = true,
                     UseDefaultCredentials = false,
-                    DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network
+                    DeliveryMethod = SmtpDeliveryMethod.Network
                 });
+            
+            services.Configure<ApiBehaviorOptions>(_ => _.SuppressModelStateInvalidFilter = true);
 
             services.RegisterServices();
 

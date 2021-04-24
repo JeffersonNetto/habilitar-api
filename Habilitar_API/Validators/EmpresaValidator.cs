@@ -7,7 +7,13 @@ namespace Habilitar_API.Validators
     {
         public EmpresaValidator()
         {
-            
+            RuleFor(_ => _.NomeFantasia)
+                .NotEmpty()
+                .WithMessage("Informe o {PropertyName}");
+
+            RuleFor(_ => _.RazaoSocial)
+                .NotEmpty()
+                .WithMessage("Informe a Razão Social");
         }
     }
 }

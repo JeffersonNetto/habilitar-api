@@ -1,5 +1,4 @@
-﻿using Habilitar_API.Helpers;
-using Habilitar_API.Models;
+﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsuarioController : ControllerBase
+    [Route("api/[controller]")]    
+    public class UsuarioController : MainController
     {
         private readonly IUsuarioRepository _repository;
         private readonly IUnitOfWork _uow;
@@ -24,13 +22,12 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<Usuario>>> Get()
         {
             try
             {
                 var lst = await _repository.GetAll();
-
-                return Ok(new Retorno<List<Usuario>> { Mensagem = "Usuários obtidos com sucesso", Dados = lst });
+                return CustomSuccessResponse(200, "Usuários obtidos com sucesso", lst);                
             }
             catch (Exception ex)
             {
@@ -79,7 +76,7 @@ namespace Habilitar_API.Controllers
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(Usuario obj)
+        public async Task<ActionResult<Usuario>> Post(Usuario obj)
         {
             try
             {
@@ -88,7 +85,7 @@ namespace Habilitar_API.Controllers
 
                 obj = await _repository.GetById(obj.Id);
 
-                return CreatedAtAction("Post", new Retorno<Usuario> { Mensagem = "Usuário criado com sucesso", Dados = obj  });
+                return CustomSuccessResponse(201, "Usuário criado com sucesso", obj);                
             }
             catch (Exception ex)
             {
@@ -119,23 +116,23 @@ namespace Habilitar_API.Controllers
             await _repository.Exists(id);
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(Usuario obj)
+        public async Task<ActionResult<Usuario>> Login(Usuario obj)
         {
             try
             {
                 var usuario = await _repository.Login(obj);
 
                 if (usuario == null)
-                    return NotFound(new Retorno<Usuario> { Mensagem = "Usuário ou senha inválidos" });
+                    return CustomFailResponse(404, "Usuário ou senha inválidos");                    
 
                 usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
 
-                return Ok(new Retorno<Usuario> { Mensagem = "Login realizado com sucesso", Dados = usuario });
+                return CustomSuccessResponse(200, "Login realizado com sucesso", usuario);                
             }
             catch (Exception ex)
             {
-                await _uow.Rollback();
-                return BadRequest(new Retorno<Usuario>(ex.InnerException?.Message ?? ex?.Message));
+                await _uow.Rollback();                
+                return CustomFailResponse(400, ex.InnerException?.Message ?? ex?.Message);
             }
         }
     }

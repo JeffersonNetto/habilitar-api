@@ -1,15 +1,15 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmpresaController : ControllerBase
+    [Route("api/[controller]")]    
+    public class EmpresaController : MainController
     {
         private readonly IRepositoryBase<Empresa> _repository;
         private readonly IUnitOfWork _uow;
@@ -77,10 +77,15 @@ namespace Habilitar_API.Controllers
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(Empresa obj)
+        public async Task<IActionResult> Post(Empresa obj, [FromServices] EmpresaValidator empresaValidator)
         {
             try
             {
+                var result = await empresaValidator.ValidateAsync(obj);
+
+                if (!result.IsValid)
+                    return CustomFailResponse(400, "", result.Errors);
+
                 await _repository.Add(obj);
                 await _uow.Commit();
 

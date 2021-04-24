@@ -1,14 +1,24 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using FluentValidation.Results;
+using System.Collections.Generic;
 
 namespace Habilitar_API.Helpers
 {
-    public record Retorno<T>
+    public abstract record Response
+    {        
+        public string Mensagem { get; init; }                        
+    }
+
+    public record SuccessResponse<T> : Response
     {
-        public Retorno(IList<FluentValidation.Results.ValidationFailure> validationFailure = null) =>
+        public T Dados { get; init; }
+    }
+
+    public record FailResponse : Response
+    {
+        public FailResponse(List<ValidationFailure> validationFailure = null) =>
             ConvertErrors(validationFailure);
 
-        public Retorno(string errorMessage)
+        public FailResponse(string errorMessage)
         {
             if (string.IsNullOrWhiteSpace(errorMessage))
                 Mensagem = "Sistema temporariamente indisponível. Tente novamente mais tarde.";
@@ -17,12 +27,10 @@ namespace Habilitar_API.Helpers
             else if (errorMessage.ToLower().Contains("uq_email"))
                 Erros.Add("O e-mail informado já está cadastrado na base de dados");
         }
-
-        public string Mensagem { get; init; }
-        public T Dados { get; init; }
+        
         public List<string> Erros { get; private init; } = new List<string>();
 
-        private void ConvertErrors(IList<FluentValidation.Results.ValidationFailure> validationFailure) =>
-            validationFailure?.ToList().ForEach(_ => Erros.Add(_.ErrorMessage));
+        private void ConvertErrors(List<ValidationFailure> validationFailure) =>
+            validationFailure?.ForEach(_ => Erros.Add(_.ErrorMessage));
     }
 }
