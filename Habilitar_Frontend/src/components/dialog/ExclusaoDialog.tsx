@@ -13,7 +13,7 @@ type ExclusaoDialogType = {
   nome: string | undefined;
 };
 
-export const ExclusaoDialog = (props: ExclusaoDialogType) => {
+const ExclusaoDialog = (props: ExclusaoDialogType) => {
   return (
     <Dialog
       open={props.open}
@@ -47,3 +47,5 @@ export const ExclusaoDialog = (props: ExclusaoDialogType) => {
     </Dialog>
   );
 };
+
+export default ExclusaoDialog;

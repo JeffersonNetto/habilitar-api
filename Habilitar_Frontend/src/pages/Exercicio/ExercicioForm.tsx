@@ -3,22 +3,21 @@ import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Retorno } from "../../helpers/Retorno";
+import { SuccessResponse, ErrorResponse } from "../../helpers/Retorno";
 import Loader from "../../components/loader/Loader";
 import { useContext, useEffect, useState } from "react";
-import Usuario from "../../models/Usuario";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { GetIp } from "../../services/IpService";
+import GetIp from "../../services/IpService";
 import { Context } from "../../context/AuthContext";
 import { Snackbar } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { useLocation } from "react-router";
 import Exercicio from "../../models/Exercicio";
-import { ExercicioService } from "../../services/ExercicioService";
+import ExercicioService from "../../services/ExercicioService";
 
 const validationSchema = yup.object({
   nome: yup.string().required("Informe o nome do exercício"),
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 let stateExercicio: Exercicio;
 
-export const ExercicioForm = () => {
+const ExercicioForm = () => {
   const classes = useStyles();
   const { Insert, Update } = ExercicioService();
   const [loading, setLoading] = useState(false);
@@ -102,19 +101,18 @@ export const ExercicioForm = () => {
 
       if (pathname.includes("editar")) {
         Update(exercicio.Id, exercicio)
-          .then((response) => {
+          .then((response: SuccessResponse<Exercicio>) => {
             setAlertMessage({
               severity: "success",
               mensagem: response.Mensagem,
             });
             setOpen(true);
           })
-          .catch((error: any) => {
-            let err: Retorno<Usuario> = error?.response?.data;
+          .catch((error: ErrorResponse) => {
             setAlertMessage({
               severity: "error",
-              mensagem: err
-                ? err.Mensagem
+              mensagem: error
+                ? error.Mensagem
                 : "Sistema temporariamente indisponível",
             });
             setOpen(true);
@@ -126,19 +124,18 @@ export const ExercicioForm = () => {
 
       if (pathname.includes("criar")) {
         Insert(exercicio)
-          .then((response) => {
+          .then((response: SuccessResponse<Exercicio>) => {
             setAlertMessage({
               severity: "success",
               mensagem: response.Mensagem,
             });
             setOpen(true);
           })
-          .catch((error: any) => {
-            let err: Retorno<Usuario> = error?.response?.data;
+          .catch((error: ErrorResponse) => {
             setAlertMessage({
               severity: "error",
-              mensagem: err
-                ? err.Mensagem
+              mensagem: error
+                ? error.Mensagem
                 : "Sistema temporariamente indisponível",
             });
             setOpen(true);
@@ -249,3 +246,5 @@ export const ExercicioForm = () => {
     </Container>
   );
 };
+
+export default ExercicioForm;

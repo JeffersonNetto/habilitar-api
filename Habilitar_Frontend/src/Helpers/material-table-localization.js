@@ -1,8 +1,7 @@
-export const localization = {
+const localization = {
   body: {
     emptyDataSourceMessage: "Sem dados para exibir",
     deleteText: "Tem de que deseja exlcuir esta linha?",
-    emptyDataSourceMessage: "Sem dados para exibir",
     addTooltip: "Adicionar",
     deleteTooltip: "Deletar",
     editTooltip: "Editar",
@@ -48,3 +47,5 @@ export const localization = {
     searchPlaceholder: "Pesquise aqui...",
   },
 };
+
+export default localization;

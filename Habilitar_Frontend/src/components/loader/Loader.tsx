@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default ({ loading = false }) => {
+const Loader = ({ loading = false }) => {
   const classes = useStyles();
 
   if (loading) {
@@ -25,3 +25,5 @@ export default ({ loading = false }) => {
 
   return <></>;
 };
+
+export default Loader;

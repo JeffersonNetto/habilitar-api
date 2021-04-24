@@ -45,12 +45,12 @@ namespace Habilitar_API.Controllers
 
         private ActionResult CustomNotFoundResponse(string mensagem)
         {
-            return NotFound(new FailResponse { Mensagem = mensagem });
+            return NotFound(new ErrorResponse { Mensagem = mensagem });
         }
 
         private ActionResult CustomBadRequestResponse(string mensagem, List<ValidationFailure> validationFailures)
         {
-            return BadRequest(new FailResponse(validationFailures) { Mensagem = mensagem });
+            return BadRequest(new ErrorResponse(validationFailures) { Mensagem = mensagem });
         }
 
         private ActionResult<T> CustomCreatedResponse<T>(string mensagem, T dados)

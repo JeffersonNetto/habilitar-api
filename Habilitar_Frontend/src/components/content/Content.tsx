@@ -1,5 +1,5 @@
-export const Content = () => {
-  return (
-    <div></div>
-  );
+const Content = () => {
+  return <div></div>;
 };
+
+export default Content;

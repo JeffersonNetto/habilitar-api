@@ -7,5 +7,5 @@ export default class Usuario extends Entity {
   Profissional!: boolean;
   Fisioterapeuta!: boolean;
   Conselho: string | undefined;
-  Token: string | undefined;
+  Token?: string;
 }

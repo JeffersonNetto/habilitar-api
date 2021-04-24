@@ -3,8 +3,10 @@ import ServiceBase from "./ServiceBase";
 
 const url = "usuario";
 
-export const UsuarioService = () => {
+const UsuarioService = () => {
   const { GetAll, Insert } = ServiceBase<Usuario>(url);
 
   return { GetAll, Insert };
 };
+
+export default UsuarioService;

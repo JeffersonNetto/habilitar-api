@@ -5,18 +5,18 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Retorno } from "../../helpers/Retorno";
+import { SuccessResponse, ErrorResponse } from "../../helpers/Retorno";
 import Loader from "../../components/loader/Loader";
 import { useContext, useEffect, useState } from "react";
 import Usuario from "../../models/Usuario";
-import { UsuarioService } from "../../services/UsuarioService";
+import UsuarioService from "../../services/UsuarioService";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { GetIp } from "../../services/IpService";
+import GetIp from "../../services/IpService";
 import { Pessoa } from "../../models/Pessoa";
 import { Context } from "../../context/AuthContext";
 import { Snackbar } from "@material-ui/core";
@@ -49,8 +49,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 let usuario: Usuario;
+const pessoas: Pessoa[] = [];
 
-export const UsuarioForm = () => {
+const UsuarioForm = () => {
   const classes = useStyles();
   const { Insert } = UsuarioService();
   const [loading, setLoading] = useState(false);
@@ -76,19 +77,6 @@ export const UsuarioForm = () => {
       SetIp(response);
     });
   }, []);
-
-  const pessoas: Pessoa[] = [
-    {
-      Id: 1,
-      Nome: "Jefferson",
-      Sobrenome: "Neto",
-    },
-    {
-      Id: 2,
-      Nome: "Luiz",
-      Sobrenome: "Reis",
-    },
-  ];
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -123,12 +111,12 @@ export const UsuarioForm = () => {
       console.log("form", usuario);
 
       Insert(usuario)
-        .then((response) => {
+        .then((response: SuccessResponse<Usuario>) => {
           setAlertMessage({ severity: "success", mensagem: response.Mensagem });
           setOpen(true);
         })
         .catch((error: any) => {
-          let err: Retorno<Usuario> = error?.response?.data;
+          let err: ErrorResponse = error?.response?.data;
           setAlertMessage({
             severity: "error",
             mensagem: err
@@ -257,3 +245,5 @@ export const UsuarioForm = () => {
     </Container>
   );
 };
+
+export default UsuarioForm;

@@ -1,9 +1,9 @@
 export default class Entity {
   Id: number = 0;
-  Ip: string | undefined;
+  Ip?: string;
   Ativo: boolean = true;
   DataCriacao: Date = new Date();
-  UsuarioCriacaoId: number | undefined;
-  DataAtualizacao: Date | undefined;
-  UsuarioAtualizacaoId: number | undefined;
+  UsuarioCriacaoId?: number;
+  DataAtualizacao?: Date;
+  UsuarioAtualizacaoId?: number;
 }

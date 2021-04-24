@@ -1,15 +1,15 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MetricaController : ControllerBase
+{        
+    public class MetricaController : MainController
     {
         private readonly IRepositoryBase<Metrica> _repository;
         private readonly IUnitOfWork _uow;
@@ -22,13 +22,13 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<Metrica>>> Get()
         {
             try
             {
                 var lst = await _repository.GetAll();
 
-                return Ok(lst);
+                return CustomSuccessResponse(StatusCodes.Status200OK, "Métricas obtidas com sucesso", lst);
             }
             catch (Exception ex)
             {

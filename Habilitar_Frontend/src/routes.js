@@ -1,12 +1,13 @@
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Login } from "./components/login/Login";
-import { Main } from "./components/main/Main";
+import Login from "./components/login/Login";
+import Main from "./components/main/Main";
 import CustomRoute from "./helpers/CustomRoute";
-import { Usuarios } from "./pages/Usuario/Usuarios";
-import { Fisioterapeutas } from "./pages/Fisioterapeuta/Fisioterapeutas";
-import { UsuarioForm } from "./pages/Usuario/UsuarioForm";
-import { Exercicios } from "./pages/Exercicio/Exercicios";
-import { ExercicioForm } from "./pages/Exercicio/ExercicioForm";
+import Usuarios from "./pages/Usuario/Usuarios";
+import Fisioterapeutas from "./pages/Fisioterapeuta/Fisioterapeutas";
+import UsuarioForm from "./pages/Usuario/UsuarioForm";
+import Exercicios from "./pages/Exercicio/Exercicios";
+import ExercicioForm from "./pages/Exercicio/ExercicioForm";
+import Metricas from "./pages/Metrica/Metricas";
 
 export function Rotas() {
   return (
@@ -54,6 +55,18 @@ export function RotasInternas() {
         exact
         isPrivate={true}
         path="/app/exercicios/editar/:id"
+        component={ExercicioForm}
+      />
+      <CustomRoute
+        exact
+        isPrivate={true}
+        path="/app/metricas"
+        component={Metricas}
+      />
+      <CustomRoute
+        exact
+        isPrivate={true}
+        path="/app/metricas/editar/:id"
         component={ExercicioForm}
       />
     </Switch>

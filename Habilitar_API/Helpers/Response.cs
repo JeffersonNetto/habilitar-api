@@ -13,12 +13,12 @@ namespace Habilitar_API.Helpers
         public T Dados { get; init; }
     }
 
-    public record FailResponse : Response
+    public record ErrorResponse : Response
     {
-        public FailResponse(List<ValidationFailure> validationFailure = null) =>
+        public ErrorResponse(List<ValidationFailure> validationFailure = null) =>
             ConvertErrors(validationFailure);
 
-        public FailResponse(string errorMessage)
+        public ErrorResponse(string errorMessage)
         {
             if (string.IsNullOrWhiteSpace(errorMessage))
                 Mensagem = "Sistema temporariamente indisponível. Tente novamente mais tarde.";

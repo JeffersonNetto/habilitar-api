@@ -11,13 +11,13 @@ import Grid from "@material-ui/core/Grid";
 import Alert from "@material-ui/lab/Alert";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import useStyles from "./useStyles";
 import { useState, useContext } from "react";
 import Usuario from "../../models/Login";
 import { Snackbar } from "@material-ui/core";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { Retorno } from "../../helpers/Retorno";
+import { SuccessResponse, ErrorResponse } from "../../helpers/Retorno";
 import { Context } from "../../context/AuthContext";
 import Loader from "../loader/Loader";
 import { useHistory } from "react-router";
@@ -40,40 +40,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: "100vh",
-  },
-  image: {
-    backgroundImage: "url(https://source.unsplash.com/random)",
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  },
-  paper: {
-    margin: theme.spacing(8, 4),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-export const Login = () => {
+const Login = () => {
   const { handleLogin } = useContext(Context);
   const history = useHistory();
 
@@ -107,7 +74,7 @@ export const Login = () => {
       };
 
       handleLogin(usuario)
-        .then((response: Retorno<Usuario>) => {
+        .then((response: SuccessResponse<Usuario>) => {
           setAlertMessage({ severity: "success", mensagem: response.Mensagem });
           setOpen(true);
           setTimeout(() => {
@@ -115,7 +82,7 @@ export const Login = () => {
           }, 1000);
         })
         .catch((error: any) => {
-          let err: Retorno<Usuario> = error?.response?.data;
+          let err: ErrorResponse = error?.response?.data;
           setAlertMessage({
             severity: "error",
             mensagem: err
@@ -221,3 +188,5 @@ export const Login = () => {
     </Grid>
   );
 };
+
+export default Login;

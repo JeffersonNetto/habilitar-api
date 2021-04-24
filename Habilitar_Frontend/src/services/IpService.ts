@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const GetIp = async () => {
+const GetIp = async () => {
   try {
     const { data } = await axios.get("https://api.ipify.org?format=json");
     return data.ip.toString();
@@ -8,3 +8,5 @@ export const GetIp = async () => {
     console.error("Problem fetching my IP", error);
   }
 };
+
+export default GetIp;

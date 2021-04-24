@@ -1,16 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Usuario from "../../models/Usuario";
-import { UsuarioService } from "../../services/UsuarioService";
+import UsuarioService from "../../services/UsuarioService";
 import MaterialTable from "material-table";
 import Loader from "../../components/loader/Loader";
-import EditIcon from "@material-ui/icons/Edit";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
-import { Link, useHistory } from "react-router-dom";
-import { Retorno } from "../../helpers/Retorno";
-import { localization } from "../../helpers/material-table-localization";
+import { useHistory } from "react-router-dom";
+import { SuccessResponse, ErrorResponse } from "../../helpers/Retorno";
+import localization from "../../helpers/material-table-localization";
 
-export const Usuarios = () => {
+const Usuarios = () => {
   const history = useHistory();
   const { GetAll } = UsuarioService();
   const [usuarios, setUsuarios] = useState<Usuario[] | undefined>([]);
@@ -27,10 +24,10 @@ export const Usuarios = () => {
 
   useEffect(() => {
     GetAll()
-      .then((response: Retorno<Usuario[]>) => {
+      .then((response: SuccessResponse<Usuario[]>) => {
         setUsuarios(response.Dados);
       })
-      .catch((error) => {
+      .catch((error: ErrorResponse) => {
         console.log(error);
       });
   }, []);
@@ -65,3 +62,5 @@ export const Usuarios = () => {
     </div>
   );
 };
+
+export default Usuarios;

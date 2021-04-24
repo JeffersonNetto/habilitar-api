@@ -1,7 +1,7 @@
 import Usuario from "../models/Usuario";
 import api from "../interceptor/http-interceptor";
 import { useState, useEffect } from "react";
-import { Retorno } from "../helpers/Retorno";
+import { SuccessResponse } from "../helpers/Retorno";
 
 const url = "usuario/login";
 
@@ -23,7 +23,7 @@ export default function LoginService() {
 
   async function handleLogin(usuario: Usuario) {
     try {
-      const { data } = await api.post<Retorno<Usuario>>(
+      const { data } = await api.post<SuccessResponse<Usuario>>(
         url,
         JSON.stringify(usuario),
         {

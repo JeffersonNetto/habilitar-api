@@ -1,1 +1,3 @@
-export const Header = () => <div></div>
+const Header = () => <div></div>;
+
+export default Header;
