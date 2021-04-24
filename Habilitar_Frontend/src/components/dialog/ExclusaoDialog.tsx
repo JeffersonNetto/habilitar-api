@@ -5,7 +5,15 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 
-export const ExclusaoDialog = (props: any) => {
+type ExclusaoDialogType = {
+  open: boolean;
+  handleClose: any;
+  handleDelete: any;
+  descricao: string;
+  nome: string | undefined;
+};
+
+export const ExclusaoDialog = (props: ExclusaoDialogType) => {
   return (
     <Dialog
       open={props.open}

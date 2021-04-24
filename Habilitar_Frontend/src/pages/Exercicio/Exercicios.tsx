@@ -13,7 +13,9 @@ export const Exercicios = () => {
   const [exercicios, setExercicios] = useState<Exercicio[]>([]);
   const { GetAll, Delete } = ExercicioService();
   const [open, setOpen] = useState(false);
-  const [exercicioExcluir, setExercicioExcluir] = useState<Exercicio>();
+  const [exercicioExcluir, setExercicioExcluir] = useState<
+    Exercicio | undefined
+  >();
 
   const handleClickOpen = () => {
     setOpen(true);
