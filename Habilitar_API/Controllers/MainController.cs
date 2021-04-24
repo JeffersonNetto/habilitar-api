@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace Habilitar_API.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]        
     public abstract class MainController : ControllerBase
     {        
         protected ActionResult<T> CustomSuccessResponse<T>(int statusCode, string mensagem, T dados = null) where T : class

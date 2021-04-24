@@ -7,8 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{
-    [Route("api/[controller]")]    
+{    
     public class UsuarioController : MainController
     {
         private readonly IUsuarioRepository _repository;

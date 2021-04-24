@@ -1,14 +1,14 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{
-    [Route("api/[controller]")]    
+{            
     public class ExercicioController : MainController
     {
         private readonly IRepositoryBase<Exercicio> _repository;
@@ -26,7 +26,7 @@ namespace Habilitar_API.Controllers
         {
             var lst = await _repository.GetAll();
 
-            return CustomSuccessResponse(200, "Exercícios obtidos com sucesso", lst);            
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Exercícios obtidos com sucesso", lst);            
         }
 
         // GET: api/Exercicio/5
@@ -47,7 +47,7 @@ namespace Habilitar_API.Controllers
 
         // PUT: api/Exercicio/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id}")]        
         public async Task<IActionResult> Put(int id, Exercicio obj)
         {
             try
