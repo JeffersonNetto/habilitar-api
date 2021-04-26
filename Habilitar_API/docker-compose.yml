@@ -1,0 +1,10 @@
+﻿version: "3.8"
+
+services:
+  habilitar-api:
+    image: jeffersonneto/habilitar-api
+    container_name: habilitar-api-cont    
+    build:
+        context: .
+    ports:
+        - "8000:80"    

@@ -34,7 +34,7 @@ namespace Habilitar_API
 
             services.AddAutoMapper(typeof(Startup));
 
-            var key = Encoding.ASCII.GetBytes(Configuration["Secret"]);
+            var key = Encoding.ASCII.GetBytes(Configuration["Secret"] ?? "algumsegredoaqui");
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
