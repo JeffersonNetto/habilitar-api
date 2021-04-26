@@ -7,8 +7,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["Habilitar_API/Habilitar_API.csproj", "Habilitar_API/"]
-RUN dotnet restore "Habilitar_API/Habilitar_API.csproj"
+COPY ["Habilitar_API.csproj", "Habilitar_API/"]
+RUN dotnet restore "Habilitar_API.csproj"
 COPY . .
 WORKDIR "/src/Habilitar_API"
 RUN dotnet build "Habilitar_API.csproj" -c Release -o /app/build
