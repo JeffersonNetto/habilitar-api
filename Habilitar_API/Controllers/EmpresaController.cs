@@ -2,12 +2,14 @@
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{    
+{
     public class EmpresaController : MainController
     {
         private readonly IRepositoryBase<Empresa> _repository;
@@ -21,101 +23,67 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<ActionResult<List<Empresa>>> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
+            var lst = await _repository.GetAll();
 
-                return Ok(lst);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Empresas obtidas com sucesso", lst);
         }
 
         // GET: api/Empresa/5
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Empresa>> Get(int id)
         {
-            try
-            {
-                var obj = await _repository.GetById(id);
+            var obj = await _repository.GetById(id);
 
-                return obj == null ? NotFound() : Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return obj == null ? CustomErrorResponse(StatusCodes.Status404NotFound, "Empresa não encontrada") : CustomSuccessResponse(StatusCodes.Status200OK, "Empresa obtida com sucesso", obj);
         }
 
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Empresa obj)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<Empresa>> Put(int id, Empresa obj)
         {
-            try
-            {
-                if (id != obj.Id)
-                    return BadRequest();
+            if (id != obj.Id)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
 
-                _repository.Update(obj);
-                await _uow.Commit();
+            _repository.Update(obj);
+            await _uow.Commit();
 
-                return Ok(await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Empresa atualizada com sucesso", obj);
         }
 
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]        
-        public async Task<IActionResult> Post(Empresa obj, [FromServices] EmpresaValidator empresaValidator)
+        [HttpPost]
+        public async Task<ActionResult<Empresa>> Post(Empresa obj, [FromServices] EmpresaValidator empresaValidator)
         {
-            try
-            {
-                var result = await empresaValidator.ValidateAsync(obj);
+            var result = await empresaValidator.ValidateAsync(obj);
 
-                if (!result.IsValid)
-                    return CustomFailResponse(400, "", result.Errors);
+            if (!result.IsValid)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
 
-                await _repository.Add(obj);
-                await _uow.Commit();
+            await _repository.Add(obj);
+            await _uow.Commit();
 
-                return Created("Post", await _repository.GetById(obj.Id));                
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            obj = await _repository.GetById(obj.Id);
+
+            return CustomSuccessResponse(StatusCodes.Status201Created, "Empresa inserida com sucesso", obj);
         }
 
         // DELETE: api/Empresa/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<Empresa>> Delete(int id)
         {
-            try
-            {
-                _repository.Remove(await _repository.GetById(id));
-                await _uow.Commit();
+            var obj = await _repository.GetById(id);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            _repository.Remove(obj);
+            await _uow.Commit();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Empresa excluída com sucesso", obj);
         }
 
-        private async Task<bool> Exists(int id) =>
-            await _repository.Exists(id);
+        private async Task<bool> Exists(int id) =>        
+            await _repository.Exists(id);                                
     }
 }

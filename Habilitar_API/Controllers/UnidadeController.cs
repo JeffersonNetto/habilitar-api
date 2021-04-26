@@ -32,12 +32,12 @@ namespace Habilitar_API.Controllers
             }
             catch (Exception ex)
             {
-                return CustomFailResponse(400, ex?.Message ?? ex?.InnerException?.Message);
+                return CustomErrorResponse(400, ex?.Message ?? ex?.InnerException?.Message);
             }
         }
 
         // GET: api/Unidade/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -54,7 +54,7 @@ namespace Habilitar_API.Controllers
 
         // PUT: api/Unidade/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, Unidade obj)
         {
             try
@@ -94,7 +94,7 @@ namespace Habilitar_API.Controllers
         }
 
         // DELETE: api/Unidade/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             try

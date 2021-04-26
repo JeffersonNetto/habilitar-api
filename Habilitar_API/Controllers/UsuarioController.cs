@@ -1,6 +1,9 @@
-﻿using Habilitar_API.Models;
+﻿using AutoMapper;
+using Habilitar_API.Application.ViewModels;
+using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,11 +15,13 @@ namespace Habilitar_API.Controllers
     {
         private readonly IUsuarioRepository _repository;
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public UsuarioController(IUsuarioRepository repository, IUnitOfWork uow)
+        public UsuarioController(IUsuarioRepository repository, IUnitOfWork uow, IMapper mapper)
         {
             _repository = repository;
             _uow = uow;
+            _mapper = mapper;
         }
 
         // GET: api/Empresa
@@ -35,7 +40,7 @@ namespace Habilitar_API.Controllers
         }
 
         // GET: api/Empresa/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -52,18 +57,22 @@ namespace Habilitar_API.Controllers
 
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Usuario obj)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult<UsuarioViewModel>> Put(int id, UsuarioViewModel obj)
         {
             try
             {
                 if (id != obj.Id)
                     return BadRequest();
 
-                _repository.Update(obj);
+                var usuario = _mapper.Map<UsuarioViewModel, Usuario>(obj);
+
+                _repository.Update(usuario);
                 await _uow.Commit();
 
-                return Ok(await Get(obj.Id));
+                usuario = await _repository.GetById(usuario.Id);
+                
+                return CustomSuccessResponse(StatusCodes.Status200OK, "Usuário atualizado com sucesso", _mapper.Map<Usuario, UsuarioViewModel>(usuario));
             }
             catch (Exception ex)
             {
@@ -94,7 +103,7 @@ namespace Habilitar_API.Controllers
         }
 
         // DELETE: api/Empresa/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -122,7 +131,7 @@ namespace Habilitar_API.Controllers
                 var usuario = await _repository.Login(obj);
 
                 if (usuario == null)
-                    return CustomFailResponse(404, "Usuário ou senha inválidos");                    
+                    return CustomErrorResponse(404, "Usuário ou senha inválidos");                    
 
                 usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
 
@@ -131,7 +140,7 @@ namespace Habilitar_API.Controllers
             catch (Exception ex)
             {
                 await _uow.Rollback();                
-                return CustomFailResponse(400, ex.InnerException?.Message ?? ex?.Message);
+                return CustomErrorResponse(400, ex.InnerException?.Message ?? ex?.Message);
             }
         }
     }
