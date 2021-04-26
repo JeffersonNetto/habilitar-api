@@ -15,7 +15,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 
-[assembly: ApiConventionType(typeof(DefaultApiConventions))]
+//[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace Habilitar_API
 {
     public class Startup
