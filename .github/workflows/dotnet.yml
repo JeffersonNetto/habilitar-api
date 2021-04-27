@@ -1,0 +1,30 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+  
+    env:
+      CAMINHO_PROJETO_TESTES: ./test/Habilitar_API.Tests/Habilitar_API.Tests.csproj
+      CAMINHO_PROJETO_WEBAPP: ./src/Habilitar_API/Habilitar_API.csproj      
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+                  
+   #- name: Restore dependencies
+   #  run: dotnet restore
+    - name: Build com o utilitario dotnet
+      run: dotnet build ${{ env.CAMINHO_PROJETO_WEBAPP }} --configuration Release
+    - name: Executar testes automatizados
+      run: dotnet test ${{ env.CAMINHO_PROJETO_TESTES }} --verbosity minimal
