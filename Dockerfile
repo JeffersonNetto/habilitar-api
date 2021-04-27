@@ -7,9 +7,9 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk AS build
 WORKDIR /src
-COPY ["Habilitar_API.csproj", ""]
+COPY ["src/Habilitar_API/Habilitar_API.csproj", ""]
 RUN dotnet restore "Habilitar_API.csproj"
-COPY . .
+COPY src/Habilitar_API .
 RUN dotnet build "Habilitar_API.csproj" -c Release -o /app/build
 
 FROM build AS publish
