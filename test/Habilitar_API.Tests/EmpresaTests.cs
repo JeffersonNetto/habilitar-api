@@ -5,6 +5,7 @@ using Habilitar_API.Helpers;
 using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -38,7 +39,7 @@ namespace Habilitar_API.Tests
                 .RuleFor(m => m.UsuarioCriacaoId, f => f.Random.Int(1, 100))
                 .Generate(5);
 
-            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetAll()).ReturnsAsync(expected);
+            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetAll()).ReturnsAsync(expected);            
 
             //Act
             var actual = await controller.Get();
@@ -65,7 +66,7 @@ namespace Habilitar_API.Tests
                 .RuleFor(m => m.UsuarioCriacaoId, f => f.Random.Int(1, 100))
                 .Generate();
 
-            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(expected);
+            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(expected);            
 
             //Act
             var actual = await controller.Get(1);
@@ -92,10 +93,10 @@ namespace Habilitar_API.Tests
                 .RuleFor(m => m.UsuarioCriacaoId, f => f.Random.Int(1, 100))
                 .Generate();
             
-            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(empresa);
+            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(empresa);            
 
             //Act
-            var actual = await controller.Post(empresa);
+            var actual = await controller.Post(empresa, new EmpresaValidator());
 
             var result = actual.Result.As<CreatedResult>();
 
@@ -106,6 +107,17 @@ namespace Habilitar_API.Tests
             obj.Dados.Should().BeEquivalentTo(empresa);            
             mocker.GetMock<IRepositoryBase<Empresa>>().Verify(m => m.Add(empresa), Times.Once);
             mocker.GetMock<IUnitOfWork>().Verify(u => u.Commit(), Times.Once);            
+        }
+
+        [Theory]
+        [InlineData("jEFFERSON souza neto", "08358330626")]        
+        public void Teste(string nome, string cpf)
+        {
+            nome = nome[0].ToString().ToUpper() + nome[1..nome.IndexOf(" ")].ToLower();
+
+            string result = $"{cpf[0..6]}@{nome}";
+
+            Assert.NotNull(result);
         }
     }
 }

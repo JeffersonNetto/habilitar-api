@@ -13,14 +13,12 @@ namespace Habilitar_API.Controllers
     public class MetricaController : MainController
     {
         private readonly IRepositoryBase<Metrica> _repository;
-        private readonly IUnitOfWork _uow;
-        private readonly MetricaValidator _validator;
+        private readonly IUnitOfWork _uow;        
 
-        public MetricaController(IRepositoryBase<Metrica> repository, IUnitOfWork uow, MetricaValidator validator)
+        public MetricaController(IRepositoryBase<Metrica> repository, IUnitOfWork uow)
         {
             _repository = repository;
-            _uow = uow;
-            _validator = validator;
+            _uow = uow;            
         }
 
         // GET: api/Empresa
@@ -44,12 +42,12 @@ namespace Habilitar_API.Controllers
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Metrica>> Put(int id, Metrica obj)
+        public async Task<ActionResult<Metrica>> Put(int id, Metrica obj, [FromServices] MetricaValidator validator)
         {
             if (id != obj.Id)
                 return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
 
-            var result = await _validator.ValidateAsync(obj);
+            var result = await validator.ValidateAsync(obj);
 
             if (!result.IsValid)
                 return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
@@ -63,9 +61,9 @@ namespace Habilitar_API.Controllers
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Metrica>> Post(Metrica obj)
+        public async Task<ActionResult<Metrica>> Post(Metrica obj, [FromServices] MetricaValidator validator)
         {
-            var result = await _validator.ValidateAsync(obj);
+            var result = await validator.ValidateAsync(obj);
 
             if (!result.IsValid)
                 return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
