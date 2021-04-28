@@ -1,6 +1,8 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Habilitar_API.Validators;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,102 +15,83 @@ namespace Habilitar_API.Controllers
     {
         private readonly IRepositoryBase<Unidade> _repository;
         private readonly IUnitOfWork _uow;
+        private readonly UnidadeValidator _validator;
 
-        public UnidadeController(IRepositoryBase<Unidade> repository, IUnitOfWork uow)
+        public UnidadeController(IRepositoryBase<Unidade> repository, IUnitOfWork uow, UnidadeValidator validator)
         {
             _repository = repository;
             _uow = uow;
+            _validator = validator;
         }
 
         // GET: api/Unidade
         [HttpGet]
         public async Task<ActionResult<List<Unidade>>> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
+            var lst = await _repository.GetAll();
 
-                return CustomSuccessResponse(200, "Unidades obtidas com sucesso", lst);
-            }
-            catch (Exception ex)
-            {
-                return CustomErrorResponse(400, ex?.Message ?? ex?.InnerException?.Message);
-            }
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Unidades obtidas com sucesso", lst);
         }
 
         // GET: api/Unidade/5
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<Unidade>> Get(int id)
         {
-            try
-            {
-                var obj = await _repository.GetById(id);
+            var obj = await _repository.GetById(id);
 
-                return obj == null ? NotFound() : Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return obj == null ? CustomErrorResponse(StatusCodes.Status404NotFound, "Unidade não encontrada") : CustomSuccessResponse(StatusCodes.Status200OK, "Unidade obtida com sucesso", obj);
         }
 
         // PUT: api/Unidade/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id:int}")]
-        public async Task<IActionResult> Put(int id, Unidade obj)
+        public async Task<ActionResult<Unidade>> Put(int id, Unidade obj)
         {
-            try
-            {
-                if (id != obj.Id)
-                    return BadRequest();
+            if (id != obj.Id)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
 
-                _repository.Update(obj);
-                await _uow.Commit();
+            var result = await _validator.ValidateAsync(obj);
 
-                return Ok(await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            if (!result.IsValid)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
+
+            _repository.Update(obj);
+            await _uow.Commit();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Unidade atualizada com sucesso", obj);
         }
 
         // POST: api/Unidade
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<IActionResult> Post(Unidade obj)
+        public async Task<ActionResult<Unidade>> Post(Unidade obj)
         {
-            try
-            {
-                await _repository.Add(obj);
-                await _uow.Commit();
+            var result = await _validator.ValidateAsync(obj);
 
-                return CreatedAtAction("Post", await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            if (!result.IsValid)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
+
+            await _repository.Add(obj);
+            await _uow.Commit();
+
+            obj = await _repository.GetById(obj.Id);
+
+            return CustomSuccessResponse(StatusCodes.Status201Created, "Unidade inserida com sucesso", obj);
         }
 
         // DELETE: api/Unidade/5
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult<Unidade>> Delete(int id)
         {
-            try
-            {
-                _repository.Remove(await _repository.GetById(id));
-                await _uow.Commit();
+            var obj = await _repository.GetById(id);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            if (obj == null)
+                return CustomErrorResponse(StatusCodes.Status404NotFound, "Unidade não encontrada");
+
+            _repository.Remove(obj);
+            await _uow.Commit();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Unidade excluída com sucesso", obj);
         }
 
         private async Task<bool> Exists(int id) =>

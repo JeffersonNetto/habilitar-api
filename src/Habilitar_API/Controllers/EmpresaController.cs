@@ -4,7 +4,6 @@ using Habilitar_API.Uow;
 using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,11 +13,13 @@ namespace Habilitar_API.Controllers
     {
         private readonly IRepositoryBase<Empresa> _repository;
         private readonly IUnitOfWork _uow;
+        private readonly EmpresaValidator _validator;
 
-        public EmpresaController(IRepositoryBase<Empresa> repository, IUnitOfWork uow)
+        public EmpresaController(IRepositoryBase<Empresa> repository, IUnitOfWork uow, EmpresaValidator validator)
         {
             _repository = repository;
             _uow = uow;
+            _validator = validator;
         }
 
         // GET: api/Empresa
@@ -47,6 +48,11 @@ namespace Habilitar_API.Controllers
             if (id != obj.Id)
                 return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
 
+            var result = await _validator.ValidateAsync(obj);
+
+            if (!result.IsValid)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
+
             _repository.Update(obj);
             await _uow.Commit();
 
@@ -56,9 +62,9 @@ namespace Habilitar_API.Controllers
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Empresa>> Post(Empresa obj, [FromServices] EmpresaValidator empresaValidator)
+        public async Task<ActionResult<Empresa>> Post(Empresa obj)
         {
-            var result = await empresaValidator.ValidateAsync(obj);
+            var result = await _validator.ValidateAsync(obj);
 
             if (!result.IsValid)
                 return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
@@ -76,6 +82,9 @@ namespace Habilitar_API.Controllers
         public async Task<ActionResult<Empresa>> Delete(int id)
         {
             var obj = await _repository.GetById(id);
+
+            if (obj == null)
+                return CustomErrorResponse(StatusCodes.Status404NotFound, "Empresa não encontrada");
 
             _repository.Remove(obj);
             await _uow.Commit();

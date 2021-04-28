@@ -95,7 +95,7 @@ namespace Habilitar_API.Tests
             mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(empresa);
 
             //Act
-            var actual = await controller.Post(empresa, new Validators.EmpresaValidator());
+            var actual = await controller.Post(empresa);
 
             var result = actual.Result.As<CreatedResult>();
 
