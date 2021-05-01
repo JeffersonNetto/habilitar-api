@@ -8,7 +8,7 @@ namespace Habilitar_API.Repositories
 {
     public interface IUsuarioRepository : IRepositoryBase<Usuario>
     {
-        Task<Usuario> Login(Usuario obj);
+        Task<Usuario> Login(string login, string senha);
         Task<IEnumerable<Usuario>> ObterComPerfis();
         Task<Usuario> ObterComPerfis(int id);
     }
@@ -34,10 +34,13 @@ namespace Habilitar_API.Repositories
                 .ToListAsync();
         }
 
-        public async Task<Usuario> Login(Usuario obj) =>
+        public async Task<Usuario> Login(string login, string senha) =>
             await _context.Usuario
-            .AsNoTracking()
+            .Include(u => u.UsuarioPerfilUsuario)
+                .ThenInclude(up => up.Perfil)
             .Include(_ => _.Pessoa)
-            .FirstOrDefaultAsync(_ => _.Login == obj.Login && _.Senha == obj.Senha);
+            .Include(_ => _.Unidade)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(_ => _.Login == login && _.Senha == senha);
     }
 }

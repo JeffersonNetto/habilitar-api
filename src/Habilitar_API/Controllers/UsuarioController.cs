@@ -109,16 +109,18 @@ namespace Habilitar_API.Controllers
             await _repository.Exists(id);
 
         [HttpPost("login")]
-        public async Task<ActionResult<Usuario>> Login(Usuario obj)
+        public async Task<ActionResult<UsuarioViewModel>> Login(LoginViewModel obj)
         {
-            var usuario = await _repository.Login(obj);
+            var usuario = await _repository.Login(obj.Login, obj.Senha);
 
             if (usuario == null)
                 return CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário ou senha inválidos");
 
             usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
 
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Login realizado com sucesso", usuario);
+            var usuarioViewModel = _mapper.Map<Usuario, UsuarioViewModel>(usuario);
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Login realizado com sucesso", usuarioViewModel);
         }
     }
 }

@@ -12,5 +12,7 @@ namespace Habilitar_API.ViewModels
         public bool Fisioterapeuta { get; set; }
         public string Conselho { get; set; }
         public virtual ICollection<UsuarioPerfilViewModel> UsuarioPerfilUsuario { get; set; }
+        public virtual PessoaViewModel Pessoa { get; set; }
+        public virtual UnidadeViewModel Unidade { get; set; }
     }
 }

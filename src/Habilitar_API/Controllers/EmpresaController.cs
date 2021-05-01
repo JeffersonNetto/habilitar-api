@@ -2,6 +2,7 @@
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
 {
+    [Authorize]
     public class EmpresaController : MainController
     {
         private readonly IRepositoryBase<Empresa> _repository;

@@ -10,7 +10,9 @@ namespace Habilitar_API.Application.Configuration
         {
             CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
             CreateMap<Perfil, PerfilViewModel>().ReverseMap();
-            CreateMap<UsuarioPerfil, UsuarioPerfilViewModel>().ReverseMap();            
+            CreateMap<UsuarioPerfil, UsuarioPerfilViewModel>().ReverseMap();
+            CreateMap<Pessoa, PessoaViewModel>().ReverseMap();
+            CreateMap<Unidade, UnidadeViewModel>().ReverseMap();
         }
     }
 }
