@@ -11,10 +11,10 @@ namespace Habilitar_API.Controllers
 {
     public class PerfilController : MainController
     {
-        private readonly IRepositoryBase<Perfil> _repository;
+        private readonly IPerfilRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public PerfilController(IRepositoryBase<Perfil> repository, IUnitOfWork uow)
+        public PerfilController(IPerfilRepository repository, IUnitOfWork uow)
         {
             _repository = repository;
             _uow = uow;
@@ -22,9 +22,17 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<ActionResult<List<Perfil>>> Get()
+        public async Task<ActionResult<IEnumerable<Perfil>>> Get()
         {
             var lst = await _repository.GetAll();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Perfis obtidas com sucesso", lst);
+        }
+
+        [HttpGet("ObterComFuncoes")]
+        public async Task<ActionResult<IEnumerable<Perfil>>> ObterComFuncoes()
+        {
+            var lst = await _repository.ObterComFuncoes();
 
             return CustomSuccessResponse(StatusCodes.Status200OK, "Perfis obtidas com sucesso", lst);
         }

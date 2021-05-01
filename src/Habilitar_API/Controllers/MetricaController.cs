@@ -23,7 +23,7 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<ActionResult<List<Metrica>>> Get()
+        public async Task<ActionResult<IEnumerable<Metrica>>> Get()
         {
             var lst = await _repository.GetAll();
 

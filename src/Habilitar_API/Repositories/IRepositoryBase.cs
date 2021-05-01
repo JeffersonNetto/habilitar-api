@@ -7,7 +7,7 @@ namespace Habilitar_API.Repositories
     {
         Task Add(TEntity obj);
         Task<bool> Exists<T>(T id);
-        Task<List<TEntity>> GetAll();
+        Task<IEnumerable<TEntity>> GetAll();
         Task<TEntity> GetById<T>(T id);
         void Remove(TEntity obj);
         void Update(TEntity obj);

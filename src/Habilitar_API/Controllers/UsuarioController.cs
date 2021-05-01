@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
-using Habilitar_API.Application.ViewModels;
+using Habilitar_API.ViewModels;
 using Habilitar_API.Models;
 using Habilitar_API.Repositories;
 using Habilitar_API.Uow;
+using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{    
+{
     public class UsuarioController : MainController
     {
         private readonly IUsuarioRepository _repository;
@@ -26,98 +27,82 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<ActionResult<List<Usuario>>> Get()
+        public async Task<ActionResult<IEnumerable<Usuario>>> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
-                return CustomSuccessResponse(200, "Usuários obtidos com sucesso", lst);                
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var lst = await _repository.GetAll();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuários obtidos com sucesso", lst);
+        }
+
+        [HttpGet("ObterComPerfis")]
+        public async Task<ActionResult<IEnumerable<Usuario>>> ObterComPerfis()
+        {
+            var lst = await _repository.ObterComPerfis();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuários obtidos com sucesso", lst);
         }
 
         // GET: api/Empresa/5
         [HttpGet("{id:int}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<UsuarioViewModel>> Get(int id)
         {
-            try
-            {
-                var obj = await _repository.GetById(id);
+            var obj = await _repository.ObterComPerfis(id);
 
-                return obj == null ? NotFound() : Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var usuarioViewModel = _mapper.Map<Usuario, UsuarioViewModel>(obj);
+
+            return obj == null ? CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário não encontrado") : CustomSuccessResponse(StatusCodes.Status200OK, "Usuário obtido com sucesso", usuarioViewModel);
         }
 
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<UsuarioViewModel>> Put(int id, UsuarioViewModel obj)
+        public async Task<ActionResult<Usuario>> Put(int id, Usuario obj, [FromServices] UsuarioValidator validator)
         {
-            try
-            {
-                if (id != obj.Id)
-                    return BadRequest();
+            if (id != obj.Id)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
 
-                var usuario = _mapper.Map<UsuarioViewModel, Usuario>(obj);
+            var result = await validator.ValidateAsync(obj);
 
-                _repository.Update(usuario);
-                await _uow.Commit();
+            if (!result.IsValid)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
 
-                usuario = await _repository.GetById(usuario.Id);
-                
-                return CustomSuccessResponse(StatusCodes.Status200OK, "Usuário atualizado com sucesso", _mapper.Map<Usuario, UsuarioViewModel>(usuario));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            _repository.Update(obj);
+            await _uow.Commit();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuário atualizado com sucesso", obj);
         }
 
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Usuario>> Post(Usuario obj)
+        public async Task<ActionResult<Usuario>> Post(Usuario obj, [FromServices] UsuarioValidator validator)
         {
-            try
-            {
-                await _repository.Add(obj);
-                await _uow.Commit();
+            var result = await validator.ValidateAsync(obj);
 
-                obj = await _repository.GetById(obj.Id);
+            if (!result.IsValid)
+                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
 
-                return CustomSuccessResponse(201, "Usuário criado com sucesso", obj);                
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            await _repository.Add(obj);
+            await _uow.Commit();
+
+            obj = await _repository.GetById(obj.Id);
+
+            return CustomSuccessResponse(StatusCodes.Status201Created, "Usuário inserido com sucesso", obj);
         }
 
         // DELETE: api/Empresa/5
         [HttpDelete("{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<ActionResult<Usuario>> Delete(int id)
         {
-            try
-            {
-                _repository.Remove(await _repository.GetById(id));
-                await _uow.Commit();
+            var obj = await _repository.GetById(id);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            if (obj == null)
+                return CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário não encontrado");
+
+            _repository.Remove(obj);
+            await _uow.Commit();
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuário excluído com sucesso", obj);
         }
 
         private async Task<bool> Exists(int id) =>
@@ -126,22 +111,14 @@ namespace Habilitar_API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<Usuario>> Login(Usuario obj)
         {
-            try
-            {
-                var usuario = await _repository.Login(obj);
+            var usuario = await _repository.Login(obj);
 
-                if (usuario == null)
-                    return CustomErrorResponse(404, "Usuário ou senha inválidos");                    
+            if (usuario == null)
+                return CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário ou senha inválidos");
 
-                usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
+            usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
 
-                return CustomSuccessResponse(200, "Login realizado com sucesso", usuario);                
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();                
-                return CustomErrorResponse(400, ex.InnerException?.Message ?? ex?.Message);
-            }
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Login realizado com sucesso", usuario);
         }
     }
 }

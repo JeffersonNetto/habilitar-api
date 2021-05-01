@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Habilitar_API.Application.ViewModels
+namespace Habilitar_API.ViewModels
 {
     public abstract class ViewModelBase
     {

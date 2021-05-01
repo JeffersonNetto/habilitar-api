@@ -48,8 +48,8 @@ namespace Habilitar_API.Tests
 
             //Assert            
             result.StatusCode.Should().Be(StatusCodes.Status200OK);
-            result.Value.Should().BeOfType<SuccessResponse<List<Empresa>>>();
-            var obj = result.Value as SuccessResponse<List<Empresa>>;
+            result.Value.Should().BeOfType<SuccessResponse<IEnumerable<Empresa>>>();
+            var obj = result.Value as SuccessResponse<IEnumerable<Empresa>>;
             obj.Dados.Should().BeEquivalentTo(expected);
         }
 
@@ -107,17 +107,6 @@ namespace Habilitar_API.Tests
             obj.Dados.Should().BeEquivalentTo(empresa);            
             mocker.GetMock<IRepositoryBase<Empresa>>().Verify(m => m.Add(empresa), Times.Once);
             mocker.GetMock<IUnitOfWork>().Verify(u => u.Commit(), Times.Once);            
-        }
-
-        [Theory]
-        [InlineData("jEFFERSON souza neto", "08358330626")]        
-        public void Teste(string nome, string cpf)
-        {
-            nome = nome[0].ToString().ToUpper() + nome[1..nome.IndexOf(" ")].ToLower();
-
-            string result = $"{cpf[0..6]}@{nome}";
-
-            Assert.NotNull(result);
         }
     }
 }

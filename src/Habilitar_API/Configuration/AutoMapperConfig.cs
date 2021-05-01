@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Habilitar_API.Application.ViewModels;
+using Habilitar_API.ViewModels;
 using Habilitar_API.Models;
 
 namespace Habilitar_API.Application.Configuration
@@ -9,6 +9,8 @@ namespace Habilitar_API.Application.Configuration
         public AutoMapperConfig()
         {
             CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
+            CreateMap<Perfil, PerfilViewModel>().ReverseMap();
+            CreateMap<UsuarioPerfil, UsuarioPerfilViewModel>().ReverseMap();            
         }
     }
 }

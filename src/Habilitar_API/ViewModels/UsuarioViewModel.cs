@@ -1,4 +1,6 @@
-﻿namespace Habilitar_API.Application.ViewModels
+﻿using System.Collections.Generic;
+
+namespace Habilitar_API.ViewModels
 {
     public class UsuarioViewModel : ViewModelBase
     {
@@ -9,5 +11,6 @@
         public bool Profissional { get; set; }
         public bool Fisioterapeuta { get; set; }
         public string Conselho { get; set; }
+        public virtual ICollection<UsuarioPerfilViewModel> UsuarioPerfilUsuario { get; set; }
     }
 }

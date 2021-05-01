@@ -19,7 +19,7 @@ namespace Habilitar_API.Repositories
             await _context.Set<TEntity>().FindAsync(id) != null;
 
 
-        public async Task<List<TEntity>> GetAll() =>
+        public async Task<IEnumerable<TEntity>> GetAll() =>
             await _context.Set<TEntity>().AsNoTracking().ToListAsync();
 
         public async Task<TEntity> GetById<T>(T id) =>        

@@ -22,7 +22,7 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<ActionResult<List<Empresa>>> Get()
+        public async Task<ActionResult<IEnumerable<Empresa>>> Get()
         {
             var lst = await _repository.GetAll();
 

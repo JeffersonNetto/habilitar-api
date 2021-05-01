@@ -23,7 +23,7 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Unidade
         [HttpGet]
-        public async Task<ActionResult<List<Unidade>>> Get()
+        public async Task<ActionResult<IEnumerable<Unidade>>> Get()
         {
             var lst = await _repository.GetAll();
 
