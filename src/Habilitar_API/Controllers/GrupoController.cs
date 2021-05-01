@@ -6,10 +6,8 @@ using System;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class GrupoController : ControllerBase
+{    
+    public class GrupoController : MainController
     {
         private readonly IRepositoryBase<Grupo> _repository;
         private readonly IUnitOfWork _uow;

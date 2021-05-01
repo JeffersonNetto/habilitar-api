@@ -9,9 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Habilitar_API.Controllers
-{
+{    
     public class UsuarioController : MainController
     {
         private readonly IUsuarioRepository _repository;
@@ -27,19 +28,23 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Usuario>>> Get()
+        public async Task<ActionResult<IEnumerable<UsuarioViewModel>>> Get()
         {
             var lst = await _repository.GetAll();
 
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuários obtidos com sucesso", lst);
+            var lstUsuarioViewModel = _mapper.Map<IEnumerable<Usuario>, IEnumerable<UsuarioViewModel>>(lst);
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuários obtidos com sucesso", lstUsuarioViewModel);
         }
 
         [HttpGet("ObterComPerfis")]
-        public async Task<ActionResult<IEnumerable<Usuario>>> ObterComPerfis()
+        public async Task<ActionResult<IEnumerable<UsuarioViewModel>>> ObterComPerfis()
         {
             var lst = await _repository.ObterComPerfis();
 
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuários obtidos com sucesso", lst);
+            var lstUsuarioViewModel = _mapper.Map<IEnumerable<Usuario>, IEnumerable<UsuarioViewModel>>(lst);
+
+            return CustomSuccessResponse(StatusCodes.Status200OK, "Usuários obtidos com sucesso", lstUsuarioViewModel);
         }
 
         // GET: api/Empresa/5
@@ -109,6 +114,7 @@ namespace Habilitar_API.Controllers
             await _repository.Exists(id);
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<UsuarioViewModel>> Login(LoginViewModel obj)
         {
             var usuario = await _repository.Login(obj.Login, obj.Senha);
@@ -116,10 +122,10 @@ namespace Habilitar_API.Controllers
             if (usuario == null)
                 return CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário ou senha inválidos");
 
-            usuario.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
-
             var usuarioViewModel = _mapper.Map<Usuario, UsuarioViewModel>(usuario);
 
+            usuarioViewModel.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
+            
             return CustomSuccessResponse(StatusCodes.Status200OK, "Login realizado com sucesso", usuarioViewModel);
         }
     }

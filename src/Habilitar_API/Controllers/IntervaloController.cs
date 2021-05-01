@@ -31,7 +31,7 @@ namespace Habilitar_API.Controllers
 
         // GET: api/Empresa/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Intervalo>> Get(int id)
+        public async Task<ActionResult<Intervalo>> Get(short id)
         {
             var obj = await _repository.GetById(id);
 
@@ -41,7 +41,7 @@ namespace Habilitar_API.Controllers
         // PUT: api/Empresa/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Intervalo>> Put(int id, Intervalo obj, [FromServices] IntervaloValidator validator)
+        public async Task<ActionResult<Intervalo>> Put(short id, Intervalo obj, [FromServices] IntervaloValidator validator)
         {
             if (id != obj.Id)
                 return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
@@ -77,7 +77,7 @@ namespace Habilitar_API.Controllers
 
         // DELETE: api/Empresa/5
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Intervalo>> Delete(int id)
+        public async Task<ActionResult<Intervalo>> Delete(short id)
         {
             var obj = await _repository.GetById(id);
 

@@ -9,13 +9,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{
-    [Authorize]
+{    
     public class EmpresaController : MainController
     {
         private readonly IRepositoryBase<Empresa> _repository;
         private readonly IUnitOfWork _uow;
-
+        
         public EmpresaController(IRepositoryBase<Empresa> repository, IUnitOfWork uow)
         {
             _repository = repository;
@@ -23,7 +22,7 @@ namespace Habilitar_API.Controllers
         }
 
         // GET: api/Empresa
-        [HttpGet]
+        [HttpGet]        
         public async Task<ActionResult<IEnumerable<Empresa>>> Get()
         {
             var lst = await _repository.GetAll();

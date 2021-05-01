@@ -20,7 +20,9 @@ namespace Habilitar_API.Repositories
         {
             return await _context.Usuario
                 .Include(u => u.UsuarioPerfilUsuario)
-                .ThenInclude(up => up.Perfil)
+                    .ThenInclude(up => up.Perfil)
+                .Include(_ => _.Pessoa)
+                .Include(_ => _.Unidade)
                 .AsNoTracking()
                 .SingleOrDefaultAsync(_ => _.Id == id);
         }
@@ -29,7 +31,9 @@ namespace Habilitar_API.Repositories
         {
             return await _context.Usuario
                 .Include(u => u.UsuarioPerfilUsuario)
-                .ThenInclude(up => up.Perfil)
+                    .ThenInclude(up => up.Perfil)
+                .Include(_ => _.Pessoa)
+                .Include(_ => _.Unidade)
                 .AsNoTracking()
                 .ToListAsync();
         }

@@ -8,6 +8,7 @@
    "ModelNamespace": null,
    "OutputContextPath": "Data",
    "OutputPath": "Models",
+   "ProceduresReturnList": false,
    "ProjectRootNamespace": "Habilitar_API",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
@@ -94,7 +95,7 @@
          "ObjectType": 0
       }
    ],
-   "UiHint": "5d34837d1ed1.Habilitar",
+   "UiHint": "MSSQL7.habilitar",
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": true,
    "UseDbContextSplitting": false,

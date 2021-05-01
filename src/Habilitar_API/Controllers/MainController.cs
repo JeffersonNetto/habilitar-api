@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Results;
 using Habilitar_API.Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ namespace Habilitar_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public abstract class MainController : ControllerBase
     {
         protected ActionResult<T> CustomSuccessResponse<T>(int statusCode = StatusCodes.Status200OK, string mensagem = null, T dados = null) where T : class
