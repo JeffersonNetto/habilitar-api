@@ -1,9 +1,13 @@
 ﻿using FluentValidation.Results;
 using Habilitar_API.Helpers;
+using Habilitar_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Habilitar_API.Controllers
 {
@@ -12,6 +16,60 @@ namespace Habilitar_API.Controllers
     [Authorize]
     public abstract class MainController : ControllerBase
     {
+        private readonly INotificador _notificador;
+        //public readonly IUser AppUser;
+
+        protected Guid UsuarioId { get; set; }
+        protected bool UsuarioAutenticado { get; set; }
+
+        protected MainController(INotificador notificador /*IUser appUser*/)
+        {
+            _notificador = notificador;
+            //AppUser = appUser;
+
+            //if (appUser.IsAuthenticated())
+            //{
+            //    UsuarioId = appUser.GetUserId();
+            //    UsuarioAutenticado = true;
+            //}
+        }
+
+        protected void NotificarErro(string mensagem) => _notificador.Handle(new Notificacao(mensagem));
+        protected bool OperacaoValida() => !_notificador.TemNotificacao();
+
+        protected ActionResult CustomResponse(string mensagem = null, object dados = null)
+        {
+            if (!OperacaoValida())
+            {                
+                return BadRequest(new
+                {
+                    Erros = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
+                });
+            }
+
+            return Ok(new
+            {
+                Dados = dados,
+                Mensagem = mensagem,
+            });
+        }
+
+        protected ActionResult CustomResponse(ModelStateDictionary modelState)
+        {
+            if (!modelState.IsValid) NotificarErroModelInvalida(modelState);
+            return CustomResponse();
+        }
+
+        protected void NotificarErroModelInvalida(ModelStateDictionary modelState)
+        {
+            var erros = modelState.Values.SelectMany(e => e.Errors);
+            foreach (var erro in erros)
+            {
+                var errorMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
+                NotificarErro(errorMsg);
+            }
+        }
+
         protected ActionResult<T> CustomSuccessResponse<T>(int statusCode = StatusCodes.Status200OK, string mensagem = null, T dados = null) where T : class
         {
             var result = statusCode switch

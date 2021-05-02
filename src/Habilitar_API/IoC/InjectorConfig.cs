@@ -1,5 +1,6 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ namespace Habilitar_API.IoC
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<INotificador, Notificador>();
             services.AddScoped<IRepositoryBase<Empresa>, EmpresaRepository>();
             services.AddScoped<IRepositoryBase<Exercicio>, ExercicioRepository>();
             services.AddScoped<IRepositoryBase<Funcao>, FuncaoRepository>();
