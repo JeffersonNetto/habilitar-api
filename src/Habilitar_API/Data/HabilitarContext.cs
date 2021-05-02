@@ -19,6 +19,13 @@ namespace Habilitar_API.Data
         {
         }
 
+        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Empresa> Empresa { get; set; }
         public virtual DbSet<Exercicio> Exercicio { get; set; }
         public virtual DbSet<ExercicioGrupo> ExercicioGrupo { get; set; }
@@ -44,36 +51,46 @@ namespace Habilitar_API.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
+            });
+
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+            });
+
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+            });
+
+            modelBuilder.Entity<AspNetUserTokens>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+            });
+
             modelBuilder.Entity<Empresa>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Empresa_UsuarioAtualizacaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Empresa_UsuarioCriacaoId");
-
                 entity.Property(e => e.Cnpj)
-                    .IsRequired()
-                    .HasMaxLength(14)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+                entity.Property(e => e.NomeFantasia).IsUnicode(false);
 
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.NomeFantasia)
-                    .IsRequired()
-                    .HasMaxLength(120)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.RazaoSocial)
-                    .IsRequired()
-                    .HasMaxLength(120)
-                    .IsUnicode(false);
+                entity.Property(e => e.RazaoSocial).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.EmpresaUsuarioAtualizacao)
@@ -89,35 +106,15 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Exercicio>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Exercicio_UsuarioAtualizacaoId");
+                entity.Property(e => e.Descricao).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Exercicio_UsuarioCriacaoId");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+                entity.Property(e => e.Nome).IsUnicode(false);
 
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+                entity.Property(e => e.NomePopular).IsUnicode(false);
 
-                entity.Property(e => e.Descricao)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Nome)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.NomePopular)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Url)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+                entity.Property(e => e.Url).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.ExercicioUsuarioAtualizacao)
@@ -135,20 +132,7 @@ namespace Habilitar_API.Data
             {
                 entity.HasKey(e => new { e.ExercicioId, e.GrupoId });
 
-                entity.HasIndex(e => e.GrupoId, "IX_ExercicioGrupo_GrupoId");
-
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_ExercicioGrupo_UsuarioAtualizacaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_ExercicioGrupo_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.Exercicio)
                     .WithMany(p => p.ExercicioGrupo)
@@ -178,20 +162,7 @@ namespace Habilitar_API.Data
             {
                 entity.HasKey(e => new { e.ExercicioId, e.MetricaId });
 
-                entity.HasIndex(e => e.MetricaId, "IX_ExercicioMetrica_MetricaId");
-
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_ExercicioMetrica_UsuarioAtualizacaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_ExercicioMetrica_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.Exercicio)
                     .WithMany(p => p.ExercicioMetrica)
@@ -219,22 +190,9 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Funcao>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Funcao_UsuarioAtualizacaoId");
+                entity.Property(e => e.Descricao).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Funcao_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Observacao)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Observacao).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.FuncaoUsuarioAtualizacao)
@@ -250,22 +208,9 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Grupo>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Grupo_UsuarioAtualizacaoId");
+                entity.Property(e => e.Descricao).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Grupo_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Observacao)
-                    .HasMaxLength(200)
-                    .IsUnicode(false);
+                entity.Property(e => e.Observacao).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.GrupoUsuarioAtualizacao)
@@ -281,23 +226,9 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Intervalo>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Intervalo_UsuarioAtualizacaoId");
+                entity.Property(e => e.Descricao).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Intervalo_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.IntervaloUsuarioAtualizacao)
@@ -313,14 +244,7 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<LogAcesso>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioId, "IX_LogAcesso_UsuarioId");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.LogAcesso)
@@ -331,29 +255,13 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<LogErro>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioId, "IX_LogErro_UsuarioId");
+                entity.Property(e => e.Acao).IsUnicode(false);
 
-                entity.Property(e => e.Acao)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Erro).IsUnicode(false);
 
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.Erro)
-                    .IsRequired()
-                    .HasMaxLength(2000)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Tela)
-                    .IsRequired()
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.Tela).IsUnicode(false);
 
                 entity.HasOne(d => d.Usuario)
                     .WithMany(p => p.LogErro)
@@ -363,28 +271,7 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Meta>(entity =>
             {
-                entity.HasIndex(e => e.EmpresaId, "IX_Meta_EmpresaId");
-
-                entity.HasIndex(e => e.ExercicioId, "IX_Meta_ExercicioId");
-
-                entity.HasIndex(e => e.FisioterapeutaId, "IX_Meta_FisioterapeutaId");
-
-                entity.HasIndex(e => e.IntervaloId, "IX_Meta_IntervaloId");
-
-                entity.HasIndex(e => e.MetricaId, "IX_Meta_MetricaId");
-
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Meta_UsuarioAtualizacaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Meta_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.Empresa)
                     .WithMany(p => p.Meta)
@@ -429,26 +316,11 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Metrica>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Metrica_UsuarioAtualizacaoId");
+                entity.Property(e => e.Descricao).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Metrica_UsuarioCriacaoId");
+                entity.Property(e => e.Observacao).IsUnicode(false);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Observacao)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Sigla)
-                    .HasMaxLength(5)
-                    .IsUnicode(false);
+                entity.Property(e => e.Sigla).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.MetricaUsuarioAtualizacao)
@@ -464,34 +336,7 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<PacienteMeta>(entity =>
             {
-                entity.HasIndex(e => e.ExercicioId, "IX_PacienteMeta_ExercicioId");
-
-                entity.HasIndex(e => e.FisioterapeutaId, "IX_PacienteMeta_FisioterapeutaId");
-
-                entity.HasIndex(e => e.IntervaloId, "IX_PacienteMeta_IntervaloId");
-
-                entity.HasIndex(e => e.MetaId, "IX_PacienteMeta_MetaId");
-
-                entity.HasIndex(e => e.MetricaId, "IX_PacienteMeta_MetricaId");
-
-                entity.HasIndex(e => e.PessoaId, "IX_PacienteMeta_PessoaId");
-
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_PacienteMeta_UsuarioAtualizacaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_PacienteMeta_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataFinal).HasColumnType("date");
-
-                entity.Property(e => e.DataInicial).HasColumnType("date");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.Exercicio)
                     .WithMany(p => p.PacienteMeta)
@@ -542,18 +387,7 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<PacienteMetaDiaria>(entity =>
             {
-                entity.HasIndex(e => e.PacienteMetaId, "IX_PacienteMetaDiaria_PacienteMetaId");
-
-                entity.Property(e => e.Data).HasColumnType("date");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.PacienteMeta)
                     .WithMany(p => p.PacienteMetaDiaria)
@@ -564,14 +398,7 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<PacienteMetaDiariaLog>(entity =>
             {
-                entity.HasIndex(e => e.PacienteMetaDiariaId, "IX_PacienteMetaDiariaLog_PacienteMetaDiariaId");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.PacienteMetaDiaria)
                     .WithMany(p => p.PacienteMetaDiariaLog)
@@ -582,27 +409,11 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Perfil>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Perfil_UsuarioAtualizacaoId");
+                entity.Property(e => e.Descricao).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Perfil_UsuarioCriacaoId");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Descricao)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Observacao)
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
+                entity.Property(e => e.Observacao).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.PerfilUsuarioAtualizacao)
@@ -619,12 +430,6 @@ namespace Habilitar_API.Data
             modelBuilder.Entity<PerfilFuncao>(entity =>
             {
                 entity.HasKey(e => new { e.PerfilId, e.FuncaoId });
-
-                entity.HasIndex(e => e.FuncaoId, "IX_PerfilFuncao_FuncaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_PerfilFuncao_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Funcao)
                     .WithMany(p => p.PerfilFuncao)
@@ -647,56 +452,25 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Pessoa>(entity =>
             {
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Pessoa_UsuarioAtualizacaoId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Pessoa_UsuarioCriacaoId");
-
                 entity.Property(e => e.Cpf)
-                    .IsRequired()
-                    .HasMaxLength(11)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+                entity.Property(e => e.Email).IsUnicode(false);
 
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+                entity.Property(e => e.IntegracaoId).IsUnicode(false);
 
-                entity.Property(e => e.DataNascimento).HasColumnType("date");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IntegracaoId)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Nome)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Nome).IsUnicode(false);
 
                 entity.Property(e => e.Sexo)
-                    .IsRequired()
-                    .HasMaxLength(1)
                     .IsUnicode(false)
                     .IsFixedLength(true);
 
-                entity.Property(e => e.Sobrenome)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.Sobrenome).IsUnicode(false);
 
-                entity.Property(e => e.Telefone)
-                    .IsRequired()
-                    .HasMaxLength(11)
-                    .IsUnicode(false);
+                entity.Property(e => e.Telefone).IsUnicode(false);
 
                 entity.HasOne(d => d.UsuarioAtualizacao)
                     .WithMany(p => p.PessoaUsuarioAtualizacao)
@@ -712,46 +486,19 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Unidade>(entity =>
             {
-                entity.HasIndex(e => e.EmpresaId, "IX_Unidade_EmpresaId");
+                entity.Property(e => e.Cnes).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioAtualizacaoId, "IX_Unidade_UsuarioAtualizacaoId");
+                entity.Property(e => e.Email).IsUnicode(false);
 
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_Unidade_UsuarioCriacaoId");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.Cnes)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Latitude).IsUnicode(false);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
+                entity.Property(e => e.Longitude).IsUnicode(false);
 
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
+                entity.Property(e => e.Nome).IsUnicode(false);
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Latitude)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Longitude)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Nome)
-                    .IsRequired()
-                    .HasMaxLength(150)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Telefone)
-                    .IsRequired()
-                    .HasMaxLength(11)
-                    .IsUnicode(false);
+                entity.Property(e => e.Telefone).IsUnicode(false);
 
                 entity.HasOne(d => d.Empresa)
                     .WithMany(p => p.Unidade)
@@ -773,32 +520,13 @@ namespace Habilitar_API.Data
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasIndex(e => e.PessoaId, "IX_Usuario_PessoaId");
+                entity.Property(e => e.Conselho).IsUnicode(false);
 
-                entity.HasIndex(e => e.UnidadeId, "IX_Usuario_UnidadeId");
+                entity.Property(e => e.Ip).IsUnicode(false);
 
-                entity.Property(e => e.Conselho)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Login).IsUnicode(false);
 
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Login)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Senha)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Senha).IsUnicode(false);
 
                 entity.HasOne(d => d.Pessoa)
                     .WithMany(p => p.Usuario)
@@ -815,16 +543,7 @@ namespace Habilitar_API.Data
             {
                 entity.HasKey(e => new { e.UsuarioId, e.PerfilId });
 
-                entity.HasIndex(e => e.PerfilId, "IX_UsuarioPerfil_PerfilId");
-
-                entity.HasIndex(e => e.UsuarioCriacaoId, "IX_UsuarioPerfil_UsuarioCriacaoId");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.Property(e => e.Ip).IsUnicode(false);
 
                 entity.HasOne(d => d.Perfil)
                     .WithMany(p => p.UsuarioPerfil)

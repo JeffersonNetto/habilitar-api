@@ -14,7 +14,7 @@ namespace Habilitar_API.Repositories
 
         public async Task Add(TEntity obj) =>
             await _context.Set<TEntity>().AddAsync(obj);
-
+        
         public async Task<bool> Exists<T>(T id) =>
             await _context.Set<TEntity>().FindAsync(id) != null;
 
@@ -34,5 +34,7 @@ namespace Habilitar_API.Repositories
             _context.Entry(obj).Property("DataCriacao").IsModified = false;
             _context.Entry(obj).Property("UsuarioCriacaoId").IsModified = false;
         }
+
+        public void Dispose() =>_context?.Dispose();        
     }
 }

@@ -12,16 +12,19 @@ using System.Threading.Tasks;
 namespace Habilitar_API.Controllers
 {    
     public class EmpresaController : MainController
-    {        
+    {
         private readonly IRepositoryBase<Empresa> _repository;
+        private readonly IEmpresaService _service;
         private readonly IUnitOfWork _uow;
-        
+
         public EmpresaController(
             INotificador notificador,
-            IRepositoryBase<Empresa> repository, 
-            IUnitOfWork uow) : base (notificador)
-        {            
+            IRepositoryBase<Empresa> repository,
+            IEmpresaService service,
+            IUnitOfWork uow) : base(notificador)
+        {
             _repository = repository;
+            _service = service;
             _uow = uow;
         }
 
@@ -64,20 +67,31 @@ namespace Habilitar_API.Controllers
 
         // POST: api/Empresa
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        //[HttpPost]
+        //public async Task<ActionResult<Empresa>> Post(Empresa obj, [FromServices] EmpresaValidator validator)
+        //{
+        //    var result = await validator.ValidateAsync(obj);
+
+        //    if (!result.IsValid)
+        //        return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
+
+        //    await _repository.Add(obj);
+        //    await _uow.Commit();
+
+        //    obj = await _repository.GetById(obj.Id);
+
+        //    return CustomSuccessResponse(StatusCodes.Status201Created, "Empresa inserida com sucesso", obj);
+        //}
+
         [HttpPost]
-        public async Task<ActionResult<Empresa>> Post(Empresa obj, [FromServices] EmpresaValidator validator)
+        public async Task<ActionResult<Empresa>> Post(Empresa obj)
         {
-            var result = await validator.ValidateAsync(obj);
+            //if (!ModelState.IsValid)
+            //    return CustomResponse(ModelState);
 
-            if (!result.IsValid)
-                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);            
+            await _service.Adicionar(obj);            
 
-            await _repository.Add(obj);
-            await _uow.Commit();
-
-            obj = await _repository.GetById(obj.Id);
-
-            return CustomSuccessResponse(StatusCodes.Status201Created, "Empresa inserida com sucesso", obj);
+            return CustomResponse(obj);
         }
 
         // DELETE: api/Empresa/5
@@ -95,7 +109,7 @@ namespace Habilitar_API.Controllers
             return CustomSuccessResponse(StatusCodes.Status200OK, "Empresa excluída com sucesso", obj);
         }
 
-        private async Task<bool> Exists(int id) =>        
-            await _repository.Exists(id);                                
+        private async Task<bool> Exists(int id) =>
+            await _repository.Exists(id);
     }
 }
