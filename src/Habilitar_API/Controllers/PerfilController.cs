@@ -1,5 +1,6 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +15,10 @@ namespace Habilitar_API.Controllers
         private readonly IPerfilRepository _repository;
         private readonly IUnitOfWork _uow;
 
-        public PerfilController(IPerfilRepository repository, IUnitOfWork uow)
+        public PerfilController(
+            INotificador notificador,
+            IPerfilRepository repository, 
+            IUnitOfWork uow) : base (notificador)
         {
             _repository = repository;
             _uow = uow;

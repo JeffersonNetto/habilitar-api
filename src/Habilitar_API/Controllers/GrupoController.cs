@@ -1,5 +1,6 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,7 +13,10 @@ namespace Habilitar_API.Controllers
         private readonly IRepositoryBase<Grupo> _repository;
         private readonly IUnitOfWork _uow;
 
-        public GrupoController(IRepositoryBase<Grupo> repository, IUnitOfWork uow)
+        public GrupoController(
+            INotificador notificador,
+            IRepositoryBase<Grupo> repository, 
+            IUnitOfWork uow) : base (notificador)
         {
             _repository = repository;
             _uow = uow;

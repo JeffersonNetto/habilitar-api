@@ -1,5 +1,6 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
@@ -14,7 +15,10 @@ namespace Habilitar_API.Controllers
         private readonly IRepositoryBase<Funcao> _repository;
         private readonly IUnitOfWork _uow;
 
-        public FuncaoController(IRepositoryBase<Funcao> repository, IUnitOfWork uow)
+        public FuncaoController(
+            INotificador notificador,
+            IRepositoryBase<Funcao> repository, 
+            IUnitOfWork uow) : base (notificador)
         {
             _repository = repository;
             _uow = uow;

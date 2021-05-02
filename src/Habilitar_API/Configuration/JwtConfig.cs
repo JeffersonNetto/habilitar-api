@@ -10,7 +10,12 @@ namespace Habilitar_API.Configuration
     {
         public static IServiceCollection AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            var key = Encoding.ASCII.GetBytes(configuration["Secret"] ?? "algumsegredoaqui");
+            var jwtSettingsSection = configuration.GetSection("JwtSettings");
+            services.Configure<JwtSettings>(jwtSettingsSection);
+
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
+
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -24,13 +29,23 @@ namespace Habilitar_API.Configuration
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = jwtSettings.Audience,
+                    ValidIssuer = jwtSettings.Issuer,
                     ClockSkew = System.TimeSpan.Zero
                 };
             });
 
             return services;
         }
+    }
+
+    public record JwtSettings
+    {
+        public string Secret { get; init; }
+        public string Audience { get; init; }
+        public string Issuer { get; init; }
+        public short Expires { get; init; }
     }
 }

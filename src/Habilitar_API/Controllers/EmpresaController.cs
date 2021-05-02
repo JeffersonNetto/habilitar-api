@@ -1,5 +1,6 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Authorization;
@@ -11,12 +12,15 @@ using System.Threading.Tasks;
 namespace Habilitar_API.Controllers
 {    
     public class EmpresaController : MainController
-    {
+    {        
         private readonly IRepositoryBase<Empresa> _repository;
         private readonly IUnitOfWork _uow;
         
-        public EmpresaController(IRepositoryBase<Empresa> repository, IUnitOfWork uow)
-        {
+        public EmpresaController(
+            INotificador notificador,
+            IRepositoryBase<Empresa> repository, 
+            IUnitOfWork uow) : base (notificador)
+        {            
             _repository = repository;
             _uow = uow;
         }

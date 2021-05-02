@@ -1,21 +1,24 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
-{    
+{
     public class UnidadeController : MainController
     {
         private readonly IRepositoryBase<Unidade> _repository;
         private readonly IUnitOfWork _uow;        
 
-        public UnidadeController(IRepositoryBase<Unidade> repository, IUnitOfWork uow)
+        public UnidadeController(
+            INotificador notificador,
+            IRepositoryBase<Unidade> repository, 
+            IUnitOfWork uow) : base (notificador)
         {
             _repository = repository;
             _uow = uow;            

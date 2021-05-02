@@ -2,7 +2,7 @@
 {
     public record RegisterViewModel : LoginViewModel
     {
-        public string Email { get; set; }
-        public string ConfirmPassword { get; set; }
+        public string Email { get; init; }
+        public string ConfirmPassword { get; init; }
     }
 }

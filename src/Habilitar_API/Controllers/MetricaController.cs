@@ -1,5 +1,6 @@
 ﻿using Habilitar_API.Models;
 using Habilitar_API.Repositories;
+using Habilitar_API.Services;
 using Habilitar_API.Uow;
 using Habilitar_API.Validators;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,10 @@ namespace Habilitar_API.Controllers
         private readonly IRepositoryBase<Metrica> _repository;
         private readonly IUnitOfWork _uow;        
 
-        public MetricaController(IRepositoryBase<Metrica> repository, IUnitOfWork uow)
+        public MetricaController(
+            INotificador notificador,
+            IRepositoryBase<Metrica> repository, 
+            IUnitOfWork uow) : base (notificador)
         {
             _repository = repository;
             _uow = uow;            

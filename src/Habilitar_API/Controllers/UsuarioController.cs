@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Habilitar_API.Services;
 
 namespace Habilitar_API.Controllers
 {    
@@ -19,7 +20,11 @@ namespace Habilitar_API.Controllers
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public UsuarioController(IUsuarioRepository repository, IUnitOfWork uow, IMapper mapper)
+        public UsuarioController(
+            INotificador notificador,
+            IUsuarioRepository repository, 
+            IUnitOfWork uow, 
+            IMapper mapper) : base (notificador)
         {
             _repository = repository;
             _uow = uow;
@@ -113,20 +118,20 @@ namespace Habilitar_API.Controllers
         private async Task<bool> Exists(int id) =>
             await _repository.Exists(id);
 
-        [HttpPost("login")]
-        [AllowAnonymous]
-        public async Task<ActionResult<UsuarioViewModel>> Login(LoginViewModel obj)
-        {
-            var usuario = await _repository.Login(obj.Login, obj.Senha);
+        //[HttpPost("login")]
+        //[AllowAnonymous]
+        //public async Task<ActionResult<UsuarioViewModel>> Login(LoginViewModel obj)
+        //{
+        //    var usuario = await _repository.Login(obj.Login, obj.Senha);
 
-            if (usuario == null)
-                return CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário ou senha inválidos");
+        //    if (usuario == null)
+        //        return CustomErrorResponse(StatusCodes.Status404NotFound, "Usuário ou senha inválidos");
 
-            var usuarioViewModel = _mapper.Map<Usuario, UsuarioViewModel>(usuario);
+        //    var usuarioViewModel = _mapper.Map<Usuario, UsuarioViewModel>(usuario);
 
-            usuarioViewModel.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
+        //    usuarioViewModel.Token = Services.TokenService.GenerateToken(usuario, DateTime.UtcNow.AddHours(2));
             
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Login realizado com sucesso", usuarioViewModel);
-        }
+        //    return CustomSuccessResponse(StatusCodes.Status200OK, "Login realizado com sucesso", usuarioViewModel);
+        //}
     }
 }

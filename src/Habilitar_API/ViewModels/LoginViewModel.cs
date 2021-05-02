@@ -2,7 +2,7 @@
 {
     public record LoginViewModel
     {
-        public string Login { get; init; }
-        public string Senha { get; init; }
+        public string UserName { get; init; }
+        public string Password { get; init; }
     }
 }

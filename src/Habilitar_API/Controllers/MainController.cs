@@ -37,7 +37,7 @@ namespace Habilitar_API.Controllers
         protected void NotificarErro(string mensagem) => _notificador.Handle(new Notificacao(mensagem));
         protected bool OperacaoValida() => !_notificador.TemNotificacao();
 
-        protected ActionResult CustomResponse(string mensagem = null, object dados = null)
+        protected ActionResult CustomResponse(object dados = null)
         {
             if (!OperacaoValida())
             {                
@@ -49,8 +49,7 @@ namespace Habilitar_API.Controllers
 
             return Ok(new
             {
-                Dados = dados,
-                Mensagem = mensagem,
+                Dados = dados,                
             });
         }
 

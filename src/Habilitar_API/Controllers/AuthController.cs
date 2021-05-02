@@ -1,73 +1,135 @@
-﻿using FluentValidation.Results;
+﻿using Habilitar_API.Configuration;
 using Habilitar_API.Services;
 using Habilitar_API.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Habilitar_API.Controllers
 {
     public class AuthController : MainController
     {
-        private readonly INotificador _notificador;
+        private readonly JwtSettings _jwtSettings;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ILogger<AuthController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
 
         public AuthController(
+            IOptions<JwtSettings> jwtSettings,
             INotificador notificador,
-            SignInManager<IdentityUser> signInManager, 
+            SignInManager<IdentityUser> signInManager,
+            ILogger<AuthController> logger,
             UserManager<IdentityUser> userManager) : base (notificador)
         {
-            _notificador = notificador;
+            _jwtSettings = jwtSettings.Value;
             _signInManager = signInManager;
+            _logger = logger;
             _userManager = userManager;
         }
 
         [HttpPost("registrar")]
-        public async Task<ActionResult<RegisterViewModel>> Registrar(RegisterViewModel register)
+        public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
         {
-            var usuario = new IdentityUser
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var user = new IdentityUser
             {
-                UserName = register.Login,
-                Email = register.Email,
-                EmailConfirmed = true,
+                UserName = registerUser.Email,
+                Email = registerUser.Email,
+                EmailConfirmed = true
             };
 
-            var result = await _userManager.CreateAsync(usuario, register.ConfirmPassword);
-
+            var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(usuario, false);
-                return CustomSuccessResponse(200, "", register);
+                await _signInManager.SignInAsync(user, false);
+                return CustomResponse(await GenerateToken(user.Email));
             }
-            else
-            {                                
-                foreach (var error in result.Errors)
-                    NotificarErro(error.Description);
+            foreach (var error in result.Errors)
+            {
+                NotificarErro(error.Description);
+            }
 
-                return CustomResponse("", register);
-            }
+            return CustomResponse(registerUser);
         }
 
         [HttpPost("entrar")]
-        public async Task<ActionResult<LoginViewModel>> Login(LoginViewModel login)
+        public async Task<ActionResult> Login(LoginUserViewModel loginUser)
         {
-            var result = await _signInManager.PasswordSignInAsync(login.Login, login.Senha, false, true);
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
 
             if (result.Succeeded)
-                return CustomSuccessResponse(200, null, login);
-            else if (result.IsLockedOut)
             {
-                var erros = new List<ValidationFailure>
-                {
-                    new ValidationFailure("", "")
-                };
-
-                return CustomErrorResponse(400, "", erros);
+                _logger.LogInformation("Usuario " + loginUser.Email + " logado com sucesso");
+                return CustomResponse(await GenerateToken(loginUser.Email));
+            }
+            if (result.IsLockedOut)
+            {
+                NotificarErro("Usuário temporariamente bloqueado por tentativas inválidas");
+                return CustomResponse(loginUser);
             }
 
-            return CustomErrorResponse(400, "Usuário ou Senha incorretos");
+            NotificarErro("Usuário ou Senha incorretos");
+            return CustomResponse(loginUser);
         }
+
+        private async Task<LoginResponseViewModel> GenerateToken(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            var claims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+
+            foreach (var userRole in userRoles)            
+                claims.Add(new Claim("role", userRole));            
+
+            var identityClaims = new ClaimsIdentity();
+            identityClaims.AddClaims(claims);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience,
+                Subject = identityClaims,
+                Expires = DateTime.UtcNow.AddHours(_jwtSettings.Expires),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            });
+
+            var encodedToken = tokenHandler.WriteToken(token);
+
+            var response = new LoginResponseViewModel
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_jwtSettings.Expires).TotalSeconds,
+                UserToken = new UserTokenViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
+                }
+            };
+
+            return response;
+        }
+
+        private static long ToUnixEpochDate(DateTime date)
+            => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
     }
 }
