@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Habilitar_API\Habilitar.Api.csproj" />
+    <ProjectReference Include="..\..\src\Habilitar.Api\Habilitar.Api.csproj" />
   </ItemGroup>
 
 </Project>
