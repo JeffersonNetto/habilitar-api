@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Habilitar_API
+namespace Habilitar.Api
 {
     public class Program
     {

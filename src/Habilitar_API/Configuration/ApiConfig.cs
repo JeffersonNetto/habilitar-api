@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Habilitar_API.Configuration
+namespace Habilitar.Api.Configuration
 {
     public static class ApiConfig
     {

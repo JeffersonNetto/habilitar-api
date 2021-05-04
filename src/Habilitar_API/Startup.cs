@@ -1,6 +1,6 @@
-using Habilitar_API.Configuration;
-using Habilitar_API.Data;
-using Habilitar_API.IoC;
+using Habilitar.Api.Configuration;
+using Habilitar.Infra.Data;
+using Habilitar.Api.IoC;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 //[assembly: ApiConventionType(typeof(DefaultApiConventions))]
-namespace Habilitar_API
+namespace Habilitar.Api
 {
     public class Startup
     {
@@ -39,7 +39,7 @@ namespace Habilitar_API
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Habilitar_API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Habilitar.Api", Version = "v1" });
             });                        
         }
 
@@ -50,7 +50,7 @@ namespace Habilitar_API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Habilitar_API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Habilitar.Api v1"));
             }
             
             app.UseMvcConfig();                        

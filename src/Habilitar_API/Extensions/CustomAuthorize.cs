@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Habilitar_API.Extensions
+namespace Habilitar.Api.Extensions
 {
     public class CustomAuthorization
     {

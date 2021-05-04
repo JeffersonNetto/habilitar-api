@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Habilitar_API.ViewModels
+namespace Habilitar.Api.ViewModels
 {
     public class RegisterUserViewModel
     {
@@ -28,7 +28,7 @@ namespace Habilitar_API.ViewModels
         public string Password { get; set; }
     }
 
-    public class UserTokenViewModel
+    public class UserViewModel
     {
         public string Id { get; set; }
         public string Email { get; set; }
@@ -39,7 +39,7 @@ namespace Habilitar_API.ViewModels
     {
         public string AccessToken { get; set; }
         public double ExpiresIn { get; set; }
-        public UserTokenViewModel UserToken { get; set; }
+        public UserViewModel User { get; set; }
     }
 
     public class ClaimViewModel

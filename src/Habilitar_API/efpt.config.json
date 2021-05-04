@@ -9,7 +9,7 @@
    "OutputContextPath": "Data",
    "OutputPath": "Models",
    "ProceduresReturnList": false,
-   "ProjectRootNamespace": "Habilitar_API",
+   "ProjectRootNamespace": "Habilitar.Api",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,

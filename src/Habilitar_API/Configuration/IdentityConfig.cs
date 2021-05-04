@@ -1,10 +1,10 @@
-﻿using Habilitar_API.Data;
+﻿using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Habilitar_API.Configuration
+namespace Habilitar.Api.Configuration
 {
     public static class IdentityConfig
     {
@@ -12,7 +12,7 @@ namespace Habilitar_API.Configuration
         {
             services.AddDbContext<IdentityContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
 
-            services.AddIdentityCore<IdentityUser>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IdentityContext>()
                 .AddErrorDescriber<IdentityMensagensPtBr>()

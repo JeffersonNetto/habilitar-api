@@ -1,13 +1,13 @@
-﻿using Habilitar_API.Models;
-using Habilitar_API.Repositories;
-using Habilitar_API.Services;
-using Habilitar_API.Uow;
+﻿using Habilitar.Core.Models;
+using Habilitar.Core.Repositories;
+using Habilitar.Core.Services;
+using Habilitar.Core.Uow;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace Habilitar_API.Controllers
-{    
+namespace Habilitar.Api.Controllers
+{
     public class GrupoController : MainController
     {
         private readonly IRepositoryBase<Grupo> _repository;

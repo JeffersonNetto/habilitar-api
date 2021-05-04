@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
-using Habilitar_API.Helpers;
-using Habilitar_API.Services;
+using Habilitar.Core.Helpers;
+using Habilitar.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Habilitar_API.Controllers
+namespace Habilitar.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

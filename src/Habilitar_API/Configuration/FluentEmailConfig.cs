@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Mail;
 
-namespace Habilitar_API.Configuration
+namespace Habilitar.Api.Configuration
 {
     public static class FluentEmailConfig
     {

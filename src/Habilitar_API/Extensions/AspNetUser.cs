@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 
-namespace Habilitar_API.Extensions
+namespace Habilitar.Api.Extensions
 {
     public interface IUser
     {

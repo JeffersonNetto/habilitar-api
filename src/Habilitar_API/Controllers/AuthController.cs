@@ -1,6 +1,7 @@
-﻿using Habilitar_API.Configuration;
-using Habilitar_API.Services;
-using Habilitar_API.ViewModels;
+﻿using Habilitar.Api.Configuration;
+using Habilitar.Core.Services;
+using Habilitar.Api.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,8 +14,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Habilitar_API.Controllers
+namespace Habilitar.Api.Controllers
 {
+    [AllowAnonymous]
     public class AuthController : MainController
     {
         private readonly JwtSettings _jwtSettings;
@@ -35,7 +37,7 @@ namespace Habilitar_API.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost("registrar")]
+        [HttpPost("registrar")]        
         public async Task<ActionResult> Registrar(RegisterUserViewModel registerUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -61,7 +63,7 @@ namespace Habilitar_API.Controllers
             return CustomResponse(registerUser);
         }
 
-        [HttpPost("entrar")]
+        [HttpPost("entrar")]        
         public async Task<ActionResult> Login(LoginUserViewModel loginUser)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -89,11 +91,11 @@ namespace Habilitar_API.Controllers
             var claims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
 
             foreach (var userRole in userRoles)            
                 claims.Add(new Claim("role", userRole));            
@@ -118,7 +120,7 @@ namespace Habilitar_API.Controllers
             {
                 AccessToken = encodedToken,
                 ExpiresIn = TimeSpan.FromHours(_jwtSettings.Expires).TotalSeconds,
-                UserToken = new UserTokenViewModel
+                User = new UserViewModel
                 {
                     Id = user.Id,
                     Email = user.Email,

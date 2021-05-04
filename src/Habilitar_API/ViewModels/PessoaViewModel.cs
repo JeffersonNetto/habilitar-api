@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Habilitar_API.ViewModels
+namespace Habilitar.Api.ViewModels
 {
     public class PessoaViewModel : ViewModelBase
     {

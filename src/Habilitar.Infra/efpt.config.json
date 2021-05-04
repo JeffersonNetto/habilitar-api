@@ -1,0 +1,120 @@
+﻿{
+   "CodeGenerationMode": 0,
+   "ContextClassName": "HabilitarContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "FilterSchemas": false,
+   "IncludeConnectionString": false,
+   "ModelNamespace": null,
+   "OutputContextPath": "Data",
+   "OutputPath": "Models",
+   "ProceduresReturnList": false,
+   "ProjectRootNamespace": "Habilitar.Infra",
+   "Schemas": null,
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "Name": "[dbo].[AspNetRoleClaims]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserClaims]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserLogins]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserRoles]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUsers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[AspNetUserTokens]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Empresa]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Exercicio]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ExercicioGrupo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[ExercicioMetrica]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Grupo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Intervalo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LogAcesso]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[LogErro]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Meta]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Metrica]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PacienteMeta]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PacienteMetaDiaria]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[PacienteMetaDiariaLog]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Pessoa]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Unidade]",
+         "ObjectType": 0
+      }
+   ],
+   "UiHint": "MSSQL7.habilitar",
+   "UseBoolPropertiesWithoutDefaultSql": false,
+   "UseDatabaseNames": true,
+   "UseDbContextSplitting": false,
+   "UseFluentApiOnly": true,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseNoConstructor": false,
+   "UseNoNavigations": false,
+   "UseNoObjectFilter": false,
+   "UseNodaTime": false,
+   "UseNullableReferences": false,
+   "UseSpatial": false
+}

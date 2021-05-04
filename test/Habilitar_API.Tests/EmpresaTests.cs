@@ -1,11 +1,10 @@
 using Bogus;
 using FluentAssertions;
-using Habilitar_API.Controllers;
-using Habilitar_API.Helpers;
-using Habilitar_API.Models;
-using Habilitar_API.Repositories;
-using Habilitar_API.Uow;
-using Habilitar_API.Validators;
+using Habilitar.Api.Controllers;
+using Habilitar.Core.Helpers;
+using Habilitar.Core.Models;
+using Habilitar.Core.Repositories;
+using Habilitar.Core.Uow;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -13,7 +12,7 @@ using Moq.AutoMock;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Habilitar_API.Tests
+namespace Habilitar.Api.Tests
 {
     public class EmpresaTests
     {

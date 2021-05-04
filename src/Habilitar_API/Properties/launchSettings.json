@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Habilitar_API": {
+    "Habilitar.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -1,14 +1,16 @@
-﻿using Habilitar_API.Models;
-using Habilitar_API.Repositories;
-using Habilitar_API.Services;
-using Habilitar_API.Uow;
-using Habilitar_API.Validators;
+﻿using Habilitar.Core.Models;
+using Habilitar.Infra.Repositories;
+using Habilitar.Core.Services;
+using Habilitar.Infra.Uow;
+using Habilitar.Core.Validators;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Habilitar.Core.Repositories;
+using Habilitar.Core.Uow;
 
-namespace Habilitar_API.Controllers
+namespace Habilitar.Api.Controllers
 {
     public class IntervaloController : MainController
     {
