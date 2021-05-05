@@ -27,8 +27,7 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();                        
 
-            services.AddScoped<IEmpresaService, EmpresaService>();
-            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IEmpresaService, EmpresaService>();            
             services.AddScoped<IPessoaService, PessoaService>();
 
             services.AddMemoryCache();
