@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Habilitar.Api.ViewModels
+namespace Habilitar.Core.ViewModels
 {
     public class RegisterUserViewModel
     {
@@ -15,6 +15,8 @@ namespace Habilitar.Api.ViewModels
 
         [Compare("Password", ErrorMessage = "As senhas não conferem.")]
         public string ConfirmPassword { get; set; }
+
+        public PessoaViewModel Pessoa { get; set; }
     }
 
     public class LoginUserViewModel

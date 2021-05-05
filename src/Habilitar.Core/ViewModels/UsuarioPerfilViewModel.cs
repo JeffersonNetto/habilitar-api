@@ -1,6 +1,6 @@
 ﻿using Habilitar.Core.Models;
 
-namespace Habilitar.Api.ViewModels
+namespace Habilitar.Core.ViewModels
 {
     public class UsuarioPerfilViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Habilitar.Api.ViewModels
+namespace Habilitar.Core.ViewModels
 {
     public class UsuarioViewModel : ViewModelBase
     {

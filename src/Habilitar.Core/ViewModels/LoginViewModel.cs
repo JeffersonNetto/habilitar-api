@@ -1,4 +1,4 @@
-﻿namespace Habilitar.Api.ViewModels
+﻿namespace Habilitar.Core.ViewModels
 {
     public record LoginViewModel
     {

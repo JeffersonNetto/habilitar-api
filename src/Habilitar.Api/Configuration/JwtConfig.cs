@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Habilitar.Core.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -39,13 +40,5 @@ namespace Habilitar.Api.Configuration
 
             return services;
         }
-    }
-
-    public record JwtSettings
-    {
-        public string Secret { get; init; }
-        public string Audience { get; init; }
-        public string Issuer { get; init; }
-        public short Expires { get; init; }
-    }
+    }   
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Habilitar.Api.ViewModels;
+using Habilitar.Core.ViewModels;
 using Habilitar.Core.Models;
 
 namespace Habilitar.Api.Application.Configuration
