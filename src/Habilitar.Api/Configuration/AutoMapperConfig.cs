@@ -8,8 +8,10 @@ namespace Habilitar.Api.Application.Configuration
     {
         public AutoMapperConfig()
         {            
-            CreateMap<Pessoa, PessoaViewModel>().ReverseMap();
-            CreateMap<Unidade, UnidadeViewModel>().ReverseMap();
+            CreateMap<Pessoa, PessoaViewModelInsert>().ReverseMap();
+            CreateMap<Pessoa, PessoaViewModelUpdate>().ReverseMap();
+            CreateMap<Unidade, UnidadeViewModelInsert>().ReverseMap();
+            CreateMap<Unidade, UnidadeViewModelUpdate>().ReverseMap();
         }
     }
 }

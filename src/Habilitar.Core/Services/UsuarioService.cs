@@ -74,8 +74,9 @@ namespace Habilitar.Core.Services
         {
             var result = await _userManager.CreateAsync(new IdentityUser
             {
-                UserName = registerUser.Email,
+                UserName = registerUser.UserName,
                 Email = registerUser.Email,
+                PhoneNumber = registerUser.PhoneNumber,
                 EmailConfirmed = true
             }, registerUser.Password);
 

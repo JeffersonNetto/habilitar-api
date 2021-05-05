@@ -24,10 +24,12 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IRepositoryBase<LogErro>, LogErroRepository>();
             services.AddScoped<IRepositoryBase<Meta>, MetaRepository>();
             services.AddScoped<IRepositoryBase<Metrica>, MetricaRepository>();            
-            services.AddScoped<IRepositoryBase<Pessoa>, PessoaRepository>();
+            services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();                        
 
             services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IPessoaService, PessoaService>();
 
             services.AddMemoryCache();
         }

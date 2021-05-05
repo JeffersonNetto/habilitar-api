@@ -16,7 +16,15 @@ namespace Habilitar.Core.ViewModels
         [Compare("Password", ErrorMessage = "As senhas não conferem.")]
         public string ConfirmPassword { get; set; }
 
-        public PessoaViewModel Pessoa { get; set; }
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(50, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 6)]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "O campo {0} é obrigatório")]
+        [StringLength(20, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 10)]
+        public string PhoneNumber { get; set; }
+
+        public PessoaViewModelInsert Pessoa { get; set; }
     }
 
     public class LoginUserViewModel

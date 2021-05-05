@@ -19,10 +19,8 @@ namespace Habilitar.Core.Models
         public DateTime DataNascimento { get; set; }
         public string Sexo { get; set; }
         public string Cpf { get; set; }
-        public string Telefone { get; set; }
         public Guid UserId { get; set; }
         public string IntegracaoId { get; set; }
-        public string Email { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
