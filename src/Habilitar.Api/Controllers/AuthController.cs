@@ -81,7 +81,15 @@ namespace Habilitar.Api.Controllers
         [HttpPost("entrar")]
         public async Task<ActionResult<LoginResponseViewModel>> Login(LoginUserViewModel loginUser)
         {
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
+            var user = await _userManager.FindByEmailAsync(loginUser.Email);
+
+            if(user == null)
+            {
+                NotificarErro("Usuário não existe na base de dados");
+                return CustomResponse();
+            }
+
+            var result = await _signInManager.PasswordSignInAsync(user.UserName, loginUser.Password, false, true);
 
             if (result.IsLockedOut)
             {
@@ -95,9 +103,7 @@ namespace Habilitar.Api.Controllers
             }
 
             _logger.LogInformation("Usuario " + loginUser.Email + " logado com sucesso");
-
-            var user = await _userManager.FindByEmailAsync(loginUser.Email);
-
+            
             return CustomResponse(await GenerateToken(user));
         }
 
