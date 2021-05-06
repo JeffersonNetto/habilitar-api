@@ -1,4 +1,5 @@
-﻿using Habilitar.Core.Models;
+﻿using Habilitar.Core.Helpers;
+using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
 using Habilitar.Core.Uow;
@@ -17,8 +18,9 @@ namespace Habilitar.Api.Controllers
 
         public UnidadeController(
             INotificador notificador,
-            IRepositoryBase<Unidade> repository, 
-            IUnitOfWork uow) : base (notificador)
+            IRepositoryBase<Unidade> repository,
+            IUser user,
+            IUnitOfWork uow) : base (notificador, user)
         {
             _repository = repository;
             _uow = uow;            

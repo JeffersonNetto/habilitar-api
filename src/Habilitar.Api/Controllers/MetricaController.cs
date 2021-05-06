@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Uow;
+using Habilitar.Core.Helpers;
 
 namespace Habilitar.Api.Controllers
 {
@@ -20,8 +21,9 @@ namespace Habilitar.Api.Controllers
 
         public MetricaController(
             INotificador notificador,
-            IRepositoryBase<Metrica> repository, 
-            IUnitOfWork uow) : base (notificador)
+            IRepositoryBase<Metrica> repository,
+            IUser user,
+            IUnitOfWork uow) : base (notificador, user)
         {
             _repository = repository;
             _uow = uow;            

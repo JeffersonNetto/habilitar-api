@@ -1,20 +1,11 @@
-﻿using System;
+﻿using Habilitar.Core.Helpers;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
 
 namespace Habilitar.Api.Extensions
 {
-    public interface IUser
-    {
-        string Name { get; }
-        Guid GetUserId();
-        string GetUserEmail();
-        bool IsAuthenticated();
-        bool IsInRole(string role);
-        IEnumerable<Claim> GetClaimsIdentity();
-    }
-
     public class AspNetUser : IUser
     {
         private readonly IHttpContextAccessor _accessor;

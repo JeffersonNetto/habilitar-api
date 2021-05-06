@@ -1,4 +1,5 @@
-﻿using Habilitar.Core.Models;
+﻿using Habilitar.Core.Helpers;
+using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
 using Habilitar.Core.Uow;
@@ -20,7 +21,8 @@ namespace Habilitar.Api.Controllers
             INotificador notificador,
             IRepositoryBase<Empresa> repository,
             IEmpresaService service,
-            IUnitOfWork uow) : base(notificador)
+            IUser user,
+            IUnitOfWork uow) : base(notificador, user)
         {
             _repository = repository;
             _service = service;
@@ -30,7 +32,7 @@ namespace Habilitar.Api.Controllers
         // GET: api/Empresa
         [HttpGet]        
         public async Task<ActionResult<IEnumerable<Empresa>>> Get()
-        {
+        {            
             var lst = await _repository.GetAll();
 
             return CustomSuccessResponse(StatusCodes.Status200OK, "Empresas obtidas com sucesso", lst);

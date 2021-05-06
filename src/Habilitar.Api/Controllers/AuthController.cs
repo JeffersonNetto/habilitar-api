@@ -20,30 +20,31 @@ namespace Habilitar.Api.Controllers
 {
     [AllowAnonymous]
     public class AuthController : MainController
-    {        
+    {
         private readonly JwtSettings _jwtSettings;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AuthController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IPessoaService _pessoaService;
-        private readonly IMapper _mapper;            
+        private readonly IMapper _mapper;
 
         public AuthController(
-            INotificador notificador,            
+            INotificador notificador,
             UserManager<IdentityUser> userManager,
             ILogger<AuthController> logger,
             SignInManager<IdentityUser> signInManager,
             IOptions<JwtSettings> jwtSettings,
             IPessoaService pessoaService,
-            IMapper mapper
-            ) : base(notificador)
-        {            
+            IMapper mapper,
+            IUser user
+            ) : base(notificador, user)
+        {
             _userManager = userManager;
             _logger = logger;
             _signInManager = signInManager;
             _jwtSettings = jwtSettings.Value;
             _pessoaService = pessoaService;
-            _mapper = mapper;            
+            _mapper = mapper;
         }
 
         [HttpPost("registrar")]
@@ -71,10 +72,10 @@ namespace Habilitar.Api.Controllers
 
             await _userManager.AddToRoleAsync(user, "Admin");
 
-            await _pessoaService.Adicionar(pessoa);                       
+            await _pessoaService.Adicionar(pessoa);
 
             await _signInManager.SignInAsync(user, false);
-            
+
             return CustomResponse(await GenerateToken(user));
         }
 
@@ -83,7 +84,7 @@ namespace Habilitar.Api.Controllers
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
 
-            if(user == null)
+            if (user == null)
             {
                 NotificarErro("Usuário não existe na base de dados");
                 return CustomResponse();
@@ -103,8 +104,14 @@ namespace Habilitar.Api.Controllers
             }
 
             _logger.LogInformation("Usuario " + loginUser.Email + " logado com sucesso");
-            
+
             return CustomResponse(await GenerateToken(user));
+        }
+
+        [HttpGet("sair")]
+        public async Task Logout()
+        {
+            await _signInManager.SignOutAsync();
         }
 
         private async Task<LoginResponseViewModel> GenerateToken(IdentityUser user)
@@ -112,8 +119,8 @@ namespace Habilitar.Api.Controllers
             var claims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            //claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
-            //claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));

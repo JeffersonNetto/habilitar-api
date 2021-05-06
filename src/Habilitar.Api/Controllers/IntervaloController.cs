@@ -9,21 +9,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Uow;
+using Habilitar.Core.Helpers;
 
 namespace Habilitar.Api.Controllers
 {
     public class IntervaloController : MainController
     {
         private readonly IRepositoryBase<Intervalo> _repository;
-        private readonly IUnitOfWork _uow;        
+        private readonly IUnitOfWork _uow;
 
         public IntervaloController(
             INotificador notificador,
-            IRepositoryBase<Intervalo> repository, 
-            IUnitOfWork uow) : base (notificador)
+            IRepositoryBase<Intervalo> repository,
+            IUser user,
+            IUnitOfWork uow) : base(notificador, user)
         {
             _repository = repository;
-            _uow = uow;            
+            _uow = uow;
         }
 
         // GET: api/Empresa

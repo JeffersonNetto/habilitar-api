@@ -1,6 +1,5 @@
 ﻿using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Habilitar.Api.Configuration
@@ -10,8 +9,6 @@ namespace Habilitar.Api.Configuration
         public static IServiceCollection WebApiConfig(this IServiceCollection services)
         {
             services.AddCors();
-            services.Configure<ApiBehaviorOptions>(_ => _.SuppressModelStateInvalidFilter = true);
-
             services.AddAutoMapper(typeof(Startup));
 
             services.AddControllers().AddNewtonsoftJson(_ =>
@@ -39,7 +36,7 @@ namespace Habilitar.Api.Configuration
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });            
 
             return app;
         }
