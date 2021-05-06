@@ -12,6 +12,7 @@ namespace Habilitar.Core.Services
         Task<bool> Adicionar(Pessoa pessoa);
         Task<bool> Atualizar(Pessoa pessoa);
         Task<bool> Remover(int id);
+        Task<bool> Remover(Guid userId);
     }
     public class PessoaService : ServiceBase, IPessoaService
     {
@@ -51,6 +52,16 @@ namespace Habilitar.Core.Services
             if (pessoa == null)
                 Notificar($"Nenhuma pessoa encontrada para o Id {id}");
 
+            _pessoaRepository.Remove(pessoa);
+            await Commit();
+
+            return true;
+        }
+        
+        public async Task<bool> Remover(Guid userId)
+        {
+            var pessoa = await _pessoaRepository.GetByUserId(userId);
+            
             _pessoaRepository.Remove(pessoa);
             await Commit();
 

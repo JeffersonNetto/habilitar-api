@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Habilitar.Api.Migrations
+namespace Habilitar.Infra.Migrations
 {
     [DbContext(typeof(HabilitarContext))]
     partial class HabilitarContextModelSnapshot : ModelSnapshot
@@ -61,17 +61,13 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(120)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Empresa");
                 });
@@ -119,17 +115,13 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(200)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Exercicio");
                 });
@@ -157,19 +149,15 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ExercicioId", "GrupoId");
 
                     b.HasIndex("GrupoId");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("ExercicioGrupo");
                 });
@@ -197,63 +185,17 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ExercicioId", "MetricaId");
 
                     b.HasIndex("MetricaId");
 
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
-
                     b.ToTable("ExercicioMetrica");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Funcao", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Observacao")
-                        .HasMaxLength(150)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
-
-                    b.ToTable("Funcao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.Grupo", b =>
@@ -278,21 +220,18 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<byte[]>("Observacao")
+                    b.Property<string>("Observacao")
                         .HasMaxLength(200)
-                        .HasColumnType("varbinary(200)");
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(200)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Grupo");
                 });
@@ -325,17 +264,13 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Intervalo");
                 });
@@ -356,12 +291,10 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(20)");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("LogAcesso");
                 });
@@ -400,12 +333,10 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("LogErro");
                 });
@@ -453,11 +384,11 @@ namespace Habilitar.Api.Migrations
                     b.Property<int>("QtdSeries")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -465,15 +396,9 @@ namespace Habilitar.Api.Migrations
 
                     b.HasIndex("ExercicioId");
 
-                    b.HasIndex("FisioterapeutaId");
-
                     b.HasIndex("IntervaloId");
 
                     b.HasIndex("MetricaId");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Meta");
                 });
@@ -510,17 +435,13 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(5)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Metrica");
                 });
@@ -598,17 +519,15 @@ namespace Habilitar.Api.Migrations
                     b.Property<bool>("TercaFeira")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ExercicioId");
-
-                    b.HasIndex("FisioterapeutaId");
 
                     b.HasIndex("IntervaloId");
 
@@ -617,10 +536,6 @@ namespace Habilitar.Api.Migrations
                     b.HasIndex("MetricaId");
 
                     b.HasIndex("PessoaId");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("PacienteMeta");
                 });
@@ -692,71 +607,6 @@ namespace Habilitar.Api.Migrations
                     b.ToTable("PacienteMetaDiariaLog");
                 });
 
-            modelBuilder.Entity("Habilitar.Core.Models.Perfil", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Observacao")
-                        .HasMaxLength(150)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(150)");
-
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
-
-                    b.ToTable("Perfil");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.PerfilFuncao", b =>
-                {
-                    b.Property<int>("PerfilId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FuncaoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PerfilId", "FuncaoId");
-
-                    b.HasIndex("FuncaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
-
-                    b.ToTable("PerfilFuncao");
-                });
-
             modelBuilder.Entity("Habilitar.Core.Models.Pessoa", b =>
                 {
                     b.Property<int>("Id")
@@ -782,12 +632,6 @@ namespace Habilitar.Api.Migrations
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("date");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("IntegracaoId")
                         .HasMaxLength(30)
@@ -819,23 +663,16 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(11)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
 
                     b.ToTable("Pessoa");
                 });
@@ -897,152 +734,17 @@ namespace Habilitar.Api.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(11)");
 
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmpresaId");
 
-                    b.HasIndex("UsuarioAtualizacaoId");
-
-                    b.HasIndex("UsuarioCriacaoId");
-
                     b.ToTable("Unidade");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Usuario", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Conselho")
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<bool>("Fisioterapeuta")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Ip")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Login")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<int?>("PessoaId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Profissional")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<int?>("UnidadeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UsuarioAtualizacaoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PessoaId");
-
-                    b.HasIndex("UnidadeId");
-
-                    b.ToTable("Usuario");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.UsuarioPerfil", b =>
-                {
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PerfilId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Ip")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<int>("UsuarioCriacaoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UsuarioId", "PerfilId");
-
-                    b.HasIndex("PerfilId");
-
-                    b.HasIndex("UsuarioCriacaoId");
-
-                    b.ToTable("UsuarioPerfil");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Empresa", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("EmpresaUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Empresa_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("EmpresaUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Empresa_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Exercicio", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("ExercicioUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Exercicio_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("ExercicioUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Exercicio_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.ExercicioGrupo", b =>
@@ -1059,24 +761,9 @@ namespace Habilitar.Api.Migrations
                         .HasConstraintName("FK_ExercicioGrupo_Grupo")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("ExercicioGrupoUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_ExercicioGrupo_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("ExercicioGrupoUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_ExercicioGrupo_UsuarioCriacao")
-                        .IsRequired();
-
                     b.Navigation("Exercicio");
 
                     b.Navigation("Grupo");
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.ExercicioMetrica", b =>
@@ -1093,99 +780,9 @@ namespace Habilitar.Api.Migrations
                         .HasConstraintName("FK_ExercicioMetrica_Metrica")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("ExercicioMetricaUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_ExercicioMetrica_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("ExercicioMetricaUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_ExercicioMetrica_UsuarioCriacao")
-                        .IsRequired();
-
                     b.Navigation("Exercicio");
 
                     b.Navigation("Metrica");
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Funcao", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("FuncaoUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Funcao_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("FuncaoUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Funcao_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Grupo", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("GrupoUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Grupo_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("GrupoUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Grupo_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Intervalo", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("IntervaloUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Intervalo_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("IntervaloUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Intervalo_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.LogAcesso", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "Usuario")
-                        .WithMany("LogAcesso")
-                        .HasForeignKey("UsuarioId")
-                        .HasConstraintName("FK_LogAcesso_Usuario")
-                        .IsRequired();
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.LogErro", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "Usuario")
-                        .WithMany("LogErro")
-                        .HasForeignKey("UsuarioId")
-                        .HasConstraintName("FK_LogErro_Usuario");
-
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.Meta", b =>
@@ -1202,11 +799,6 @@ namespace Habilitar.Api.Migrations
                         .HasConstraintName("FK_Meta_Exercicio")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Usuario", "Fisioterapeuta")
-                        .WithMany("MetaFisioterapeuta")
-                        .HasForeignKey("FisioterapeutaId")
-                        .HasConstraintName("FK_Meta_Fisioterapeuta");
-
                     b.HasOne("Habilitar.Core.Models.Intervalo", "Intervalo")
                         .WithMany("Meta")
                         .HasForeignKey("IntervaloId")
@@ -1219,48 +811,13 @@ namespace Habilitar.Api.Migrations
                         .HasConstraintName("FK_Meta_Metrica")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("MetaUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Meta_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("MetaUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Meta_UsuarioCriacao")
-                        .IsRequired();
-
                     b.Navigation("Empresa");
 
                     b.Navigation("Exercicio");
 
-                    b.Navigation("Fisioterapeuta");
-
                     b.Navigation("Intervalo");
 
                     b.Navigation("Metrica");
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Metrica", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("MetricaUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Metrica_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("MetricaUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Metrica_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.PacienteMeta", b =>
@@ -1269,12 +826,6 @@ namespace Habilitar.Api.Migrations
                         .WithMany("PacienteMeta")
                         .HasForeignKey("ExercicioId")
                         .HasConstraintName("FK_PacienteMeta_Exercicio")
-                        .IsRequired();
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "Fisioterapeuta")
-                        .WithMany("PacienteMetaFisioterapeuta")
-                        .HasForeignKey("FisioterapeutaId")
-                        .HasConstraintName("FK_PacienteMeta_Usuario")
                         .IsRequired();
 
                     b.HasOne("Habilitar.Core.Models.Intervalo", "Intervalo")
@@ -1300,20 +851,7 @@ namespace Habilitar.Api.Migrations
                         .HasConstraintName("FK_PacienteMeta_Pessoa")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("PacienteMetaUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_PacienteMeta_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("PacienteMetaUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_PacienteMeta_UsuarioCriacao")
-                        .IsRequired();
-
                     b.Navigation("Exercicio");
-
-                    b.Navigation("Fisioterapeuta");
 
                     b.Navigation("Intervalo");
 
@@ -1322,10 +860,6 @@ namespace Habilitar.Api.Migrations
                     b.Navigation("Metrica");
 
                     b.Navigation("Pessoa");
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.PacienteMetaDiaria", b =>
@@ -1350,69 +884,6 @@ namespace Habilitar.Api.Migrations
                     b.Navigation("PacienteMetaDiaria");
                 });
 
-            modelBuilder.Entity("Habilitar.Core.Models.Perfil", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("PerfilUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Perfil_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("PerfilUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Perfil_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.PerfilFuncao", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Funcao", "Funcao")
-                        .WithMany("PerfilFuncao")
-                        .HasForeignKey("FuncaoId")
-                        .HasConstraintName("FK_PerfilFuncao_Funcao")
-                        .IsRequired();
-
-                    b.HasOne("Habilitar.Core.Models.Perfil", "Perfil")
-                        .WithMany("PerfilFuncao")
-                        .HasForeignKey("PerfilId")
-                        .HasConstraintName("FK_PerfilFuncao_Perfil")
-                        .IsRequired();
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("PerfilFuncao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_PerfilFuncao_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("Funcao");
-
-                    b.Navigation("Perfil");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Pessoa", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("PessoaUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Pessoa_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("PessoaUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Pessoa_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
             modelBuilder.Entity("Habilitar.Core.Models.Unidade", b =>
                 {
                     b.HasOne("Habilitar.Core.Models.Empresa", "Empresa")
@@ -1421,66 +892,7 @@ namespace Habilitar.Api.Migrations
                         .HasConstraintName("FK_Unidade_Empresa")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioAtualizacao")
-                        .WithMany("UnidadeUsuarioAtualizacao")
-                        .HasForeignKey("UsuarioAtualizacaoId")
-                        .HasConstraintName("FK_Unidade_UsuarioAtualizacao");
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("UnidadeUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_Unidade_UsuarioCriacao")
-                        .IsRequired();
-
                     b.Navigation("Empresa");
-
-                    b.Navigation("UsuarioAtualizacao");
-
-                    b.Navigation("UsuarioCriacao");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Usuario", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Pessoa", "Pessoa")
-                        .WithMany("Usuario")
-                        .HasForeignKey("PessoaId")
-                        .HasConstraintName("FK_Usuario_Pessoa");
-
-                    b.HasOne("Habilitar.Core.Models.Unidade", "Unidade")
-                        .WithMany("Usuario")
-                        .HasForeignKey("UnidadeId")
-                        .HasConstraintName("FK_Usuario_Unidade");
-
-                    b.Navigation("Pessoa");
-
-                    b.Navigation("Unidade");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.UsuarioPerfil", b =>
-                {
-                    b.HasOne("Habilitar.Core.Models.Perfil", "Perfil")
-                        .WithMany("UsuarioPerfil")
-                        .HasForeignKey("PerfilId")
-                        .HasConstraintName("FK_UsuarioPerfil_Perfil")
-                        .IsRequired();
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "UsuarioCriacao")
-                        .WithMany("UsuarioPerfilUsuarioCriacao")
-                        .HasForeignKey("UsuarioCriacaoId")
-                        .HasConstraintName("FK_UsuarioPerfil_UsuarioCriacao")
-                        .IsRequired();
-
-                    b.HasOne("Habilitar.Core.Models.Usuario", "Usuario")
-                        .WithMany("UsuarioPerfilUsuario")
-                        .HasForeignKey("UsuarioId")
-                        .HasConstraintName("FK_UsuarioPerfil_Usuario")
-                        .IsRequired();
-
-                    b.Navigation("Perfil");
-
-                    b.Navigation("Usuario");
-
-                    b.Navigation("UsuarioCriacao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.Empresa", b =>
@@ -1499,11 +911,6 @@ namespace Habilitar.Api.Migrations
                     b.Navigation("Meta");
 
                     b.Navigation("PacienteMeta");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Funcao", b =>
-                {
-                    b.Navigation("PerfilFuncao");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.Grupo", b =>
@@ -1542,92 +949,9 @@ namespace Habilitar.Api.Migrations
                     b.Navigation("PacienteMetaDiariaLog");
                 });
 
-            modelBuilder.Entity("Habilitar.Core.Models.Perfil", b =>
-                {
-                    b.Navigation("PerfilFuncao");
-
-                    b.Navigation("UsuarioPerfil");
-                });
-
             modelBuilder.Entity("Habilitar.Core.Models.Pessoa", b =>
                 {
                     b.Navigation("PacienteMeta");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Unidade", b =>
-                {
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Habilitar.Core.Models.Usuario", b =>
-                {
-                    b.Navigation("EmpresaUsuarioAtualizacao");
-
-                    b.Navigation("EmpresaUsuarioCriacao");
-
-                    b.Navigation("ExercicioGrupoUsuarioAtualizacao");
-
-                    b.Navigation("ExercicioGrupoUsuarioCriacao");
-
-                    b.Navigation("ExercicioMetricaUsuarioAtualizacao");
-
-                    b.Navigation("ExercicioMetricaUsuarioCriacao");
-
-                    b.Navigation("ExercicioUsuarioAtualizacao");
-
-                    b.Navigation("ExercicioUsuarioCriacao");
-
-                    b.Navigation("FuncaoUsuarioAtualizacao");
-
-                    b.Navigation("FuncaoUsuarioCriacao");
-
-                    b.Navigation("GrupoUsuarioAtualizacao");
-
-                    b.Navigation("GrupoUsuarioCriacao");
-
-                    b.Navigation("IntervaloUsuarioAtualizacao");
-
-                    b.Navigation("IntervaloUsuarioCriacao");
-
-                    b.Navigation("LogAcesso");
-
-                    b.Navigation("LogErro");
-
-                    b.Navigation("MetaFisioterapeuta");
-
-                    b.Navigation("MetaUsuarioAtualizacao");
-
-                    b.Navigation("MetaUsuarioCriacao");
-
-                    b.Navigation("MetricaUsuarioAtualizacao");
-
-                    b.Navigation("MetricaUsuarioCriacao");
-
-                    b.Navigation("PacienteMetaFisioterapeuta");
-
-                    b.Navigation("PacienteMetaUsuarioAtualizacao");
-
-                    b.Navigation("PacienteMetaUsuarioCriacao");
-
-                    b.Navigation("PerfilFuncao");
-
-                    b.Navigation("PerfilUsuarioAtualizacao");
-
-                    b.Navigation("PerfilUsuarioCriacao");
-
-                    b.Navigation("PessoaUsuarioAtualizacao");
-
-                    b.Navigation("PessoaUsuarioCriacao");
-
-                    b.Navigation("UnidadeUsuarioAtualizacao");
-
-                    b.Navigation("UnidadeUsuarioCriacao");
-
-                    b.Navigation("UsuarioPerfilUsuario");
-
-                    b.Navigation("UsuarioPerfilUsuarioCriacao");
                 });
 #pragma warning restore 612, 618
         }

@@ -88,8 +88,7 @@ namespace Habilitar.Api.Controllers
         public async Task<ActionResult<Empresa>> Post(Empresa obj)
         {
             //if (!ModelState.IsValid)
-            //    return CustomResponse(ModelState);
-
+            //    return CustomResponse(ModelState);            
             await _service.Adicionar(obj);            
 
             return CustomResponse(obj);

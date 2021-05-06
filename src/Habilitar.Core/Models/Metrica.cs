@@ -21,9 +21,9 @@ namespace Habilitar.Core.Models
         public string Observacao { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
-        public int UsuarioCriacaoId { get; set; }
+        public Guid UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
-        public int? UsuarioAtualizacaoId { get; set; }
+        public Guid? UsuarioAtualizacaoId { get; set; }
 
         public virtual ICollection<ExercicioMetrica> ExercicioMetrica { get; set; }
         public virtual ICollection<Meta> Meta { get; set; }

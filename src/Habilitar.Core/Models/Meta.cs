@@ -24,9 +24,9 @@ namespace Habilitar.Core.Models
         public string Ip { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
-        public int UsuarioCriacaoId { get; set; }
+        public Guid UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
-        public int? UsuarioAtualizacaoId { get; set; }
+        public Guid? UsuarioAtualizacaoId { get; set; }
 
         public virtual Empresa Empresa { get; set; }
         public virtual Exercicio Exercicio { get; set; }

@@ -26,7 +26,7 @@ namespace Habilitar.Api.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IPessoaService _pessoaService;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;        
 
         public AuthController(
             INotificador notificador,
@@ -55,7 +55,8 @@ namespace Habilitar.Api.Controllers
                 UserName = registerUser.UserName,
                 Email = registerUser.Email,
                 PhoneNumber = registerUser.PhoneNumber,
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                PhoneNumberConfirmed = true
             }, registerUser.Password);
 
             if (!result.Succeeded)
@@ -66,20 +67,21 @@ namespace Habilitar.Api.Controllers
                 return CustomResponse();
             }
 
-            var pessoa = _mapper.Map<Pessoa>(registerUser.Pessoa);
+            var pessoa = _mapper.Map<PessoaViewModelInsert, Pessoa>(registerUser.Pessoa);
             var user = await _userManager.FindByEmailAsync(registerUser.Email);
             pessoa.UserId = Guid.Parse(user.Id);
+            pessoa.UsuarioCriacaoId = UsuarioId;
 
             await _userManager.AddToRoleAsync(user, "Admin");
 
             await _pessoaService.Adicionar(pessoa);
 
-            await _signInManager.SignInAsync(user, false);
+            //await _signInManager.SignInAsync(user, false);
 
             return CustomResponse(await GenerateToken(user));
         }
 
-        [HttpPost("entrar")]
+        [HttpPost("entrar")]        
         public async Task<ActionResult<LoginResponseViewModel>> Login(LoginUserViewModel loginUser)
         {
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
@@ -108,10 +110,61 @@ namespace Habilitar.Api.Controllers
             return CustomResponse(await GenerateToken(user));
         }
 
-        [HttpGet("sair")]
-        public async Task Logout()
+        [HttpGet("remover/{id:guid}")]        
+        public async Task<ActionResult> Remover(Guid id)
         {
-            await _signInManager.SignOutAsync();
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                NotificarErro("Usuário não existe na base de dados");
+                return CustomResponse();
+            }
+
+            await _pessoaService.Remover(id);
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (!result.Succeeded)                            
+            {
+                foreach (var error in result.Errors)
+                    NotificarErro(error.Description);
+
+                return CustomResponse();
+            }
+
+            return CustomResponse("Usuário excluído com sucesso");
+        }
+
+        [HttpPut("editar/{id:guid}")]
+        public async Task<ActionResult<LoginResponseViewModel>> Editar(Guid id, EditUserViewModel editUser)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user == null)
+            {
+                NotificarErro("Usuário não existe na base de dados");
+                return CustomResponse();
+            }
+
+            var pessoa = _mapper.Map<PessoaViewModelUpdate, Pessoa>(editUser.Pessoa);
+            await _pessoaService.Atualizar(pessoa);
+
+            user.Email = editUser.Email;
+            user.UserName = editUser.UserName;
+            user.PhoneNumber = editUser.PhoneNumber;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                    NotificarErro(error.Description);
+
+                return CustomResponse();
+            }
+
+            return CustomResponse("Usuário editado com sucesso");
         }
 
         private async Task<LoginResponseViewModel> GenerateToken(IdentityUser user)

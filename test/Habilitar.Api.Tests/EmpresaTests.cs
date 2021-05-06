@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.AutoMock;
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -35,7 +36,7 @@ namespace Habilitar.Api.Tests
                 .RuleFor(m => m.RazaoSocial, f => f.Company.CompanyName())
                 .RuleFor(m => m.Ativo, f => f.Random.Bool())
                 .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
-                .RuleFor(m => m.UsuarioCriacaoId, f => f.Random.Int(1, 100))
+                .RuleFor(m => m.UsuarioCriacaoId, Guid.NewGuid())
                 .Generate(5);
 
             mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetAll()).ReturnsAsync(expected);            
@@ -62,7 +63,7 @@ namespace Habilitar.Api.Tests
                 .RuleFor(m => m.RazaoSocial, f => f.Company.CompanyName())
                 .RuleFor(m => m.Ativo, f => f.Random.Bool())
                 .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
-                .RuleFor(m => m.UsuarioCriacaoId, f => f.Random.Int(1, 100))
+                .RuleFor(m => m.UsuarioCriacaoId, Guid.NewGuid())
                 .Generate();
 
             mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(expected);            
@@ -89,7 +90,7 @@ namespace Habilitar.Api.Tests
                 .RuleFor(m => m.RazaoSocial, f => f.Company.CompanyName())
                 .RuleFor(m => m.Ativo, f => f.Random.Bool())
                 .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
-                .RuleFor(m => m.UsuarioCriacaoId, f => f.Random.Int(1, 100))
+                .RuleFor(m => m.UsuarioCriacaoId, Guid.NewGuid())
                 .Generate();
             
             mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(empresa);            

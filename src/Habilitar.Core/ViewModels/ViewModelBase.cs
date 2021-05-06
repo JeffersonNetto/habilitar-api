@@ -7,13 +7,13 @@ namespace Habilitar.Core.ViewModels
         public string Ip { get; set; }
         public bool Ativo { get; set; }
         public DateTime DataCriacao { get; set; }
-        public int UsuarioCriacaoId { get; set; }     
+        public Guid UsuarioCriacaoId { get; set; }     
     }
 
     public abstract class ViewModelBaseForUpdate : ViewModelBaseForInsert
     {
         public int Id { get; set; }        
         public DateTime? DataAtualizacao { get; set; }
-        public int? UsuarioAtualizacaoId { get; set; }
+        public Guid? UsuarioAtualizacaoId { get; set; }
     }
 }

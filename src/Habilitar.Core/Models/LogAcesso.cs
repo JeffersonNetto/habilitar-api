@@ -9,7 +9,7 @@ namespace Habilitar.Core.Models
     public partial class LogAcesso
     {
         public int Id { get; set; }
-        public int UsuarioId { get; set; }
+        public Guid UsuarioId { get; set; }
         public string Ip { get; set; }
         public DateTime DataCriacao { get; set; }
     }

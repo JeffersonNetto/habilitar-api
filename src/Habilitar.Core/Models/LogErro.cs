@@ -12,7 +12,7 @@ namespace Habilitar.Core.Models
         public string Erro { get; set; }
         public string Acao { get; set; }
         public string Tela { get; set; }
-        public int? UsuarioId { get; set; }
+        public Guid? UsuarioId { get; set; }
         public string Ip { get; set; }
         public DateTime DataCriacao { get; set; }
     }
