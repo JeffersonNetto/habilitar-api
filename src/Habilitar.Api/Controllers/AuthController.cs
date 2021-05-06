@@ -205,6 +205,7 @@ namespace Habilitar.Api.Controllers
                 {
                     Id = user.Id,
                     Email = user.Email,
+                    UserName = user.UserName,
                     Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
                 }
             };
