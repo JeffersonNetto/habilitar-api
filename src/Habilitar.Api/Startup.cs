@@ -1,20 +1,13 @@
 using Habilitar.Api.Configuration;
-using Habilitar.Infra.Data;
 using Habilitar.Api.IoC;
+using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using FluentValidation.AspNetCore;
-using Habilitar.Core.Helpers;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 //[assembly: ApiConventionType(typeof(DefaultApiConventions))]
@@ -39,7 +32,7 @@ namespace Habilitar.Api
 
             services.AddJwtConfiguration(Configuration);
                        
-            services.WebApiConfig();
+            services.WebApiConfiguration();
 
             services.AddDbContext<HabilitarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
             //services.AddDbContext<HabilitarContext>(options => options.UseInMemoryDatabase(databaseName: "Habilitar"), ServiceLifetime.Scoped);            
@@ -58,10 +51,7 @@ namespace Habilitar.Api
                 };
             });
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Habilitar.Api", Version = "v1" });
-            });
+            services.AddSwaggerConfiguration();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +64,7 @@ namespace Habilitar.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Habilitar.Api v1"));
             }
 
-            app.UseMvcConfig();
+            app.UseMvcConfiguration();
         }
     }
 }

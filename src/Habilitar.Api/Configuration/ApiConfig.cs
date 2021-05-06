@@ -6,7 +6,7 @@ namespace Habilitar.Api.Configuration
 {
     public static class ApiConfig
     {
-        public static IServiceCollection WebApiConfig(this IServiceCollection services)
+        public static IServiceCollection WebApiConfiguration(this IServiceCollection services)
         {
             services.AddCors();
             services.AddAutoMapper(typeof(Startup));
@@ -22,7 +22,7 @@ namespace Habilitar.Api.Configuration
             return services;
         }
 
-        public static IApplicationBuilder UseMvcConfig(this IApplicationBuilder app)
+        public static IApplicationBuilder UseMvcConfiguration(this IApplicationBuilder app)
         {
             app.UseCors(_ => _.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
