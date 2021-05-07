@@ -10,8 +10,8 @@ jobs:
   build:
   
     env:
-      CAMINHO_PROJETO_TESTES: ./test/Habilitar_API.Tests/Habilitar_API.Tests.csproj
-      CAMINHO_PROJETO_WEBAPP: ./src/Habilitar_API/Habilitar_API.csproj      
+      CAMINHO_PROJETO_TESTES: ./test/Habilitar.Api.Tests/Habilitar.Api.Tests.csproj
+      CAMINHO_PROJETO_WEBAPP: ./src/Habilitar.Api/Habilitar.Api.csproj      
 
     runs-on: ubuntu-latest
 
