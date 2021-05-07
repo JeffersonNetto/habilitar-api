@@ -6,8 +6,8 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk AS build
-ENV projfolder=Habilitar_API
-ENV projfile=Habilitar_API.csproj
+ENV projfolder=Habilitar.Api
+ENV projfile=Habilitar.Api.csproj
 WORKDIR /src
 COPY ["src/$projfolder/$projfile", ""]
 RUN dotnet restore "$projfile"
@@ -20,4 +20,4 @@ RUN dotnet publish "$projfile" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Habilitar_API.dll"]
+ENTRYPOINT ["dotnet", "Habilitar.Api.dll"]
