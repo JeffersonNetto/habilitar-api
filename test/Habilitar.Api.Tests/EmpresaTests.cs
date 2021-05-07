@@ -4,6 +4,7 @@ using Habilitar.Api.Controllers;
 using Habilitar.Core.Helpers;
 using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
+using Habilitar.Core.Services;
 using Habilitar.Core.Uow;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -44,13 +45,12 @@ namespace Habilitar.Api.Tests
             //Act
             var actual = await controller.Get();
 
-            var result = actual.Result.As<OkObjectResult>();
+            var result = actual.As<OkObjectResult>();
 
             //Assert            
-            result.StatusCode.Should().Be(StatusCodes.Status200OK);
-            result.Value.Should().BeOfType<SuccessResponse<IEnumerable<Empresa>>>();
-            var obj = result.Value as SuccessResponse<IEnumerable<Empresa>>;
-            obj.Dados.Should().BeEquivalentTo(expected);
+            result.StatusCode.Should().Be(StatusCodes.Status200OK);            
+            var obj = result.Value.GetType().GetProperty("Dados").GetValue(result.Value);
+            obj.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
@@ -71,13 +71,12 @@ namespace Habilitar.Api.Tests
             //Act
             var actual = await controller.Get(1);
 
-            var result = actual.Result.As<OkObjectResult>();
+            var result = actual.As<OkObjectResult>();
 
             //Assert            
-            result.StatusCode.Should().Be(StatusCodes.Status200OK);
-            result.Value.Should().BeOfType<SuccessResponse<Empresa>>();
-            var obj = result.Value as SuccessResponse<Empresa>;
-            obj.Dados.Should().BeEquivalentTo(expected);
+            result.StatusCode.Should().Be(StatusCodes.Status200OK);            
+            var obj = result.Value.GetType().GetProperty("Dados").GetValue(result.Value);
+            obj.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
@@ -92,21 +91,19 @@ namespace Habilitar.Api.Tests
                 .RuleFor(m => m.DataCriacao, f => f.Date.Recent())
                 .RuleFor(m => m.UsuarioCriacaoId, Guid.NewGuid())
                 .Generate();
-            
-            mocker.GetMock<IRepositoryBase<Empresa>>().Setup(_ => _.GetById(It.Is<int>(id => id > 0))).ReturnsAsync(empresa);            
+                        
+            mocker.GetMock<IEmpresaService>().Setup(_ => _.Adicionar(empresa)).ReturnsAsync(true);
 
             //Act
             var actual = await controller.Post(empresa);
 
-            var result = actual.Result.As<CreatedResult>();
+            var result = actual.As<OkObjectResult>();
 
             //Assert
-            result.StatusCode.Should().Be(StatusCodes.Status201Created);
-            result.Value.Should().BeOfType<SuccessResponse<Empresa>>();
-            var obj = result.Value as SuccessResponse<Empresa>;
-            obj.Dados.Should().BeEquivalentTo(empresa);            
-            mocker.GetMock<IRepositoryBase<Empresa>>().Verify(m => m.Add(empresa), Times.Once);
-            mocker.GetMock<IUnitOfWork>().Verify(u => u.Commit(), Times.Once);            
+            result.StatusCode.Should().Be(StatusCodes.Status200OK);
+            
+            var obj = result.Value.GetType().GetProperty("Dados").GetValue(result.Value);
+            obj.Should().BeEquivalentTo(empresa);                                 
         }
     }
 }

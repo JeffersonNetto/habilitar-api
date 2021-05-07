@@ -25,7 +25,7 @@ namespace Habilitar.Api.Controllers
         }
         
         [HttpGet]        
-        public async Task<ActionResult<IEnumerable<Empresa>>> Get()
+        public async Task<IActionResult> Get()
         {            
             var lst = await _repository.GetAll();
 
@@ -33,7 +33,7 @@ namespace Habilitar.Api.Controllers
         }
         
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<Empresa>> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             var obj = await _repository.GetById(id);
 
@@ -41,7 +41,7 @@ namespace Habilitar.Api.Controllers
         }
         
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<Empresa>> Put(int id, Empresa obj)
+        public async Task<IActionResult> Put(int id, Empresa obj)
         {
             obj.UsuarioAtualizacaoId = UsuarioId;
             await _service.Atualizar(obj);            
@@ -50,7 +50,7 @@ namespace Habilitar.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Empresa>> Post(Empresa obj)
+        public async Task<IActionResult> Post(Empresa obj)
         {
             obj.UsuarioCriacaoId = UsuarioId;
             await _service.Adicionar(obj);            
@@ -59,7 +59,7 @@ namespace Habilitar.Api.Controllers
         }
         
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult<Empresa>> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             await _service.Remover(id);
 
