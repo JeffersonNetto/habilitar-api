@@ -30,7 +30,10 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IPessoaRepository, PessoaRepository>();
             services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();                        
 
-            services.AddScoped<IEmpresaService, EmpresaService>();            
+            services.AddScoped<IEmpresaService, EmpresaService>();
+            services.AddScoped<IExercicioService, ExercicioService>();
+            services.AddScoped<IIntervaloService, IntervaloService>();
+            services.AddScoped<IMetricaService, MetricaService>();
             services.AddScoped<IPessoaService, PessoaService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

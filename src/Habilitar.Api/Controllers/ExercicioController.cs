@@ -2,11 +2,7 @@
 using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
-using Habilitar.Core.Uow;
-using Habilitar.Core.Validators;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
@@ -14,87 +10,58 @@ namespace Habilitar.Api.Controllers
     public class ExercicioController : MainController
     {
         private readonly IRepositoryBase<Exercicio> _repository;
-        private readonly IUnitOfWork _uow;        
+        private readonly IExercicioService _service;
 
         public ExercicioController(
             INotificador notificador,
             IRepositoryBase<Exercicio> repository,
-            IUser user,
-            IUnitOfWork uow) : base (notificador, user)
+            IExercicioService service,
+            IUser user) : base(notificador, user)
         {
             _repository = repository;
-            _uow = uow;
+            _service = service;
         }
 
-        // GET: api/Exercicio
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Exercicio>>> Get()
+        public async Task<IActionResult> Get()
         {
             var lst = await _repository.GetAll();
 
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Exercícios obtidos com sucesso", lst);
+            return CustomResponse(lst);
         }
 
-        // GET: api/Exercicio/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Exercicio>> Get(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> Get(int id)
         {
-
             var obj = await _repository.GetById(id);
 
-            return obj == null ? CustomErrorResponse(StatusCodes.Status404NotFound, "Exercício não encontrado") : CustomSuccessResponse(StatusCodes.Status200OK, "Exercício obtido com sucesso", obj);
+            return obj == null ? NotFound() : CustomResponse(obj);
         }
 
-        // PUT: api/Exercicio/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<ActionResult<Exercicio>> Put(int id, Exercicio obj, [FromServices] ExercicioValidator validator)
+        [HttpPut("{id:int}")]
+        public async Task<IActionResult> Put(int id, Exercicio obj)
         {
-            if (id != obj.Id)
-                return CustomErrorResponse(StatusCodes.Status400BadRequest, "O Id passado na url é diferente do Id do objeto");
+            obj.UsuarioAtualizacaoId = UsuarioId;
+            await _service.Atualizar(obj);
 
-            var result = await validator.ValidateAsync(obj);
-
-            if (!result.IsValid)
-                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
-
-            _repository.Update(obj);
-            await _uow.Commit();
-
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Exercício atualizado com sucesso", obj);
+            return CustomResponse(obj);
         }
 
-        // POST: api/Exercicio
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Exercicio>> Post(Exercicio obj, [FromServices] ExercicioValidator validator)
+        public async Task<IActionResult> Post(Exercicio obj)
         {
-            var result = await validator.ValidateAsync(obj);
+            obj.UsuarioCriacaoId = UsuarioId;
+            await _service.Adicionar(obj);
 
-            if (!result.IsValid)
-                return CustomErrorResponse(StatusCodes.Status400BadRequest, "", result.Errors);
-
-            await _repository.Add(obj);
-            await _uow.Commit();
-
-            obj = await _repository.GetById(obj.Id);
-
-            return CustomSuccessResponse(StatusCodes.Status201Created, "Exercício inserido com sucesso", obj);
+            return CustomResponse(obj);
         }
 
-        // DELETE: api/Exercicio/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Exercicio>> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var obj = await _repository.GetById(id);
+            await _service.Remover(id);
 
-            if (obj == null)
-                return CustomErrorResponse(StatusCodes.Status404NotFound, "Exercício não encontrado");
-
-            _repository.Remove(obj);
-            await _uow.Commit();
-
-            return CustomSuccessResponse(StatusCodes.Status200OK, "Exercício excluído com sucesso", obj);
+            return CustomResponse();
         }
 
         private async Task<bool> Exists(int id) =>

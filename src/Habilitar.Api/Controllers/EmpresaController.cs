@@ -43,6 +43,7 @@ namespace Habilitar.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<Empresa>> Put(int id, Empresa obj)
         {
+            obj.UsuarioAtualizacaoId = UsuarioId;
             await _service.Atualizar(obj);            
 
             return CustomResponse(obj);
@@ -50,7 +51,8 @@ namespace Habilitar.Api.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Empresa>> Post(Empresa obj)
-        {                   
+        {
+            obj.UsuarioCriacaoId = UsuarioId;
             await _service.Adicionar(obj);            
 
             return CustomResponse(obj);
