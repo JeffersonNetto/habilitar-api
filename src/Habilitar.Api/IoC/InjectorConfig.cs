@@ -34,6 +34,7 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IExercicioService, ExercicioService>();
             services.AddScoped<IIntervaloService, IntervaloService>();
             services.AddScoped<IMetricaService, MetricaService>();
+            services.AddScoped<IUnidadeService, UnidadeService>();
             services.AddScoped<IPessoaService, PessoaService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
