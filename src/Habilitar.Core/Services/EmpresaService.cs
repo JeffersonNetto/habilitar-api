@@ -4,6 +4,9 @@ using Habilitar.Core.Validators;
 using System;
 using System.Threading.Tasks;
 using Habilitar.Core.Repositories;
+using Habilitar.Core.ViewModels;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Habilitar.Core.Services
 {
@@ -12,6 +15,7 @@ namespace Habilitar.Core.Services
         Task<bool> Adicionar(Empresa empresa);
         Task<bool> Atualizar(Empresa empresa);
         Task<bool> Remover(int id);
+        Task<IEnumerable<ComboBase<int>>> ObterCombos();
     }
 
     public class EmpresaService : ServiceBase, IEmpresaService
@@ -59,5 +63,16 @@ namespace Habilitar.Core.Services
         }
 
         public void Dispose() => _empresaRepository?.Dispose();
+
+        public async Task<IEnumerable<ComboBase<int>>> ObterCombos()
+        {
+            var lst = await _empresaRepository.GetAll();
+
+            return lst.Select(obj => new ComboBase<int>
+            {
+                Value = obj.Id,
+                Text = obj.NomeFantasia,
+            });
+        }
     }
 }

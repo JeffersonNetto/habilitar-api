@@ -9,12 +9,12 @@ namespace Habilitar.Api.Controllers
 {
     public class UnidadeController : MainController
     {
-        private readonly IRepositoryBase<Unidade> _repository;
+        private readonly IUnidadeRepository _repository;
         private readonly IUnidadeService _service;
 
         public UnidadeController(
             INotificador notificador,
-            IRepositoryBase<Unidade> repository,
+            IUnidadeRepository repository,
             IUnidadeService service,
             IUser user) : base(notificador, user)
         {
@@ -25,7 +25,7 @@ namespace Habilitar.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var lst = await _repository.GetAll();
+            var lst = await _repository.ObterComEmpresa();
 
             return CustomResponse(lst);
         }

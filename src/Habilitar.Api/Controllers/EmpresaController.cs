@@ -23,7 +23,15 @@ namespace Habilitar.Api.Controllers
             _repository = repository;
             _service = service;            
         }
-        
+
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetCombo()
+        {
+            var lst = await _service.ObterCombos();
+
+            return CustomResponse(lst);
+        }
+
         [HttpGet]        
         public async Task<IActionResult> Get()
         {            

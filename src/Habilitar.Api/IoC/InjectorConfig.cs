@@ -28,7 +28,7 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IRepositoryBase<Meta>, MetaRepository>();
             services.AddScoped<IRepositoryBase<Metrica>, MetricaRepository>();            
             services.AddScoped<IPessoaRepository, PessoaRepository>();
-            services.AddScoped<IRepositoryBase<Unidade>, UnidadeRepository>();                        
+            services.AddScoped<IUnidadeRepository, UnidadeRepository>();                        
 
             services.AddScoped<IEmpresaService, EmpresaService>();
             services.AddScoped<IExercicioService, ExercicioService>();

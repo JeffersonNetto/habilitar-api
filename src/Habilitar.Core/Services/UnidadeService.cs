@@ -1,9 +1,9 @@
 ﻿using Habilitar.Core.Models;
+using Habilitar.Core.Repositories;
 using Habilitar.Core.Uow;
 using Habilitar.Core.Validators;
 using System;
 using System.Threading.Tasks;
-using Habilitar.Core.Repositories;
 
 namespace Habilitar.Core.Services
 {
@@ -16,12 +16,12 @@ namespace Habilitar.Core.Services
 
     public class UnidadeService : ServiceBase, IUnidadeService
     {
-        private readonly IRepositoryBase<Unidade> _unidadeRepository;
+        private readonly IUnidadeRepository _unidadeRepository;
 
         public UnidadeService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Unidade> unidadeRepository) : base(notificador, uow) => _unidadeRepository = unidadeRepository;
+            IUnidadeRepository unidadeRepository) : base(notificador, uow) => _unidadeRepository = unidadeRepository;
 
         public async Task<bool> Adicionar(Unidade obj)
         {
