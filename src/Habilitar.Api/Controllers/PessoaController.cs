@@ -1,114 +1,85 @@
-﻿using Habilitar.Core.Models;
+﻿using AutoMapper;
+using Habilitar.Core.Helpers;
+using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
+using Habilitar.Core.Services;
 using Habilitar.Core.Uow;
+using Habilitar.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
-{
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PessoaController : ControllerBase
+{    
+    public class PessoaController : MainController
     {
-        private readonly IRepositoryBase<Pessoa> _repository;
-        private readonly IUnitOfWork _uow;
+        private readonly IPessoaRepository _repository;
+        private readonly IPessoaService _service;
+        private readonly IMapper _mapper;
 
-        public PessoaController(IRepositoryBase<Pessoa> repository, IUnitOfWork uow)
+        public PessoaController(
+            INotificador notificador,
+            IPessoaRepository repository,
+            IPessoaService service,
+            IUser user, 
+            IMapper mapper) : base(notificador, user)
         {
             _repository = repository;
-            _uow = uow;
+            _service = service;
+            _mapper = mapper;
         }
 
-        // GET: api/Empresa
+        //[HttpGet("combo")]
+        //public async Task<IActionResult> GetCombo()
+        //{
+        //    var lst = await _service.ObterCombos();
+
+        //    return CustomResponse(lst);
+        //}
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
+            var lst = await _repository.ObterComUsuario();
 
-                return Ok(lst);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            var result = _mapper.Map<IEnumerable<PessoaViewModelUpdate>>(lst);
+
+            return CustomResponse(result);
         }
 
-        // GET: api/Empresa/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var obj = await _repository.GetById(id);
+            var obj = await _repository.GetById(id);
 
-                return obj == null ? NotFound() : Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return obj == null ? NotFound() : CustomResponse(obj);
         }
 
-        // PUT: api/Empresa/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, Pessoa obj)
         {
-            try
-            {
-                if (id != obj.Id)
-                    return BadRequest();
+            obj.UsuarioAtualizacaoId = UsuarioId;
+            await _service.Atualizar(obj);
 
-                _repository.Update(obj);
-                await _uow.Commit();
-
-                return Ok(await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse(obj);
         }
 
-        // POST: api/Empresa
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<IActionResult> Post(Pessoa obj)
         {
-            try
-            {
-                await _repository.Add(obj);
-                await _uow.Commit();
+            obj.UsuarioCriacaoId = UsuarioId;
+            await _service.Adicionar(obj);
 
-                return CreatedAtAction("Post", await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse(obj);
         }
 
-        // DELETE: api/Empresa/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                _repository.Remove(await _repository.GetById(id));
-                await _uow.Commit();
+            await _service.Remover(id);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse();
         }
 
         private async Task<bool> Exists(int id) =>

@@ -19,7 +19,7 @@ namespace Habilitar.Core.Models
         public DateTime DataNascimento { get; set; }
         public string Sexo { get; set; }
         public string Cpf { get; set; }
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public string IntegracaoId { get; set; }
         public string Ip { get; set; }
         public bool Ativo { get; set; }
@@ -28,6 +28,7 @@ namespace Habilitar.Core.Models
         public DateTime? DataAtualizacao { get; set; }
         public Guid? UsuarioAtualizacaoId { get; set; }
 
+        public virtual AspNetUsers User { get; set; }
         public virtual ICollection<PacienteMeta> PacienteMeta { get; set; }
     }
 }

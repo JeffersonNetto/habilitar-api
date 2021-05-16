@@ -20,6 +20,7 @@ namespace Habilitar.Core.ViewModels
         public string Sexo { get; set; }
         public string Cpf { get; set; }
         public string IntegracaoId { get; set; }
-        public Guid UserId { get; set; }
+        //public string UserId { get; set; }
+        public UserViewModel User { get; set; }
     }
 }

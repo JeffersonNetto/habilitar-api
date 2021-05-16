@@ -48,7 +48,7 @@ namespace Habilitar.Api.Controllers
         }
 
         [HttpPost("registrar")]
-        public async Task<ActionResult<LoginResponseViewModel>> Registrar(RegisterUserViewModel registerUser)
+        public async Task<IActionResult> Registrar(RegisterUserViewModel registerUser)
         {
             var result = await _userManager.CreateAsync(new IdentityUser
             {
@@ -67,9 +67,9 @@ namespace Habilitar.Api.Controllers
                 return CustomResponse();
             }
 
-            var pessoa = _mapper.Map<PessoaViewModelInsert, Pessoa>(registerUser.Pessoa);
+            var pessoa = _mapper.Map<Pessoa>(registerUser.Pessoa);
             var user = await _userManager.FindByEmailAsync(registerUser.Email);
-            pessoa.UserId = Guid.Parse(user.Id);
+            pessoa.UserId = user.Id;
             pessoa.UsuarioCriacaoId = UsuarioId;
 
             await _userManager.AddToRoleAsync(user, "Admin");
@@ -121,7 +121,7 @@ namespace Habilitar.Api.Controllers
                 return CustomResponse();
             }
 
-            await _pessoaService.Remover(id);
+            await _pessoaService.Remover(id.ToString());
 
             var result = await _userManager.DeleteAsync(user);
 

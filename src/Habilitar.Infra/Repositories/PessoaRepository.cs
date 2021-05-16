@@ -2,7 +2,7 @@
 using Habilitar.Core.Repositories;
 using Habilitar.Infra.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar.Infra.Repositories
@@ -11,7 +11,15 @@ namespace Habilitar.Infra.Repositories
     {
         public PessoaRepository(HabilitarContext context) : base(context) { }
 
-        public Task<Pessoa> GetByUserId(Guid userId) =>        
-            _context.Pessoa.SingleAsync(_ => _.UserId == userId);        
-    }    
+        public Task<Pessoa> GetByUserId(string userId) =>
+            _context.Pessoa.SingleAsync(_ => _.UserId == userId);
+
+        public async Task<IEnumerable<Pessoa>> ObterComUsuario()
+        {
+            return await _context.Pessoa
+                        .Include(p => p.User)
+                        .AsNoTracking()
+                        .ToListAsync();
+        }
+    }
 }

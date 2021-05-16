@@ -12,7 +12,7 @@ namespace Habilitar.Core.Services
         Task<bool> Adicionar(Pessoa pessoa);
         Task<bool> Atualizar(Pessoa pessoa);
         Task<bool> Remover(int id);
-        Task<bool> Remover(Guid userId);
+        Task<bool> Remover(string userId);
     }
     public class PessoaService : ServiceBase, IPessoaService
     {
@@ -58,7 +58,7 @@ namespace Habilitar.Core.Services
             return true;
         }
         
-        public async Task<bool> Remover(Guid userId)
+        public async Task<bool> Remover(string userId)
         {
             var pessoa = await _pessoaRepository.GetByUserId(userId);
             

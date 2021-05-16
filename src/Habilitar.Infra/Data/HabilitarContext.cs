@@ -19,6 +19,13 @@ namespace Habilitar.Infra.Data
         {
         }
 
+        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Empresa> Empresa { get; set; }
         public virtual DbSet<Exercicio> Exercicio { get; set; }
         public virtual DbSet<ExercicioGrupo> ExercicioGrupo { get; set; }
@@ -39,8 +46,95 @@ namespace Habilitar.Infra.Data
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
+            modelBuilder.Entity<AspNetRoleClaims>(entity =>
+            {
+                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+
+                entity.Property(e => e.RoleId).IsRequired();
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetRoleClaims)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AspNetRoles>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
+
+                entity.Property(e => e.Name).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
+            });
+
+            modelBuilder.Entity<AspNetUserClaims>(entity =>
+            {
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserClaims)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
+            {
+                entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
+
+                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+
+                entity.Property(e => e.UserId).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserLogins)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.RoleId });
+
+                entity.HasIndex(e => e.RoleId, "IX_AspNetUserRoles_RoleId");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserRoles)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUserTokens>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspNetUserTokens)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
             modelBuilder.Entity<Empresa>(entity =>
-            {                
+            {
                 entity.Property(e => e.Cnpj)
                     .IsRequired()
                     .HasMaxLength(14)
@@ -68,7 +162,7 @@ namespace Habilitar.Infra.Data
             });
 
             modelBuilder.Entity<Exercicio>(entity =>
-            {                
+            {
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
@@ -97,8 +191,10 @@ namespace Habilitar.Infra.Data
             });
 
             modelBuilder.Entity<ExercicioGrupo>(entity =>
-            {
+            {                
                 entity.HasKey(e => new { e.ExercicioId, e.GrupoId });
+
+                entity.HasIndex(e => e.GrupoId, "IX_ExercicioGrupo_GrupoId");
 
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
@@ -126,6 +222,8 @@ namespace Habilitar.Infra.Data
             {
                 entity.HasKey(e => new { e.ExercicioId, e.MetricaId });
 
+                entity.HasIndex(e => e.MetricaId, "IX_ExercicioMetrica_MetricaId");
+
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
@@ -150,7 +248,6 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<Grupo>(entity =>
             {
-
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
@@ -167,8 +264,6 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<Intervalo>(entity =>
             {
-
-
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
@@ -186,8 +281,6 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<LogAcesso>(entity =>
             {
-
-
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
                 entity.Property(e => e.Ip)
@@ -198,7 +291,6 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<LogErro>(entity =>
             {
-
                 entity.Property(e => e.Acao)
                     .IsRequired()
                     .HasMaxLength(100)
@@ -224,7 +316,13 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<Meta>(entity =>
             {
-               
+                entity.HasIndex(e => e.EmpresaId, "IX_Meta_EmpresaId");
+
+                entity.HasIndex(e => e.ExercicioId, "IX_Meta_ExercicioId");
+
+                entity.HasIndex(e => e.IntervaloId, "IX_Meta_IntervaloId");
+
+                entity.HasIndex(e => e.MetricaId, "IX_Meta_MetricaId");
 
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
@@ -262,7 +360,6 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<Metrica>(entity =>
             {
-               
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
@@ -283,7 +380,15 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<PacienteMeta>(entity =>
             {
-               
+                entity.HasIndex(e => e.ExercicioId, "IX_PacienteMeta_ExercicioId");
+
+                entity.HasIndex(e => e.IntervaloId, "IX_PacienteMeta_IntervaloId");
+
+                entity.HasIndex(e => e.MetaId, "IX_PacienteMeta_MetaId");
+
+                entity.HasIndex(e => e.MetricaId, "IX_PacienteMeta_MetricaId");
+
+                entity.HasIndex(e => e.PessoaId, "IX_PacienteMeta_PessoaId");
 
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
 
@@ -330,7 +435,8 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<PacienteMetaDiaria>(entity =>
             {
-               
+                entity.HasIndex(e => e.PacienteMetaId, "IX_PacienteMetaDiaria_PacienteMetaId");
+
                 entity.Property(e => e.Data).HasColumnType("date");
 
                 entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
@@ -351,7 +457,8 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<PacienteMetaDiariaLog>(entity =>
             {
-                
+                entity.HasIndex(e => e.PacienteMetaDiariaId, "IX_PacienteMetaDiariaLog_PacienteMetaDiariaId");
+
                 entity.Property(e => e.DataCriacao).HasColumnType("datetime");
 
                 entity.Property(e => e.Ip)
@@ -368,8 +475,6 @@ namespace Habilitar.Infra.Data
 
             modelBuilder.Entity<Pessoa>(entity =>
             {
-                
-
                 entity.Property(e => e.Cpf)
                     .IsRequired()
                     .HasMaxLength(11)
@@ -406,11 +511,21 @@ namespace Habilitar.Infra.Data
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.Pessoa)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Pessoa_Pessoa");
             });
 
             modelBuilder.Entity<Unidade>(entity =>
             {
-               
+                entity.HasIndex(e => e.EmpresaId, "IX_Unidade_EmpresaId");
 
                 entity.Property(e => e.Cnes)
                     .HasMaxLength(20)
