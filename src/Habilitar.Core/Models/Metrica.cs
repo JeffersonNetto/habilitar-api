@@ -19,8 +19,8 @@ namespace Habilitar.Core.Models
         public string Descricao { get; set; }
         public string Sigla { get; set; }
         public string Observacao { get; set; }
-        public bool Ativo { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public bool Ativo { get; set; } = true;
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
         public Guid UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public Guid? UsuarioAtualizacaoId { get; set; }

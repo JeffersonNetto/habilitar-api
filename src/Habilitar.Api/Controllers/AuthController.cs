@@ -78,7 +78,7 @@ namespace Habilitar.Api.Controllers
 
             //await _signInManager.SignInAsync(user, false);
 
-            return CustomResponse(await GenerateToken(user));
+            return CustomResponse();
         }
 
         [HttpPost("entrar")]        

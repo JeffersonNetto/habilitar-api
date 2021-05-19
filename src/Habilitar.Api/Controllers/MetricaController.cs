@@ -3,6 +3,7 @@ using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
@@ -41,6 +42,7 @@ namespace Habilitar.Api.Controllers
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, Metrica obj)
         {
+            obj.DataAtualizacao = DateTime.Now;
             obj.UsuarioAtualizacaoId = UsuarioId;
             await _service.Atualizar(obj);
 
