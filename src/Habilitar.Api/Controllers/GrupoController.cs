@@ -2,9 +2,7 @@
 using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
-using Habilitar.Core.Uow;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
@@ -12,48 +10,34 @@ namespace Habilitar.Api.Controllers
     public class GrupoController : MainController
     {
         private readonly IRepositoryBase<Grupo> _repository;
-        private readonly IUnitOfWork _uow;
+        private readonly IGrupoService _service;
 
         public GrupoController(
             INotificador notificador,
             IRepositoryBase<Grupo> repository,
-            IUser user,
-            IUnitOfWork uow) : base (notificador, user)
+            IGrupoService service,
+            IUser user) : base (notificador, user)
         {
             _repository = repository;
-            _uow = uow;
+            _service = service;
         }
 
         // GET: api/Unidade
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
+            var lst = await _repository.GetAll();
 
-                return Ok(lst);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return CustomResponse(lst);
         }
 
         // GET: api/Unidade/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var obj = await _repository.GetById(id);
+            var obj = await _repository.GetById(id);
 
-                return obj == null ? NotFound() : Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return obj == null ? NotFound() : CustomResponse(obj);
         }
 
         // PUT: api/Unidade/5
@@ -61,21 +45,10 @@ namespace Habilitar.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, Grupo obj)
         {
-            try
-            {
-                if (id != obj.Id)
-                    return BadRequest();
+            obj.UsuarioAtualizacaoId = UsuarioId;
+            await _service.Atualizar(obj);
 
-                _repository.Update(obj);
-                await _uow.Commit();
-
-                return Ok(await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse(obj);
         }
 
         // POST: api/Unidade
@@ -83,36 +56,19 @@ namespace Habilitar.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Grupo obj)
         {
-            try
-            {
-                await _repository.Add(obj);
-                await _uow.Commit();
+            obj.UsuarioCriacaoId = UsuarioId;
+            await _service.Adicionar(obj);
 
-                return CreatedAtAction("Post", await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse(obj);
         }
 
         // DELETE: api/Unidade/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                _repository.Remove(await _repository.GetById(id));
-                await _uow.Commit();
+            await _service.Remover(id);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse();
         }
 
         private async Task<bool> Exists(int id) =>

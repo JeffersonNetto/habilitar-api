@@ -36,6 +36,7 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IMetricaService, MetricaService>();
             services.AddScoped<IUnidadeService, UnidadeService>();
             services.AddScoped<IPessoaService, PessoaService>();
+            services.AddScoped<IGrupoService, GrupoService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();
