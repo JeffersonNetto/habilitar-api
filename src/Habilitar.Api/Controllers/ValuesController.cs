@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Habilitar.Core.Helpers;
+using Habilitar.Core.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +15,15 @@ namespace Habilitar.Api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly StorageConfig _storageConfig;
+        private readonly IAzureBlobStorage _azureBlobStorage;
+
+        public ValuesController(IOptions<StorageConfig> storageConfig, IAzureBlobStorage azureBlobStorage)
+        {
+            _storageConfig = storageConfig.Value;
+            _azureBlobStorage = azureBlobStorage;            
+        }
+
         // GET: api/<ValuesController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -28,8 +40,9 @@ namespace Habilitar.Api.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<string> Post([FromBody] string file)
         {
+           return await _azureBlobStorage.Upload(file, Guid.NewGuid().ToString() + ".jpg");            
         }
 
         // PUT api/<ValuesController>/5

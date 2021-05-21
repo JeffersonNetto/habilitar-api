@@ -1,5 +1,7 @@
 using Habilitar.Api.Configuration;
 using Habilitar.Api.IoC;
+using Habilitar.Core.Helpers;
+using Habilitar.Core.Services;
 using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 //[assembly: ApiConventionType(typeof(DefaultApiConventions))]
@@ -27,6 +30,11 @@ namespace Habilitar.Api
         {
             //services.AddCors();
             //services.AddAutoMapper(typeof(Startup));
+
+            services.Configure<StorageConfig>(Configuration.GetSection(nameof(StorageConfig)))
+                .AddSingleton(options => options.GetRequiredService<IOptions<StorageConfig>>().Value);
+
+            services.AddScoped<IAzureBlobStorage, AzureBlobStorage>();            
 
             services.AddIdentityConfiguration(Configuration);
 
