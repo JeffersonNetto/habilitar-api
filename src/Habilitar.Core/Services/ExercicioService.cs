@@ -16,12 +16,12 @@ namespace Habilitar.Core.Services
 
     public class ExercicioService : ServiceBase, IExercicioService
     {
-        private readonly IRepositoryBase<Exercicio> _exercicioRepository;
+        private readonly IExercicioRepository _exercicioRepository;
 
         public ExercicioService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Exercicio> exercicioRepository) : base(notificador, uow) => _exercicioRepository = exercicioRepository;
+            IExercicioRepository exercicioRepository) : base(notificador, uow) => _exercicioRepository = exercicioRepository;
 
         public async Task<bool> Adicionar(Exercicio obj)
         {

@@ -21,7 +21,9 @@ namespace Habilitar.Infra.Repositories
 
 
         public async Task<IEnumerable<TEntity>> GetAll() =>
-            await _context.Set<TEntity>().AsNoTracking().ToListAsync();
+            await _context.Set<TEntity>()
+            .AsNoTracking()
+            .ToListAsync();
 
         public async Task<TEntity> GetById<T>(T id) =>        
             await _context.Set<TEntity>().FindAsync(id);        

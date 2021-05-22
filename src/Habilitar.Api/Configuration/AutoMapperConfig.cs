@@ -13,6 +13,9 @@ namespace Habilitar.Api.Application.Configuration
             CreateMap<Unidade, UnidadeViewModelInsert>().ReverseMap();
             CreateMap<Unidade, UnidadeViewModelUpdate>().ReverseMap();
             CreateMap<AspNetUsers, UserViewModel>().ReverseMap();
+            CreateMap<Grupo, GrupoViewModel>().ReverseMap();
+            CreateMap<Exercicio, ExercicioViewModel>().ReverseMap();
+            CreateMap<ExercicioGrupo, ExercicioGrupoViewModel>().ReverseMap();
         }
     }
 }

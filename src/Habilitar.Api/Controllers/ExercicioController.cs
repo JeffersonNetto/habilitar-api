@@ -1,47 +1,58 @@
-﻿using Habilitar.Core.Helpers;
+﻿using AutoMapper;
+using Habilitar.Core.Helpers;
 using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
+using Habilitar.Core.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
 {
     public class ExercicioController : MainController
     {
-        private readonly IRepositoryBase<Exercicio> _repository;
+        private readonly IExercicioRepository _repository;
         private readonly IExercicioService _service;
+        private readonly IMapper _mapper;
 
         public ExercicioController(
             INotificador notificador,
-            IRepositoryBase<Exercicio> repository,
-            IExercicioService service,
+            IExercicioRepository repository,
+            IExercicioService service,            
+            IMapper mapper,
             IUser user) : base(notificador, user)
         {
             _repository = repository;
             _service = service;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var lst = await _repository.GetAll();
+            var lst = await _repository.ObterComGrupos();
 
-            return CustomResponse(lst);
+            var result = _mapper.Map<IEnumerable<ExercicioViewModel>>(lst);
+            
+            return CustomResponse(result);
         }
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            var obj = await _repository.GetById(id);
-
-            return obj == null ? NotFound() : CustomResponse(obj);
+            var obj = await _repository.ObterComGrupos(id);
+            
+            return obj == null ? NotFound() : CustomResponse(_mapper.Map<ExercicioViewModel>(obj));
         }
 
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, Exercicio obj)
         {
             obj.UsuarioAtualizacaoId = UsuarioId;
+            obj.DataAtualizacao = DateTime.Now;
+
             await _service.Atualizar(obj);
 
             return CustomResponse(obj);

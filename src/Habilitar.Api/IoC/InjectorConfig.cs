@@ -20,7 +20,7 @@ namespace Habilitar.Api.IoC
             services.AddScoped<INotificador, Notificador>();
 
             services.AddScoped<IRepositoryBase<Empresa>, EmpresaRepository>();
-            services.AddScoped<IRepositoryBase<Exercicio>, ExercicioRepository>();            
+            services.AddScoped<IExercicioRepository, ExercicioRepository>();            
             services.AddScoped<IRepositoryBase<Grupo>, GrupoRepository>();
             services.AddScoped<IRepositoryBase<Intervalo>, IntervaloRepository>();
             services.AddScoped<IRepositoryBase<LogAcesso>, LogAcessoRepository>();

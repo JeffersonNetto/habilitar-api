@@ -11,8 +11,8 @@ namespace Habilitar.Core.Models
         public int ExercicioId { get; set; }
         public int GrupoId { get; set; }
         public string Ip { get; set; }
-        public bool Ativo { get; set; }
-        public DateTime DataCriacao { get; set; }
+        public bool Ativo { get; set; } = true;
+        public DateTime DataCriacao { get; set; } = DateTime.Now;
         public Guid UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public Guid? UsuarioAtualizacaoId { get; set; }
