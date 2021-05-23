@@ -28,34 +28,35 @@ namespace Habilitar.Infra.Repositories
                   .SingleOrDefaultAsync();
 
         public new void Update(Exercicio obj)
-        {
-            var lst = _context.ExercicioGrupo.Where(eg => eg.ExercicioId == obj.Id).AsNoTracking().ToList();
+        {            
+            
+            _context.Entry(obj).Property(nameof(obj.DataCriacao)).IsModified = false;
+            _context.Entry(obj).Property(nameof(obj.UsuarioCriacaoId)).IsModified = false;            
 
-            _context.Entry(obj).State = EntityState.Modified;            
+            var exercicioGrupos = _context.ExercicioGrupo.Where(eg => eg.ExercicioId == obj.Id).AsNoTracking().ToList();
 
-            foreach (var item in obj.ExercicioGrupo)
+            if(exercicioGrupos.Count > obj.ExercicioGrupo.Count)
             {
-                item.Ip = obj.Ip;
-                                
-                if (item.ExercicioId == 0)
+                foreach (var item in exercicioGrupos)
                 {
-                    item.ExercicioId = obj.Id;                    
-                    _context.Entry(item).State = EntityState.Added;                                        
+                    if(!obj.ExercicioGrupo.Any(_ => _.GrupoId == item.GrupoId))
+                    {
+                        _context.Entry(item).State = EntityState.Deleted;
+                    }
                 }
-                else
+            }
+            else
+            {
+                foreach (var item in obj.ExercicioGrupo)
                 {
-                    item.DataAtualizacao = obj.DataAtualizacao;
-                    _context.Entry(item).State = EntityState.Modified;
-                }                    
+                    if (!exercicioGrupos.Any(_ => _.GrupoId == item.GrupoId))
+                    {
+                        _context.Entry(item).State = EntityState.Added;
+                    }
+                }
             }
 
-            var result = lst.Except(obj.ExercicioGrupo);
-
-            foreach (var item in result)            
-                _context.Entry(item).State = EntityState.Deleted;            
-            
-            _context.Entry(obj).Property("DataCriacao").IsModified = false;
-            _context.Entry(obj).Property("UsuarioCriacaoId").IsModified = false;
+            _context.Entry(obj).State = EntityState.Modified;
         }
     }
 }

@@ -194,16 +194,7 @@ namespace Habilitar.Infra.Data
             {                
                 entity.HasKey(e => new { e.ExercicioId, e.GrupoId });
 
-                entity.HasIndex(e => e.GrupoId, "IX_ExercicioGrupo_GrupoId");
-
-                entity.Property(e => e.DataAtualizacao).HasColumnType("datetime");
-
-                entity.Property(e => e.DataCriacao).HasColumnType("datetime");
-
-                entity.Property(e => e.Ip)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.HasIndex(e => e.GrupoId, "IX_ExercicioGrupo_GrupoId");     
 
                 entity.HasOne(d => d.Exercicio)
                     .WithMany(p => p.ExercicioGrupo)
