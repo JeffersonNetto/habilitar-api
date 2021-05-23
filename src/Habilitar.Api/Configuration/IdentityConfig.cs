@@ -1,8 +1,10 @@
-﻿using Habilitar.Infra.Data;
+﻿using Habilitar.Core.Models;
+using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Habilitar.Api.Configuration
 {
@@ -10,11 +12,14 @@ namespace Habilitar.Api.Configuration
     {
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<IdentityContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
+                builder => builder.EnableRetryOnFailure()), 
+                ServiceLifetime.Scoped);
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<IdentityContext>()
+            services.AddIdentity<User, Role>()
+                .AddRoles<Role>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddErrorDescriber<IdentityMensagensPtBr>()
                 .AddDefaultTokenProviders();
 

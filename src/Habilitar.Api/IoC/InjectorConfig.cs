@@ -26,16 +26,14 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IRepositoryBase<LogAcesso>, LogAcessoRepository>();
             services.AddScoped<IRepositoryBase<LogErro>, LogErroRepository>();
             services.AddScoped<IRepositoryBase<Meta>, MetaRepository>();
-            services.AddScoped<IRepositoryBase<Metrica>, MetricaRepository>();            
-            services.AddScoped<IPessoaRepository, PessoaRepository>();
+            services.AddScoped<IRepositoryBase<Metrica>, MetricaRepository>();                        
             services.AddScoped<IUnidadeRepository, UnidadeRepository>();                        
 
             services.AddScoped<IEmpresaService, EmpresaService>();
             services.AddScoped<IExercicioService, ExercicioService>();
             services.AddScoped<IIntervaloService, IntervaloService>();
             services.AddScoped<IMetricaService, MetricaService>();
-            services.AddScoped<IUnidadeService, UnidadeService>();
-            services.AddScoped<IPessoaService, PessoaService>();
+            services.AddScoped<IUnidadeService, UnidadeService>();            
             services.AddScoped<IGrupoService, GrupoService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

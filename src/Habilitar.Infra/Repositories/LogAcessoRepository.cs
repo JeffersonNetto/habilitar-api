@@ -5,6 +5,6 @@ namespace Habilitar.Infra.Repositories
 {
     public class LogAcessoRepository : RepositoryBase<LogAcesso>
     {
-        public LogAcessoRepository(HabilitarContext context) : base(context) { }
+        public LogAcessoRepository(ApplicationDbContext context) : base(context) { }
     }
 }

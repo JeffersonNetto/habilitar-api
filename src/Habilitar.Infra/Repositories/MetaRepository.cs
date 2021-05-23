@@ -5,6 +5,6 @@ namespace Habilitar.Infra.Repositories
 {
     public class MetaRepository : RepositoryBase<Meta>
     {
-        public MetaRepository(HabilitarContext context) : base(context) { }
+        public MetaRepository(ApplicationDbContext context) : base(context) { }
     }
 }

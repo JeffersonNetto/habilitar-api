@@ -35,7 +35,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[AspNetUsers]",
+         "Name": "[dbo].[Usuario]",
          "ObjectType": 0
       },
       {
@@ -99,11 +99,11 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Perfil]",
+         "Name": "[dbo].[AspNetRoles]",
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[PerfilFuncao]",
+         "Name": "[dbo].[AspNetRolesFuncao]",
          "ObjectType": 0
       },
       {
@@ -119,7 +119,7 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[UsuarioPerfil]",
+         "Name": "[dbo].[UsuarioAspNetRoles]",
          "ObjectType": 0
       }
    ],

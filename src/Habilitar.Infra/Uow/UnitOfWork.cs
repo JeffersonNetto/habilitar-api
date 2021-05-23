@@ -7,9 +7,9 @@ namespace Habilitar.Infra.Uow
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly HabilitarContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public UnitOfWork(HabilitarContext context) =>
+        public UnitOfWork(ApplicationDbContext context) =>
             _context = context;
 
         public async Task<bool> Commit()

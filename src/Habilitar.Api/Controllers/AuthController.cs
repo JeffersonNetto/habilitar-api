@@ -24,8 +24,7 @@ namespace Habilitar.Api.Controllers
         private readonly JwtSettings _jwtSettings;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<AuthController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IPessoaService _pessoaService;
+        private readonly UserManager<IdentityUser> _userManager;        
         private readonly IMapper _mapper;        
 
         public AuthController(
@@ -33,8 +32,7 @@ namespace Habilitar.Api.Controllers
             UserManager<IdentityUser> userManager,
             ILogger<AuthController> logger,
             SignInManager<IdentityUser> signInManager,
-            IOptions<JwtSettings> jwtSettings,
-            IPessoaService pessoaService,
+            IOptions<JwtSettings> jwtSettings,            
             IMapper mapper,
             IUser user
             ) : base(notificador, user)
@@ -42,8 +40,7 @@ namespace Habilitar.Api.Controllers
             _userManager = userManager;
             _logger = logger;
             _signInManager = signInManager;
-            _jwtSettings = jwtSettings.Value;
-            _pessoaService = pessoaService;
+            _jwtSettings = jwtSettings.Value;            
             _mapper = mapper;
         }
 
@@ -66,15 +63,10 @@ namespace Habilitar.Api.Controllers
 
                 return CustomResponse();
             }
-
-            var pessoa = _mapper.Map<Pessoa>(registerUser.Pessoa);
+            
             var user = await _userManager.FindByEmailAsync(registerUser.Email);
-            pessoa.UserId = user.Id;
-            pessoa.UsuarioCriacaoId = UsuarioId;
-
-            await _userManager.AddToRoleAsync(user, "Admin");
-
-            await _pessoaService.Adicionar(pessoa);
+            
+            await _userManager.AddToRoleAsync(user, "Admin");            
 
             //await _signInManager.SignInAsync(user, false);
 
@@ -111,7 +103,7 @@ namespace Habilitar.Api.Controllers
         }
 
         [HttpGet("remover/{id:guid}")]        
-        public async Task<ActionResult> Remover(Guid id)
+        public async Task<ActionResult> Remover(int id)
         {
             var user = await _userManager.FindByIdAsync(id.ToString());
 
@@ -119,9 +111,7 @@ namespace Habilitar.Api.Controllers
             {
                 NotificarErro("Usuário não existe na base de dados");
                 return CustomResponse();
-            }
-
-            await _pessoaService.Remover(id.ToString());
+            }            
 
             var result = await _userManager.DeleteAsync(user);
 
@@ -145,10 +135,7 @@ namespace Habilitar.Api.Controllers
             {
                 NotificarErro("Usuário não existe na base de dados");
                 return CustomResponse();
-            }
-
-            var pessoa = _mapper.Map<PessoaViewModelUpdate, Pessoa>(editUser.Pessoa);
-            await _pessoaService.Atualizar(pessoa);
+            }            
 
             user.Email = editUser.Email;
             user.UserName = editUser.UserName;

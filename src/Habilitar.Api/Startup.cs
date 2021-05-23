@@ -2,11 +2,9 @@ using Habilitar.Api.Configuration;
 using Habilitar.Api.IoC;
 using Habilitar.Core.Helpers;
 using Habilitar.Core.Services;
-using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -42,7 +40,7 @@ namespace Habilitar.Api
                        
             services.WebApiConfiguration();
 
-            services.AddDbContext<HabilitarContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
+            //services.AddDbContext<HabilitarDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
             //services.AddDbContext<HabilitarContext>(options => options.UseInMemoryDatabase(databaseName: "Habilitar"), ServiceLifetime.Scoped);            
             
             services.AddFluentEmailConfiguration(Configuration);

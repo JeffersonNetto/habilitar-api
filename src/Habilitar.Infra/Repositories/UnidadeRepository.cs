@@ -9,7 +9,7 @@ namespace Habilitar.Infra.Repositories
 {
     public class UnidadeRepository : RepositoryBase<Unidade>, IUnidadeRepository
     {
-        public UnidadeRepository(HabilitarContext context) : base(context) { }
+        public UnidadeRepository(ApplicationDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Unidade>> ObterComEmpresa() =>
             await _context.Unidade

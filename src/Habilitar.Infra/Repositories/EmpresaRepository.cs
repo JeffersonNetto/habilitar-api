@@ -5,6 +5,6 @@ namespace Habilitar.Infra.Repositories
 {
     public class EmpresaRepository : RepositoryBase<Empresa>
     {        
-        public EmpresaRepository(HabilitarContext context) : base(context) { }            
+        public EmpresaRepository(ApplicationDbContext context) : base(context) { }            
     }    
 }

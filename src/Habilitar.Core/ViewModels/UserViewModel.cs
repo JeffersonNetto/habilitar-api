@@ -22,9 +22,7 @@ namespace Habilitar.Core.ViewModels
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(20, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 10)]
-        public string PhoneNumber { get; set; }
-
-        public PessoaViewModelInsert Pessoa { get; set; }
+        public string PhoneNumber { get; set; }        
     }
 
     public class EditUserViewModel
@@ -39,9 +37,7 @@ namespace Habilitar.Core.ViewModels
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(20, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 10)]
-        public string PhoneNumber { get; set; }
-
-        public PessoaViewModelUpdate Pessoa { get; set; }
+        public string PhoneNumber { get; set; }        
     }
 
     public class LoginUserViewModel

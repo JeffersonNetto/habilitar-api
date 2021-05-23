@@ -5,6 +5,6 @@ namespace Habilitar.Infra.Repositories
 {
     public class MetricaRepository : RepositoryBase<Metrica>
     {        
-        public MetricaRepository(HabilitarContext context) : base(context) { }      
+        public MetricaRepository(ApplicationDbContext context) : base(context) { }      
     }    
 }

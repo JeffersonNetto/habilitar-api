@@ -10,7 +10,7 @@ namespace Habilitar.Infra.Repositories
 {
     public class ExercicioRepository : RepositoryBase<Exercicio>, IExercicioRepository
     {        
-        public ExercicioRepository(HabilitarContext context) : base(context) { }
+        public ExercicioRepository(ApplicationDbContext context) : base(context) { }
 
         public async Task<IEnumerable<Exercicio>> ObterComGrupos() =>        
             await _context.Exercicio

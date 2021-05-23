@@ -14,7 +14,7 @@ namespace Habilitar.Core.Models
         }
 
         public int Id { get; set; }
-        public int PessoaId { get; set; }
+        public Guid UserId { get; set; }
         public int? MetaId { get; set; }
         public int FisioterapeutaId { get; set; }
         public DateTime DataInicial { get; set; }
@@ -38,11 +38,11 @@ namespace Habilitar.Core.Models
         public DateTime? DataAtualizacao { get; set; }
         public Guid? UsuarioAtualizacaoId { get; set; }
 
+        public virtual User User { get; set; }
         public virtual Exercicio Exercicio { get; set; }
         public virtual Intervalo Intervalo { get; set; }
         public virtual Meta Meta { get; set; }
-        public virtual Metrica Metrica { get; set; }
-        public virtual Pessoa Pessoa { get; set; }
+        public virtual Metrica Metrica { get; set; }        
         public virtual ICollection<PacienteMetaDiaria> PacienteMetaDiaria { get; set; }
     }
 }

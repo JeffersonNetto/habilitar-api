@@ -8,9 +8,9 @@ namespace Habilitar.Infra.Repositories
 {
     public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class
     {
-        protected readonly HabilitarContext _context;
+        protected readonly ApplicationDbContext _context;
 
-        public RepositoryBase(HabilitarContext context) =>
+        public RepositoryBase(ApplicationDbContext context) =>
             _context = context;
 
         public async Task Add(TEntity obj) =>

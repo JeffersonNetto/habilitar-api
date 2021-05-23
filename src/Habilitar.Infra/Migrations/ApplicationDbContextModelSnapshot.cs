@@ -4,22 +4,19 @@ using Habilitar.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Habilitar.Infra.Migrations
 {
-    [DbContext(typeof(HabilitarContext))]
-    [Migration("20210506165031_Atualizacao")]
-    partial class Atualizacao
+    [DbContext(typeof(ApplicationDbContext))]
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("ProductVersion", "5.0.6")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Habilitar.Core.Models.Empresa", b =>
@@ -136,30 +133,9 @@ namespace Habilitar.Infra.Migrations
                     b.Property<int>("GrupoId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Ip")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<Guid?>("UsuarioAtualizacaoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsuarioCriacaoId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ExercicioId", "GrupoId");
 
-                    b.HasIndex("GrupoId");
+                    b.HasIndex(new[] { "GrupoId" }, "IX_ExercicioGrupo_GrupoId");
 
                     b.ToTable("ExercicioGrupo");
                 });
@@ -195,7 +171,7 @@ namespace Habilitar.Infra.Migrations
 
                     b.HasKey("ExercicioId", "MetricaId");
 
-                    b.HasIndex("MetricaId");
+                    b.HasIndex(new[] { "MetricaId" }, "IX_ExercicioMetrica_MetricaId");
 
                     b.ToTable("ExercicioMetrica");
                 });
@@ -285,13 +261,10 @@ namespace Habilitar.Infra.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Ip")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
@@ -309,31 +282,19 @@ namespace Habilitar.Infra.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Acao")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Erro")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ip")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Tela")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UsuarioId")
                         .HasColumnType("uniqueidentifier");
@@ -394,13 +355,13 @@ namespace Habilitar.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmpresaId");
+                    b.HasIndex(new[] { "EmpresaId" }, "IX_Meta_EmpresaId");
 
-                    b.HasIndex("ExercicioId");
+                    b.HasIndex(new[] { "ExercicioId" }, "IX_Meta_ExercicioId");
 
-                    b.HasIndex("IntervaloId");
+                    b.HasIndex(new[] { "IntervaloId" }, "IX_Meta_IntervaloId");
 
-                    b.HasIndex("MetricaId");
+                    b.HasIndex(new[] { "MetricaId" }, "IX_Meta_MetricaId");
 
                     b.ToTable("Meta");
                 });
@@ -497,9 +458,6 @@ namespace Habilitar.Infra.Migrations
                     b.Property<int>("MetricaQtd")
                         .HasColumnType("int");
 
-                    b.Property<int>("PessoaId")
-                        .HasColumnType("int");
-
                     b.Property<int>("QtdSeries")
                         .HasColumnType("int");
 
@@ -521,6 +479,9 @@ namespace Habilitar.Infra.Migrations
                     b.Property<bool>("TercaFeira")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("UsuarioAtualizacaoId")
                         .HasColumnType("uniqueidentifier");
 
@@ -529,15 +490,15 @@ namespace Habilitar.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExercicioId");
+                    b.HasIndex(new[] { "ExercicioId" }, "IX_PacienteMeta_ExercicioId");
 
-                    b.HasIndex("IntervaloId");
+                    b.HasIndex(new[] { "IntervaloId" }, "IX_PacienteMeta_IntervaloId");
 
-                    b.HasIndex("MetaId");
+                    b.HasIndex(new[] { "MetaId" }, "IX_PacienteMeta_MetaId");
 
-                    b.HasIndex("MetricaId");
+                    b.HasIndex(new[] { "MetricaId" }, "IX_PacienteMeta_MetricaId");
 
-                    b.HasIndex("PessoaId");
+                    b.HasIndex(new[] { "UserId" }, "IX_PacienteMeta_UserId");
 
                     b.ToTable("PacienteMeta");
                 });
@@ -575,7 +536,7 @@ namespace Habilitar.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PacienteMetaId");
+                    b.HasIndex(new[] { "PacienteMetaId" }, "IX_PacienteMetaDiaria_PacienteMetaId");
 
                     b.ToTable("PacienteMetaDiaria");
                 });
@@ -604,79 +565,66 @@ namespace Habilitar.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PacienteMetaDiariaId");
+                    b.HasIndex(new[] { "PacienteMetaDiariaId" }, "IX_PacienteMetaDiariaLog_PacienteMetaDiariaId");
 
                     b.ToTable("PacienteMetaDiariaLog");
                 });
 
-            modelBuilder.Entity("Habilitar.Core.Models.Pessoa", b =>
+            modelBuilder.Entity("Habilitar.Core.Models.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Cpf")
+                    b.Property<string>("ClaimType")
                         .IsRequired()
-                        .HasMaxLength(11)
-                        .IsUnicode(false)
-                        .HasColumnType("char(11)")
-                        .IsFixedLength(true);
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
-                    b.Property<DateTime?>("DataAtualizacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("date");
-
-                    b.Property<string>("IntegracaoId")
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
-
-                    b.Property<string>("Ip")
+                    b.Property<string>("ClaimValue")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("Sexo")
-                        .IsRequired()
-                        .HasMaxLength(1)
-                        .IsUnicode(false)
-                        .HasColumnType("char(1)")
-                        .IsFixedLength(true);
-
-                    b.Property<string>("Sobrenome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("UsuarioAtualizacaoId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UsuarioCriacaoId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pessoa");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleClaim");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.Unidade", b =>
@@ -744,9 +692,214 @@ namespace Habilitar.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmpresaId");
+                    b.HasIndex(new[] { "EmpresaId" }, "IX_Unidade_EmpresaId");
 
                     b.ToTable("Unidade");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasColumnType("char(11)");
+
+                    b.Property<DateTime?>("DataAtualizacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IntegracaoId")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("Ip")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("varchar(15)")
+                        .HasColumnName("Telefone");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Sexo")
+                        .HasColumnType("char(1)");
+
+                    b.Property<string>("Sobrenome")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<Guid?>("UsuarioAtualizacaoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsuarioCriacaoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("ClaimValue")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserClaim");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserLogin", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLogin");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("UserRole");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserToken", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("UserToken");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.ExercicioGrupo", b =>
@@ -847,10 +1000,10 @@ namespace Habilitar.Infra.Migrations
                         .HasConstraintName("FK_PacienteMeta_Metrica")
                         .IsRequired();
 
-                    b.HasOne("Habilitar.Core.Models.Pessoa", "Pessoa")
+                    b.HasOne("Habilitar.Core.Models.User", "User")
                         .WithMany("PacienteMeta")
-                        .HasForeignKey("PessoaId")
-                        .HasConstraintName("FK_PacienteMeta_Pessoa")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_PacienteMeta_User")
                         .IsRequired();
 
                     b.Navigation("Exercicio");
@@ -861,7 +1014,7 @@ namespace Habilitar.Infra.Migrations
 
                     b.Navigation("Metrica");
 
-                    b.Navigation("Pessoa");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.PacienteMetaDiaria", b =>
@@ -886,6 +1039,15 @@ namespace Habilitar.Infra.Migrations
                     b.Navigation("PacienteMetaDiaria");
                 });
 
+            modelBuilder.Entity("Habilitar.Core.Models.RoleClaim", b =>
+                {
+                    b.HasOne("Habilitar.Core.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Habilitar.Core.Models.Unidade", b =>
                 {
                     b.HasOne("Habilitar.Core.Models.Empresa", "Empresa")
@@ -895,6 +1057,48 @@ namespace Habilitar.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserClaim", b =>
+                {
+                    b.HasOne("Habilitar.Core.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserLogin", b =>
+                {
+                    b.HasOne("Habilitar.Core.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserRole", b =>
+                {
+                    b.HasOne("Habilitar.Core.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Habilitar.Core.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Habilitar.Core.Models.UserToken", b =>
+                {
+                    b.HasOne("Habilitar.Core.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Habilitar.Core.Models.Empresa", b =>
@@ -951,7 +1155,7 @@ namespace Habilitar.Infra.Migrations
                     b.Navigation("PacienteMetaDiariaLog");
                 });
 
-            modelBuilder.Entity("Habilitar.Core.Models.Pessoa", b =>
+            modelBuilder.Entity("Habilitar.Core.Models.User", b =>
                 {
                     b.Navigation("PacienteMeta");
                 });

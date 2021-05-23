@@ -5,6 +5,6 @@ namespace Habilitar.Infra.Repositories
 {
     public class GrupoRepository : RepositoryBase<Grupo>
     {        
-        public GrupoRepository(HabilitarContext context) : base(context) { }            
+        public GrupoRepository(ApplicationDbContext context) : base(context) { }            
     }
 }
