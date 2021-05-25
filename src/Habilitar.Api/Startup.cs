@@ -38,7 +38,7 @@ namespace Habilitar.Api
 
             services.AddJwtConfiguration(Configuration);
                        
-            services.WebApiConfiguration();
+            services.WebApiConfiguration(Configuration);
 
             //services.AddDbContext<HabilitarDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), _ => _.EnableRetryOnFailure()), ServiceLifetime.Scoped);
             //services.AddDbContext<HabilitarContext>(options => options.UseInMemoryDatabase(databaseName: "Habilitar"), ServiceLifetime.Scoped);            
@@ -70,7 +70,7 @@ namespace Habilitar.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Habilitar.Api v1"));
             }
 
-            app.UseMvcConfiguration();
+            app.UseMvcConfiguration();            
         }
     }
 }

@@ -1,12 +1,15 @@
 ﻿using FluentValidation.AspNetCore;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Habilitar.Api.Configuration
 {
     public static class ApiConfig
     {
-        public static IServiceCollection WebApiConfiguration(this IServiceCollection services)
+        public static IServiceCollection WebApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddCors();
             services.AddAutoMapper(typeof(Startup));
@@ -18,6 +21,13 @@ namespace Habilitar.Api.Configuration
                 _.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
             })
             .AddFluentValidation(_ => _.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+            services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("DefaultConnection"), null, "Banco de dados");            
+            services.AddHealthChecksUI(options => 
+            {
+                options.SetEvaluationTimeInSeconds(15);               
+            })
+            .AddInMemoryStorage();            
 
             return services;
         }
@@ -36,7 +46,18 @@ namespace Habilitar.Api.Configuration
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });            
+            });
+
+            app.UseHealthChecks("/api/hc", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecksUI(options =>
+            {
+                options.UIPath = "/ui";                
+            });
 
             return app;
         }

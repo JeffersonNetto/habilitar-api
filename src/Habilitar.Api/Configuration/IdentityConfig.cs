@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace Habilitar.Api.Configuration
@@ -12,10 +13,9 @@ namespace Habilitar.Api.Configuration
     {
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
-                builder => builder.EnableRetryOnFailure()), 
-                ServiceLifetime.Scoped);
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
+                builder => builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), null)).EnableSensitiveDataLogging()
+                .LogTo(Console.WriteLine, LogLevel.Information), ServiceLifetime.Scoped);
 
             services.AddIdentity<User, Role>()
                 .AddRoles<Role>()
