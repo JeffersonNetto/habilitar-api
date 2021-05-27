@@ -14,8 +14,7 @@ namespace Habilitar.Api.Configuration
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), 
-                builder => builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), null)).EnableSensitiveDataLogging()
-                .LogTo(Console.WriteLine, LogLevel.Information), ServiceLifetime.Scoped);
+                builder => builder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(3), null)).EnableSensitiveDataLogging());
 
             services.AddIdentity<User, Role>()
                 .AddRoles<Role>()
