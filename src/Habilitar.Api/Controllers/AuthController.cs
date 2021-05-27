@@ -22,16 +22,16 @@ namespace Habilitar.Api.Controllers
     public class AuthController : MainController
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly ILogger<AuthController> _logger;
-        private readonly UserManager<IdentityUser> _userManager;        
+        private readonly UserManager<User> _userManager;        
         private readonly IMapper _mapper;        
 
         public AuthController(
             INotificador notificador,
-            UserManager<IdentityUser> userManager,
+            UserManager<User> userManager,
             ILogger<AuthController> logger,
-            SignInManager<IdentityUser> signInManager,
+            SignInManager<User> signInManager,
             IOptions<JwtSettings> jwtSettings,            
             IMapper mapper,
             IUser user
@@ -47,7 +47,7 @@ namespace Habilitar.Api.Controllers
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar(RegisterUserViewModel registerUser)
         {
-            var result = await _userManager.CreateAsync(new IdentityUser
+            var result = await _userManager.CreateAsync(new User
             {
                 UserName = registerUser.UserName,
                 Email = registerUser.Email,
@@ -154,12 +154,12 @@ namespace Habilitar.Api.Controllers
             return CustomResponse("Usuário editado com sucesso");
         }
 
-        private async Task<LoginResponseViewModel> GenerateToken(IdentityUser user)
+        private async Task<LoginResponseViewModel> GenerateToken(User user)
         {
             var claims = await _userManager.GetClaimsAsync(user);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
             claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
