@@ -22,12 +22,11 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IRepositoryBase<Empresa>, EmpresaRepository>();
             services.AddScoped<IExercicioRepository, ExercicioRepository>();            
             services.AddScoped<IRepositoryBase<Grupo>, GrupoRepository>();
-            services.AddScoped<IRepositoryBase<Intervalo>, IntervaloRepository>();
-            services.AddScoped<IRepositoryBase<LogAcesso>, LogAcessoRepository>();
-            services.AddScoped<IRepositoryBase<LogErro>, LogErroRepository>();
+            services.AddScoped<IRepositoryBase<Intervalo>, IntervaloRepository>();            
             services.AddScoped<IRepositoryBase<Meta>, MetaRepository>();
             services.AddScoped<IRepositoryBase<Metrica>, MetricaRepository>();                        
-            services.AddScoped<IUnidadeRepository, UnidadeRepository>();                        
+            services.AddScoped<IUnidadeRepository, UnidadeRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
             services.AddScoped<IEmpresaService, EmpresaService>();
             services.AddScoped<IExercicioService, ExercicioService>();
@@ -35,6 +34,7 @@ namespace Habilitar.Api.IoC
             services.AddScoped<IMetricaService, MetricaService>();
             services.AddScoped<IUnidadeService, UnidadeService>();            
             services.AddScoped<IGrupoService, GrupoService>();
+            services.AddScoped<IUsuarioService, UsuarioService>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IUser, AspNetUser>();

@@ -44,35 +44,6 @@ namespace Habilitar.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("registrar")]
-        public async Task<IActionResult> Registrar(RegisterUserViewModel registerUser)
-        {
-            var result = await _userManager.CreateAsync(new User
-            {
-                UserName = registerUser.UserName,
-                Email = registerUser.Email,
-                PhoneNumber = registerUser.PhoneNumber,
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true
-            }, registerUser.Password);
-
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                    NotificarErro(error.Description);
-
-                return CustomResponse();
-            }
-            
-            var user = await _userManager.FindByEmailAsync(registerUser.Email);
-            
-            await _userManager.AddToRoleAsync(user, "Admin");            
-
-            //await _signInManager.SignInAsync(user, false);
-
-            return CustomResponse();
-        }
-
         [HttpPost("entrar")]        
         public async Task<ActionResult<LoginResponseViewModel>> Login(LoginUserViewModel loginUser)
         {
@@ -100,58 +71,6 @@ namespace Habilitar.Api.Controllers
             _logger.LogInformation("Usuario " + loginUser.Email + " logado com sucesso");
 
             return CustomResponse(await GenerateToken(user));
-        }
-
-        [HttpGet("remover/{id:guid}")]        
-        public async Task<ActionResult> Remover(int id)
-        {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-
-            if (user == null)
-            {
-                NotificarErro("Usuário não existe na base de dados");
-                return CustomResponse();
-            }            
-
-            var result = await _userManager.DeleteAsync(user);
-
-            if (!result.Succeeded)                            
-            {
-                foreach (var error in result.Errors)
-                    NotificarErro(error.Description);
-
-                return CustomResponse();
-            }
-
-            return CustomResponse("Usuário excluído com sucesso");
-        }
-
-        [HttpPut("editar/{id:guid}")]
-        public async Task<ActionResult<LoginResponseViewModel>> Editar(Guid id, EditUserViewModel editUser)
-        {
-            var user = await _userManager.FindByIdAsync(id.ToString());
-
-            if (user == null)
-            {
-                NotificarErro("Usuário não existe na base de dados");
-                return CustomResponse();
-            }            
-
-            user.Email = editUser.Email;
-            user.UserName = editUser.UserName;
-            user.PhoneNumber = editUser.PhoneNumber;
-
-            var result = await _userManager.UpdateAsync(user);
-
-            if (!result.Succeeded)
-            {
-                foreach (var error in result.Errors)
-                    NotificarErro(error.Description);
-
-                return CustomResponse();
-            }
-
-            return CustomResponse("Usuário editado com sucesso");
         }
 
         private async Task<LoginResponseViewModel> GenerateToken(User user)

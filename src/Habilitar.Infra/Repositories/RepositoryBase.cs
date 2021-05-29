@@ -38,6 +38,6 @@ namespace Habilitar.Infra.Repositories
             _context.Entry(obj).Property("UsuarioCriacaoId").IsModified = false;
         }
 
-        public void Dispose() =>_context?.Dispose();        
+        public void Dispose() => _context?.Dispose();        
     }
 }
