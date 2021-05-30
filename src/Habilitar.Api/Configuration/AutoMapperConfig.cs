@@ -13,6 +13,7 @@ namespace Habilitar.Api.Application.Configuration
             CreateMap<Grupo, GrupoViewModel>().ReverseMap();
             CreateMap<Exercicio, ExercicioViewModel>().ReverseMap();
             CreateMap<ExercicioGrupo, ExercicioGrupoViewModel>().ReverseMap();
+            CreateMap<RegisterUserViewModel, User>().ForMember(nameof(User.PasswordHash), x => x.MapFrom(r => r.Password)).ReverseMap();
         }
     }
 }

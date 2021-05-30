@@ -36,7 +36,7 @@ namespace Habilitar.Infra.Data
                 b.Property(nameof(User.Sobrenome)).HasMaxLength(150).HasColumnType("varchar").IsRequired();
                 b.Property(nameof(User.Email)).HasMaxLength(150).HasColumnType("varchar").IsRequired();
                 b.Property(nameof(User.UserName)).HasMaxLength(100).HasColumnType("varchar").IsRequired();
-                b.Property(nameof(User.PhoneNumber)).HasMaxLength(15).HasColumnType("varchar").HasColumnName("Telefone").IsRequired();
+                b.Property(nameof(User.PhoneNumber)).HasMaxLength(15).HasColumnType("varchar").IsRequired();
                 b.Property(nameof(User.Ip)).HasMaxLength(15).HasColumnType("varchar").IsRequired();
                 b.Property(nameof(User.IntegracaoId)).HasMaxLength(50).HasColumnType("varchar");
                 b.Property(nameof(User.DataNascimento)).HasColumnType("date").IsRequired();

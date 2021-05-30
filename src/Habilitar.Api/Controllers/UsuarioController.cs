@@ -1,4 +1,5 @@
-﻿using Habilitar.Core.Helpers;
+﻿using AutoMapper;
+using Habilitar.Core.Helpers;
 using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Services;
@@ -13,15 +14,17 @@ namespace Habilitar.Api.Controllers
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IUsuarioService _usuarioService;
+        private readonly IMapper _mapper;
 
         public UsuarioController(
             INotificador notificador,
             IUser user,
-            IUsuarioService usuarioService, 
-            IUsuarioRepository usuarioRepository) : base(notificador, user)
+            IUsuarioService usuarioService,
+            IUsuarioRepository usuarioRepository, IMapper mapper) : base(notificador, user)
         {
             _usuarioService = usuarioService;
             _usuarioRepository = usuarioRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -33,9 +36,9 @@ namespace Habilitar.Api.Controllers
             CustomResponse(await _usuarioRepository.ObterPorId(id));
 
         [HttpPost]
-        public async Task<IActionResult> Post(User user)
+        public async Task<IActionResult> Post(RegisterUserViewModel user)
         {
-            await _usuarioService.Adicionar(user);         
+            await _usuarioService.Adicionar(_mapper.Map<User>(user));         
 
             return CustomResponse();
         }

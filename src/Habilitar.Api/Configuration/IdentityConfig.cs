@@ -19,11 +19,18 @@ namespace Habilitar.Api.Configuration
                            .EnableSensitiveDataLogging()
                            .EnableDetailedErrors());
 
-            services.AddIdentity<User, Role>()
-                .AddRoles<Role>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddErrorDescriber<IdentityMensagensPtBr>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<User, Role>(options => 
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;                
+                options.Password.RequiredLength = 6;
+            })
+            .AddRoles<Role>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddErrorDescriber<IdentityMensagensPtBr>()
+            .AddDefaultTokenProviders();
 
             return services;
         }

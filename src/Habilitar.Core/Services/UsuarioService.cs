@@ -38,7 +38,7 @@ namespace Habilitar.Core.Services
 
             var user = await _usuarioRepository.ObterPorEmail(obj.Email);
 
-            await _usuarioRepository.VincularPerfil(user, "Admin");
+            await _usuarioRepository.VincularPerfil(user, "Fisioterapeuta");
 
             return true;
         }
