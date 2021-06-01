@@ -1,5 +1,6 @@
 ﻿using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
+using Habilitar.Core.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -34,5 +35,8 @@ namespace Habilitar.Infra.Repositories
         public async Task<IdentityResult> Remover(User user) => 
             await _userManager.DeleteAsync(user);
         public void Dispose() => _userManager?.Dispose();    
+
+        public async Task<IdentityResult> AlterarSenha(User user, string senhaAtual, string novaSenha) =>
+            await _userManager.ChangePasswordAsync(user, senhaAtual, novaSenha);        
     }
 }

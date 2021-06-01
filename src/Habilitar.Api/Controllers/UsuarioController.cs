@@ -58,5 +58,13 @@ namespace Habilitar.Api.Controllers
 
             return CustomResponse();
         }
+
+        [HttpPut("alterar-senha/{id:guid}")]
+        public async Task<IActionResult> AlterarSenha(Guid id, AlterarSenhaViewModel model)
+        {
+            await _usuarioService.AlterarSenha(id, model);
+
+            return CustomResponse();
+        }
     }
 }

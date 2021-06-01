@@ -15,5 +15,6 @@ namespace Habilitar.Core.Repositories
         Task<IdentityResult> VincularPerfil(User user, string role);
         Task<IdentityResult> Atualizar(User user);
         Task<IdentityResult> Remover(User user);
+        Task<IdentityResult> AlterarSenha(User user, string currentPassword, string newPassword);
     }
 }
