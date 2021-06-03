@@ -1,24 +1,24 @@
 ﻿namespace Habilitar.Core.ViewModels
 {
-    public class UnidadeViewModelInsert : ViewModelBaseForInsert
+    public record UnidadeViewModelInsert : ViewModelBaseForInsert
     {
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Telefone { get; set; }
-        public string Cnes { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
-        public int EmpresaId { get; set; }
+        public string Nome { get; init; }
+        public string Email { get; init; }
+        public string Telefone { get; init; }
+        public string Cnes { get; init; }
+        public string Latitude { get; init; }
+        public string Longitude { get; init; }
+        public int EmpresaId { get; init; }
     }
 
-    public class UnidadeViewModelUpdate : ViewModelBaseForUpdate
+    public record UnidadeViewModelUpdate : ViewModelBaseForUpdate
     {
-        public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Telefone { get; set; }
-        public string Cnes { get; set; }
-        public string Latitude { get; set; }
-        public string Longitude { get; set; }
-        public int EmpresaId { get; set; }
+        public string Nome { get; init; }
+        public string Email { get; init; }
+        public string Telefone { get; init; }
+        public string Cnes { get; init; }
+        public string Latitude { get; init; }
+        public string Longitude { get; init; }
+        public int EmpresaId { get; init; }
     }
 }

@@ -9,7 +9,7 @@ namespace Habilitar.Core.Services
 {
     public interface IUsuarioService : IDisposable
     {
-        Task<bool> Adicionar(User obj);
+        Task<bool> Adicionar(User obj, string role);
         Task<bool> Atualizar(User obj);
         Task<bool> Remover(Guid id);
         Task<bool> AlterarSenha(Guid id, AlterarSenhaViewModel model);
@@ -26,7 +26,7 @@ namespace Habilitar.Core.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public async Task<bool> Adicionar(User obj)
+        public async Task<bool> Adicionar(User obj, string role)
         {
             var result = await _usuarioRepository.Adicionar(obj);
 
@@ -40,7 +40,7 @@ namespace Habilitar.Core.Services
 
             var user = await _usuarioRepository.ObterPorEmail(obj.Email);
 
-            await _usuarioRepository.VincularPerfil(user, "Fisioterapeuta");
+            await _usuarioRepository.VincularPerfil(user, role);
 
             return true;
         }

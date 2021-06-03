@@ -36,9 +36,11 @@ namespace Habilitar.Api.Controllers
             CustomResponse(await _usuarioRepository.ObterPorId(id));
 
         [HttpPost]
-        public async Task<IActionResult> Post(RegisterUserViewModel user)
+        public async Task<IActionResult> Post(CreateUserViewModel user)
         {
-            await _usuarioService.Adicionar(_mapper.Map<User>(user));         
+            user.UsuarioCriacaoId = UsuarioId;
+
+            await _usuarioService.Adicionar(_mapper.Map<User>(user), user.Role);         
 
             return CustomResponse();
         }

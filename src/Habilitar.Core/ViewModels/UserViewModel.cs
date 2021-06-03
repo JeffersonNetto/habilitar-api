@@ -1,56 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace Habilitar.Core.ViewModels
 {
-    public class RegisterUserViewModel : ViewModelBaseForInsert
+    public record CreateUserViewModel : ViewModelBaseForInsert
     {        
-        public string Email { get; set; }        
-        public string Password { get; set; }        
-        public string ConfirmPassword { get; set; }        
-        public string UserName { get; set; }        
-        public string PhoneNumber { get; set; }        
-        public string Nome { get; set; }
-        public string Sobrenome { get; set; }
-        public DateTime DataNascimento { get; set; }
-        public string Sexo { get; set; }
-        public string Cpf { get; set; }
-        public string IntegracaoId { get; set; }
+        public string Email { get; init; }
+        public string Password { get; init; } = "123456";
+        public string UserName { get; init; }        
+        public string PhoneNumber { get; init; }        
+        public string Nome { get; init; }
+        public string Sobrenome { get; init; }
+        public DateTime DataNascimento { get; init; }
+        public string Sexo { get; init; }
+        public string Cpf { get; init; }
+        public string IntegracaoId { get; init; }
+        public string Role { get; init; }
     }
 
-    public class EditUserViewModel
-    {
-        public string Email { get; set; }               
-        public string UserName { get; set; }        
-        public string PhoneNumber { get; set; }        
-    }
-
-    public class LoginUserViewModel
+    public record LoginUserViewModel
     {        
-        public string Email { get; set; }        
-        public string Password { get; set; }
+        public string Email { get; init; }        
+        public string Password { get; init; }
     }
 
-    public class UserViewModel
+    public record UserViewModel
     {
-        public Guid Id { get; set; }
-        public string Email { get; set; }
-        public string UserName { get; set; }
-        public string PhoneNumber { get; set; }
-        public IEnumerable<ClaimViewModel> Claims { get; set; }
+        public Guid Id { get; init; }
+        public string Email { get; init; }
+        public string UserName { get; init; }
+        public string PhoneNumber { get; init; }
+        public IEnumerable<ClaimViewModel> Claims { get; init; }
     }
 
-    public class LoginResponseViewModel
+    public record LoginResponseViewModel
     {
-        public string AccessToken { get; set; }
-        public double ExpiresIn { get; set; }
-        public UserViewModel User { get; set; }
+        public string AccessToken { get; init; }
+        public double ExpiresIn { get; init; }
+        public UserViewModel User { get; init; }
     }
 
-    public class ClaimViewModel
+    public record ClaimViewModel
     {
-        public string Value { get; set; }
-        public string Type { get; set; }
+        public string Value { get; init; }
+        public string Type { get; init; }
     }
 }

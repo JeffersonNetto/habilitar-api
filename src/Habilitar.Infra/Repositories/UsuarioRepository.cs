@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Habilitar.Infra.Repositories
@@ -26,17 +27,37 @@ namespace Habilitar.Infra.Repositories
         public async Task<IEnumerable<User>> Obter() =>
             await _userManager.Users.ToListAsync();
 
-        public async Task<User> ObterPorEmail(string email) =>
-            await _userManager.FindByEmailAsync(email);
+        public async Task<User> ObterPorEmail(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
 
-        public async Task<User> ObterPorId(Guid id) =>
-            await _userManager.FindByIdAsync(id.ToString());
+            user.Role = await ObterRole(user);
 
+            return user;
+        }
+
+        private async Task<string> ObterRole(User user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
+
+            return roles.First();            
+        }            
+
+        public async Task<User> ObterPorId(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            user.Role = await ObterRole(user);
+
+            return user;
+        }
+            
         public async Task<IdentityResult> Remover(User user) => 
             await _userManager.DeleteAsync(user);
-        public void Dispose() => _userManager?.Dispose();    
-
+        
         public async Task<IdentityResult> AlterarSenha(User user, string senhaAtual, string novaSenha) =>
-            await _userManager.ChangePasswordAsync(user, senhaAtual, novaSenha);        
+            await _userManager.ChangePasswordAsync(user, senhaAtual, novaSenha);
+
+        public void Dispose() => _userManager?.Dispose();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Habilitar.Core.Models
 {
@@ -23,6 +24,8 @@ namespace Habilitar.Core.Models
         public Guid UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public Guid? UsuarioAtualizacaoId { get; set; }
+        [NotMapped]
+        public string Role { get; set; }
         public virtual ICollection<PacienteMeta> PacienteMeta { get; set; }
     }
 }

@@ -25,11 +25,6 @@ namespace Habilitar.Api.Configuration
             .AddFluentValidation(_ => _.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("DefaultConnection"), null, "Banco de dados");            
-            //services.AddHealthChecksUI(options => 
-            //{
-            //    options.SetEvaluationTimeInSeconds(15);               
-            //})
-            //.AddInMemoryStorage();
 
             services.AddHealthChecksUI(opt =>
             {
@@ -68,7 +63,7 @@ namespace Habilitar.Api.Configuration
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
 
-                //map healthcheck ui endpoing - default is /healthchecks-ui/
+                //map healthcheck ui endpoint - default is /healthchecks-ui/
                 endpoints.MapHealthChecksUI();
 
                 endpoints.MapGet("/", async context => await context.Response.WriteAsync("Hello World!"));

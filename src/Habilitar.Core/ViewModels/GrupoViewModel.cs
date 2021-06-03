@@ -1,8 +1,8 @@
 ﻿namespace Habilitar.Core.ViewModels
 {
-    public class GrupoViewModel : ViewModelBaseForUpdate
+    public record GrupoViewModel : ViewModelBaseForUpdate
     {        
-        public string Descricao { get; set; }
-        public string Observacao { get; set; }
+        public string Descricao { get; init; }
+        public string Observacao { get; init; }
     }
 }

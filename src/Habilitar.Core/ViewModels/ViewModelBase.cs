@@ -2,18 +2,18 @@
 
 namespace Habilitar.Core.ViewModels
 {
-    public abstract class ViewModelBaseForInsert
+    public abstract record ViewModelBaseForInsert
     {        
-        public string Ip { get; set; }
-        public bool Ativo { get; set; } = true;
-        public DateTime DataCriacao { get; set; } = DateTime.Now;
+        public string Ip { get; init; }
+        public bool Ativo { get; init; } = true;
+        public DateTime DataCriacao { get; init; } = DateTime.Now;
         public Guid UsuarioCriacaoId { get; set; }     
     }
 
-    public abstract class ViewModelBaseForUpdate : ViewModelBaseForInsert
+    public abstract record ViewModelBaseForUpdate : ViewModelBaseForInsert
     {
-        public int Id { get; set; }        
-        public DateTime? DataAtualizacao { get; set; }
-        public Guid? UsuarioAtualizacaoId { get; set; }
+        public int Id { get; init; }        
+        public DateTime? DataAtualizacao { get; init; }
+        public Guid? UsuarioAtualizacaoId { get; init; }
     }
 }
