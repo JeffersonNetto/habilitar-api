@@ -48,6 +48,8 @@ namespace Habilitar.Api.Controllers
         [HttpPut("{id:guid}")]
         public async Task<ActionResult<LoginResponseViewModel>> Editar(Guid id, User user)
         {
+            user.UsuarioAtualizacaoId = UsuarioId;
+
             await _usuarioService.Atualizar(user);
             
             return CustomResponse();
@@ -67,6 +69,12 @@ namespace Habilitar.Api.Controllers
             await _usuarioService.AlterarSenha(id, model);
 
             return CustomResponse();
+        }
+
+        [HttpGet("perfil/{id:guid}")]
+        public async Task<string> GetUserRole(Guid id)
+        {
+            return await _usuarioService.ObterRole(id);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
 using Habilitar.Core.ViewModels;
+using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -13,17 +14,26 @@ namespace Habilitar.Infra.Repositories
     public class UsuarioRepository : IUsuarioRepository
     {
         private readonly UserManager<User> _userManager;
-        public UsuarioRepository(UserManager<User> userManager) => _userManager = userManager;        
+
+        public UsuarioRepository(UserManager<User> userManager) 
+        {            
+            _userManager = userManager;                        
+        } 
 
         public async Task<IdentityResult> Adicionar(User user) =>
             await _userManager.CreateAsync(user, user.PasswordHash);        
 
-        public async Task<IdentityResult> VincularPerfil(User user, string role) =>
-            await _userManager.AddToRoleAsync(user, role);
-        
-        public async Task<IdentityResult> Atualizar(User user) =>
-            await _userManager.UpdateAsync(user);
+        public async Task<IdentityResult> VincularPerfil(User user, string newRole, string oldRole = null)
+        {            
+            if(oldRole is not null)
+                await _userManager.RemoveFromRoleAsync(user, oldRole);
 
+            return await _userManager.AddToRoleAsync(user, newRole);
+        }
+                    
+        public async Task<IdentityResult> Atualizar(User user) =>                    
+            await _userManager.UpdateAsync(user);                    
+            
         public async Task<IEnumerable<User>> Obter() =>
             await _userManager.Users.ToListAsync();
 
@@ -36,7 +46,7 @@ namespace Habilitar.Infra.Repositories
             return user;
         }
 
-        private async Task<string> ObterRole(User user)
+        public async Task<string> ObterRole(User user)
         {
             var roles = await _userManager.GetRolesAsync(user);
 

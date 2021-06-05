@@ -3,6 +3,7 @@ using Habilitar.Core.Repositories;
 using Habilitar.Core.Uow;
 using Habilitar.Core.ViewModels;
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Habilitar.Core.Services
@@ -13,6 +14,7 @@ namespace Habilitar.Core.Services
         Task<bool> Atualizar(User obj);
         Task<bool> Remover(Guid id);
         Task<bool> AlterarSenha(Guid id, AlterarSenhaViewModel model);
+        Task<string> ObterRole(Guid id);
     }
     public class UsuarioService : ServiceBase, IUsuarioService
     {
@@ -45,17 +47,24 @@ namespace Habilitar.Core.Services
             return true;
         }
 
-        public async Task<bool> Atualizar(User obj)
-        {
-            var user = await _usuarioRepository.ObterPorId(obj.Id);
+        public async Task<bool> Atualizar(User model)
+        {            
+            var user = await _usuarioRepository.ObterPorId(model.Id);
 
             if (user == null)
             {
                 Notificar("Usuário não existe na base de dados");
                 return false;
-            }            
+            }
 
-            var result = await _usuarioRepository.Atualizar(obj);
+            await _usuarioRepository.VincularPerfil(user, model.Role, user.Role);
+
+            foreach (PropertyInfo property in typeof(User).GetProperties())            
+                property.SetValue(user, property.GetValue(model, null), null);
+
+            user.DataAtualizacao = DateTime.Now;
+
+            var result = await _usuarioRepository.Atualizar(user);
 
             if (!result.Succeeded)
             {
@@ -64,7 +73,7 @@ namespace Habilitar.Core.Services
 
                 return false;
             }
-
+            
             return true;            
         }
                
@@ -114,6 +123,19 @@ namespace Habilitar.Core.Services
             }
 
             return true;
+        }
+
+        public async Task<string> ObterRole(Guid id)
+        {
+            var user = await _usuarioRepository.ObterPorId(id);
+            string role = null;
+
+            if (user == null)
+                Notificar("Usuário não existe na base de dados");                                                   
+            else
+                role = await _usuarioRepository.ObterRole(user);
+
+            return role;
         }
     }
 }
