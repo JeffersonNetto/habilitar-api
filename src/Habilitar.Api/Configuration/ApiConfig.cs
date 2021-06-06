@@ -24,17 +24,17 @@ namespace Habilitar.Api.Configuration
             })
             .AddFluentValidation(_ => _.RegisterValidatorsFromAssemblyContaining<Startup>());
 
-            services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("DefaultConnection"), null, "Banco de dados");            
+            //services.AddHealthChecks().AddSqlServer(configuration.GetConnectionString("DefaultConnection"), null, "Banco de dados");            
 
-            services.AddHealthChecksUI(opt =>
-            {
-                opt.SetEvaluationTimeInSeconds(60); //time in seconds between check
-                opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks
-                opt.SetApiMaxActiveRequests(1); //api requests concurrency
+            //services.AddHealthChecksUI(opt =>
+            //{
+            //    opt.SetEvaluationTimeInSeconds(60); //time in seconds between check
+            //    opt.MaximumHistoryEntriesPerEndpoint(60); //maximum history of checks
+            //    opt.SetApiMaxActiveRequests(1); //api requests concurrency
 
-                opt.AddHealthCheckEndpoint("Habilitar - Healthchecks", "/healthz"); //map health check api
-            })
-            .AddInMemoryStorage();
+            //    opt.AddHealthCheckEndpoint("Habilitar - Healthchecks", "/healthz"); //map health check api
+            //})
+            //.AddInMemoryStorage();
 
             return services;
         }
@@ -56,29 +56,18 @@ namespace Habilitar.Api.Configuration
             {
                 endpoints.MapControllers();
 
-                //adding endpoint of health check for the health check ui in UI format
-                endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+                ////adding endpoint of health check for the health check ui in UI format
+                //endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
+                //{
+                //    Predicate = _ => true,
+                //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                //});
 
-                //map healthcheck ui endpoint - default is /healthchecks-ui/
-                endpoints.MapHealthChecksUI();
+                ////map healthcheck ui endpoint - default is /healthchecks-ui/
+                //endpoints.MapHealthChecksUI();
 
                 endpoints.MapGet("/", async context => await context.Response.WriteAsync("Hello World!"));
             });
-
-            //app.UseHealthChecks("/api/hc", new HealthCheckOptions()
-            //{
-            //    Predicate = _ => true,
-            //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            //});
-
-            //app.UseHealthChecksUI(options =>
-            //{
-            //    options.UIPath = "/ui";                
-            //});
 
             return app;
         }

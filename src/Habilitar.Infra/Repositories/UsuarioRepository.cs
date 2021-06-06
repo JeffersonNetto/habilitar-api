@@ -50,7 +50,7 @@ namespace Habilitar.Infra.Repositories
         {
             var roles = await _userManager.GetRolesAsync(user);
 
-            return roles.First();            
+            return roles.FirstOrDefault();            
         }            
 
         public async Task<User> ObterPorId(Guid id)

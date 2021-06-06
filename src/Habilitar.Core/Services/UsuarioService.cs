@@ -126,16 +126,13 @@ namespace Habilitar.Core.Services
         }
 
         public async Task<string> ObterRole(Guid id)
-        {
+        {            
             var user = await _usuarioRepository.ObterPorId(id);
-            string role = null;
-
-            if (user == null)
-                Notificar("Usuário não existe na base de dados");                                                   
-            else
-                role = await _usuarioRepository.ObterRole(user);
-
-            return role;
+            
+            if (user == null)            
+                Notificar("Usuário não existe na base de dados");                            
+                
+            return user?.Role;
         }
     }
 }
