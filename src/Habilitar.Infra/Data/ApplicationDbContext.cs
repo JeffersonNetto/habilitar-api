@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 
 namespace Habilitar.Infra.Data
 {
@@ -122,6 +123,31 @@ namespace Habilitar.Infra.Data
                     .IsRequired()
                     .HasMaxLength(120)
                     .IsUnicode(false);
+
+                entity.HasData(new Empresa[]
+                {
+                    new Empresa
+                    {
+                        Id = 1,
+                        NomeFantasia = "Fundação São Francisco Xavier",
+                        RazaoSocial = "Fundação São Francisco Xavier",
+                        Cnpj = "19878404000100"
+                    },
+                    new Empresa
+                    {
+                        Id = 2,
+                        NomeFantasia = "Fisiocenter",
+                        RazaoSocial = "Fisiocenter",
+                        Cnpj = "05815928000148"
+                    },
+                    new Empresa
+                    {
+                        Id = 3,
+                        NomeFantasia = "Posturar Clinica de Fisioterapia LTDA",
+                        RazaoSocial = "Posturar Clinica de Fisioterapia LTDA",
+                        Cnpj = "04720047000180"
+                    },
+                });
             });
 
             modelBuilder.Entity<Exercicio>(entity =>
@@ -436,6 +462,32 @@ namespace Habilitar.Infra.Data
                     .HasForeignKey(d => d.EmpresaId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Unidade_Empresa");
+
+                entity.HasData(new Unidade[]
+                {
+                    new Unidade
+                    {
+                        Id = 1,
+                        Nome ="HMC I",
+                        Email = "teste@fsfx.com.br",
+                        Telefone = "03138299000",
+                        Cnes = "2440A",
+                        Latitude = "-19.49523868306967",
+                        Longitude = "-42.5379800827425",
+                        EmpresaId = 1
+                    },
+                    new Unidade
+                    {
+                        Id = 2,
+                        Nome ="HMC II",
+                        Email = "teste@fsfx.com.br",
+                        Telefone = "03138299000",
+                        Cnes = "2440A",
+                        Latitude = "-19.507606869177867",
+                        Longitude = "-42.55770305020517",
+                        EmpresaId = 1
+                    },
+                });
             });
         }
     }

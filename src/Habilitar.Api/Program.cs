@@ -22,8 +22,8 @@ namespace Habilitar.Api
 
             try
             {
-                Log.Information("Starting web host");
-                CreateHostBuilder(args).Build().Run();
+                Log.Information("Starting web host");                
+                CreateHostBuilder(args).Build().Run();                                
                 return 0;
             }
             catch (Exception ex)

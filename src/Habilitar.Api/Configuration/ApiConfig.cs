@@ -67,7 +67,7 @@ namespace Habilitar.Api.Configuration
                 //endpoints.MapHealthChecksUI();
 
                 endpoints.MapGet("/", async context => await context.Response.WriteAsync("Hello World!"));
-            });
+            });         
 
             return app;
         }

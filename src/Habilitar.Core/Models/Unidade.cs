@@ -16,7 +16,7 @@ namespace Habilitar.Core.Models
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public int EmpresaId { get; set; }
-        public string Ip { get; set; }
+        public string Ip { get; set; } = "::1";
         public bool Ativo { get; set; } = true;
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         public Guid UsuarioCriacaoId { get; set; }
