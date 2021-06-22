@@ -1,6 +1,7 @@
 ﻿using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
 {
@@ -16,6 +17,12 @@ namespace Habilitar.Api.Controllers
         public string GenerateScript()
         {
             return _context.Database.GenerateCreateScript();
+        }
+
+        [HttpGet("CheckDb")]
+        public async Task<bool> CheckDb()
+        {
+            return await _context.Database.CanConnectAsync();
         }
     }
 }

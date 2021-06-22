@@ -13,7 +13,7 @@ namespace Habilitar.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public abstract class MainController : ControllerBase
     {
         private readonly INotificador _notificador;
