@@ -5,19 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.8.4" />
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.9.0" />
     <PackageReference Include="fluentemail.core" Version="3.0.0" />
     <PackageReference Include="fluentemail.razor" Version="3.0.0" />
     <PackageReference Include="fluentemail.smtp" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.6" />
-    <PackageReference Include="microsoft.entityframeworkcore" Version="5.0.6" />
-    <PackageReference Include="microsoft.entityframeworkcore.design" Version="5.0.6">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.7" />
+    <PackageReference Include="microsoft.entityframeworkcore" Version="5.0.7" />
+    <PackageReference Include="microsoft.entityframeworkcore.design" Version="5.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="microsoft.entityframeworkcore.inmemory" Version="5.0.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
-    <PackageReference Include="microsoft.entityframeworkcore.tools" Version="5.0.6">
+    <PackageReference Include="microsoft.entityframeworkcore.inmemory" Version="5.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
+    <PackageReference Include="microsoft.entityframeworkcore.tools" Version="5.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
