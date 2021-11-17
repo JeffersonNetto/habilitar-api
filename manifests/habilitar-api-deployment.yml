@@ -1,0 +1,23 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: habilitar-api
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: habilitar-api
+  template:
+    metadata:
+      labels:
+        app: habilitar-api
+    spec:
+      containers:
+        - name: habilitar-api
+          image: jeffersonneto/habilitar-api
+          ports:
+          - containerPort: 80
+          envFrom:
+          - configMapRef: 
+              name: habilitar-api-env
