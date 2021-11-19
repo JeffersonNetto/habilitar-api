@@ -3,6 +3,8 @@ using Habilitar.Core.Repositories;
 using Habilitar.Core.Uow;
 using Habilitar.Core.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -15,6 +17,8 @@ namespace Habilitar.Core.Services
         Task<bool> Remover(Guid id);
         Task<bool> AlterarSenha(Guid id, AlterarSenhaViewModel model);
         Task<string> ObterRole(Guid id);
+        Task<bool> UsuarioExiste(Guid id);
+        Task<IEnumerable<ComboBase<Guid>>> ObterCombo(Enums.Role role);
     }
     public class UsuarioService : ServiceBase, IUsuarioService
     {
@@ -133,6 +137,22 @@ namespace Habilitar.Core.Services
                 Notificar("Usuário não existe na base de dados");                            
                 
             return user?.Role;
+        }
+
+        public async Task<bool> UsuarioExiste(Guid id)
+        {
+            return await _usuarioRepository.UsuarioExiste(id);
+        }
+
+        public async Task<IEnumerable<ComboBase<Guid>>> ObterCombo(Enums.Role role)
+        {
+            var lst = await _usuarioRepository.ObterPorRole(role);
+
+            return lst.Select(obj => new ComboBase<Guid>
+            {
+                Value = obj.Id,
+                Text = obj.Nome,
+            });
         }
     }
 }

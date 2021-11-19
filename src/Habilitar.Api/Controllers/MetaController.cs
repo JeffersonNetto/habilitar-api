@@ -1,116 +1,70 @@
-﻿using Habilitar.Core.Models;
+﻿using Habilitar.Core.Helpers;
+using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
-using Habilitar.Core.Uow;
-using Habilitar.Infra.Repositories;
-using Habilitar.Infra.Uow;
+using Habilitar.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
 namespace Habilitar.Api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class MetaController : ControllerBase
+    public class MetaController : MainController
     {
         private readonly IRepositoryBase<Meta> _repository;
-        private readonly IUnitOfWork _uow;
-
-        public MetaController(IRepositoryBase<Meta> repository, IUnitOfWork uow)
+        private readonly IMetaService _service;
+        
+        public MetaController(
+            INotificador notificador,
+            IRepositoryBase<Meta> repository,
+            IMetaService service,
+            IUser user
+            ) : base(notificador, user)
         {
             _repository = repository;
-            _uow = uow;
+            _service = service;
         }
 
-        // GET: api/Empresa
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                var lst = await _repository.GetAll();
+            var lst = await _repository.GetAll();
 
-                return Ok(lst);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return CustomResponse(lst);
         }
 
-        // GET: api/Empresa/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
-            try
-            {
-                var obj = await _repository.GetById(id);
+            var obj = await _repository.GetById(id);
 
-                return obj == null ? NotFound() : Ok(obj);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
+            return obj == null ? NotFound() : CustomResponse(obj);
         }
 
-        // PUT: api/Empresa/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public async Task<IActionResult> Put(int id, Meta obj)
         {
-            try
-            {
-                if (id != obj.Id)
-                    return BadRequest();
+            obj.DataAtualizacao = DateTime.Now;
+            obj.UsuarioAtualizacaoId = UsuarioId;
+            await _service.Atualizar(obj);
 
-                _repository.Update(obj);
-                await _uow.Commit();
-
-                return Ok(await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse(obj);
         }
 
-        // POST: api/Empresa
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<IActionResult> Post(Meta obj)
         {
-            try
-            {
-                await _repository.Add(obj);
-                await _uow.Commit();
+            obj.UsuarioCriacaoId = UsuarioId;
+            await _service.Adicionar(obj);
 
-                return CreatedAtAction("Post", await Get(obj.Id));
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse(obj);
         }
 
-        // DELETE: api/Empresa/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                _repository.Remove(await _repository.GetById(id));
-                await _uow.Commit();
+            await _service.Remover(id);
 
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                await _uow.Rollback();
-                return BadRequest(ex);
-            }
+            return CustomResponse();
         }
 
         private async Task<bool> Exists(int id) =>

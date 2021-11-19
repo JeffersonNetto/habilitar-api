@@ -27,6 +27,14 @@ namespace Habilitar.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("combo/{role:int}")]
+        public async Task<IActionResult> GetCombo(Core.Enums.Role role)
+        {
+            var lst = await _usuarioService.ObterCombo(role);
+
+            return CustomResponse(lst);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll() =>
             CustomResponse(await _usuarioRepository.Obter());

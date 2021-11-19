@@ -4,6 +4,9 @@ using Habilitar.Core.Validators;
 using System;
 using System.Threading.Tasks;
 using Habilitar.Core.Repositories;
+using Habilitar.Core.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Habilitar.Core.Services
 {
@@ -12,6 +15,7 @@ namespace Habilitar.Core.Services
         Task<bool> Adicionar(Metrica empresa);
         Task<bool> Atualizar(Metrica empresa);
         Task<bool> Remover(int id);
+        Task<IEnumerable<ComboBase<int>>> ObterCombo();
     }
 
     public class MetricaService : ServiceBase, IMetricaService
@@ -59,5 +63,16 @@ namespace Habilitar.Core.Services
         }
 
         public void Dispose() => _metricaRepository?.Dispose();
+
+        public async Task<IEnumerable<ComboBase<int>>> ObterCombo()
+        {
+            var lst = await _metricaRepository.GetAll();
+
+            return lst.Select(obj => new ComboBase<int>
+            {
+                Value = obj.Id,
+                Text = obj.Descricao,
+            });
+        }
     }
 }

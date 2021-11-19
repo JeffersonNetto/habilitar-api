@@ -28,8 +28,7 @@ namespace Habilitar.Core.ViewModels
     {
         public Guid Id { get; init; }
         public string Email { get; init; }
-        public string UserName { get; init; }
-        public string PhoneNumber { get; init; }
+        public string UserName { get; init; }        
         public IEnumerable<ClaimViewModel> Claims { get; init; }
     }
 

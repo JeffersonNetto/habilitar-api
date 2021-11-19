@@ -12,7 +12,7 @@ using System.Linq;
 namespace Habilitar.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     //[Authorize]
     public abstract class MainController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace Habilitar.Api.Controllers
         protected bool UsuarioAutenticado { get; set; }
 
         protected MainController(
-            INotificador notificador, 
+            INotificador notificador,
             IUser appUser
             )
         {
@@ -43,7 +43,7 @@ namespace Habilitar.Api.Controllers
         protected ActionResult CustomResponse(object dados = null)
         {
             if (!OperacaoValida())
-            {                
+            {
                 return BadRequest(new
                 {
                     Erros = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
@@ -52,7 +52,7 @@ namespace Habilitar.Api.Controllers
 
             return Ok(new
             {
-                Dados = dados,                
+                Dados = dados,
             });
         }
 
@@ -98,9 +98,9 @@ namespace Habilitar.Api.Controllers
 
         private ActionResult CustomNotFoundResponse(string mensagem) =>
             NotFound(new ErrorResponse { Mensagem = mensagem });
-        
+
         private ActionResult CustomBadRequestResponse(string mensagem, List<ValidationFailure> validationFailures) =>
-            BadRequest(new ErrorResponse(validationFailures) { Mensagem = mensagem });        
+            BadRequest(new ErrorResponse(validationFailures) { Mensagem = mensagem });
 
         private ActionResult<T> CustomCreatedResponse<T>(string mensagem, T dados) =>
             Created("", new SuccessResponse<T> { Mensagem = mensagem, Dados = dados });

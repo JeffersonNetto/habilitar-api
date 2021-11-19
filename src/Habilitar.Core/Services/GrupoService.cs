@@ -2,7 +2,10 @@
 using Habilitar.Core.Repositories;
 using Habilitar.Core.Uow;
 using Habilitar.Core.Validators;
+using Habilitar.Core.ViewModels;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Habilitar.Core.Services
@@ -12,6 +15,7 @@ namespace Habilitar.Core.Services
         Task<bool> Adicionar(Grupo obj);
         Task<bool> Atualizar(Grupo obj);
         Task<bool> Remover(int id);
+        Task<IEnumerable<ComboBase<int>>> ObterCombo();
     }
 
     public class GrupoService : ServiceBase, IGrupoService
@@ -59,5 +63,16 @@ namespace Habilitar.Core.Services
         }
 
         public void Dispose() => _grupoRepository?.Dispose();
+
+        public async Task<IEnumerable<ComboBase<int>>> ObterCombo()
+        {
+            var lst = await _grupoRepository.GetAll();
+
+            return lst.Select(obj => new ComboBase<int>
+            {
+                Value = obj.Id,
+                Text = obj.Descricao,
+            });
+        }
     }
 }

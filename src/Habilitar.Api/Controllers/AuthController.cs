@@ -51,7 +51,7 @@ namespace Habilitar.Api.Controllers
 
             if (user == null)
             {
-                NotificarErro("Usuário não existe na base de dados");
+                NotificarErro("Usuário ou Senha incorretos");
                 return CustomResponse();
             }
 

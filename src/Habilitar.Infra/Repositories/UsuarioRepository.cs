@@ -1,7 +1,5 @@
 ﻿using Habilitar.Core.Models;
 using Habilitar.Core.Repositories;
-using Habilitar.Core.ViewModels;
-using Habilitar.Infra.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -37,6 +35,9 @@ namespace Habilitar.Infra.Repositories
         public async Task<IEnumerable<User>> Obter() =>
             await _userManager.Users.ToListAsync();
 
+        public async Task<IEnumerable<User>> ObterPorRole(Core.Enums.Role role) =>
+            await _userManager.GetUsersInRoleAsync(role.ToString());
+
         public async Task<User> ObterPorEmail(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -67,6 +68,13 @@ namespace Habilitar.Infra.Repositories
         
         public async Task<IdentityResult> AlterarSenha(User user, string senhaAtual, string novaSenha) =>
             await _userManager.ChangePasswordAsync(user, senhaAtual, novaSenha);
+
+        public async Task<bool> UsuarioExiste(Guid id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());            
+
+            return user != null;
+        }
 
         public void Dispose() => _userManager?.Dispose();
     }

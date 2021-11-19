@@ -17,5 +17,7 @@ namespace Habilitar.Core.Repositories
         Task<IdentityResult> Remover(User user);
         Task<IdentityResult> AlterarSenha(User user, string currentPassword, string newPassword);
         Task<string> ObterRole(User user);
+        Task<bool> UsuarioExiste(Guid id);
+        Task<IEnumerable<User>> ObterPorRole(Core.Enums.Role role);
     }
 }

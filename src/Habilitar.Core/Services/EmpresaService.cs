@@ -15,7 +15,7 @@ namespace Habilitar.Core.Services
         Task<bool> Adicionar(Empresa empresa);
         Task<bool> Atualizar(Empresa empresa);
         Task<bool> Remover(int id);
-        Task<IEnumerable<ComboBase<int>>> ObterCombos();
+        Task<IEnumerable<ComboBase<int>>> ObterCombo();
     }
 
     public class EmpresaService : ServiceBase, IEmpresaService
@@ -64,7 +64,7 @@ namespace Habilitar.Core.Services
 
         public void Dispose() => _empresaRepository?.Dispose();
 
-        public async Task<IEnumerable<ComboBase<int>>> ObterCombos()
+        public async Task<IEnumerable<ComboBase<int>>> ObterCombo()
         {
             var lst = await _empresaRepository.GetAll();
 

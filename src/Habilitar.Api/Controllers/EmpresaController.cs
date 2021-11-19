@@ -27,7 +27,7 @@ namespace Habilitar.Api.Controllers
         [HttpGet("combo")]
         public async Task<IActionResult> GetCombo()
         {
-            var lst = await _service.ObterCombos();
+            var lst = await _service.ObterCombo();
 
             return CustomResponse(lst);
         }

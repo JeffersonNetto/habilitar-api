@@ -29,6 +29,14 @@ namespace Habilitar.Api.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("combo")]
+        public async Task<IActionResult> GetCombo()
+        {
+            var lst = await _service.ObterCombo();
+
+            return CustomResponse(lst);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Get()
         {

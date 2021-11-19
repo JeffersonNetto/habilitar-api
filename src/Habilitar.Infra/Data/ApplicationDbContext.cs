@@ -47,7 +47,7 @@ namespace Habilitar.Infra.Data
                 b.Property(nameof(User.Sexo)).HasColumnType("char(1)");
                 b.Property(nameof(User.PasswordHash)).HasMaxLength(300);
                 b.Property(nameof(User.SecurityStamp)).HasMaxLength(300);
-                b.Property(nameof(User.ConcurrencyStamp)).HasMaxLength(300);                
+                b.Property(nameof(User.ConcurrencyStamp)).HasMaxLength(300);
             });
 
             modelBuilder.Entity<UserClaim>(b =>
@@ -65,6 +65,34 @@ namespace Habilitar.Infra.Data
                 b.Property(nameof(Role.Name)).HasMaxLength(100).HasColumnType("varchar").IsRequired();
                 b.Property(nameof(Role.NormalizedName)).HasMaxLength(100).HasColumnType("varchar").IsRequired();
                 b.Property(nameof(Role.ConcurrencyStamp)).HasMaxLength(300);
+
+                b.HasData(new Role[]
+                {
+                    new Role
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Admin",
+                        NormalizedName = "ADMIN",
+                    },
+                    new Role
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Auxiliar",
+                        NormalizedName = "AUXILIAR",
+                    },
+                    new Role
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Fisioterapeuta",
+                        NormalizedName = "FISIOTERAPEUTA",
+                    },
+                    new Role
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = "Paciente",
+                        NormalizedName = "PACIENTE",
+                    },
+                });
             });
 
             modelBuilder.Entity<RoleClaim>(b =>
@@ -94,7 +122,7 @@ namespace Habilitar.Infra.Data
                 b.ToTable("UserToken");
 
                 b.Property(nameof(UserToken.LoginProvider)).HasMaxLength(300).IsRequired();
-                b.Property(nameof(UserToken.Name)).HasMaxLength(300).IsRequired();                
+                b.Property(nameof(UserToken.Name)).HasMaxLength(300).IsRequired();
             });
 
             modelBuilder.Entity<Empresa>(entity =>
