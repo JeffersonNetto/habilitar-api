@@ -176,9 +176,7 @@ namespace Habilitar.Infra.Data
             });
 
             modelBuilder.Entity<Meta>(entity =>
-            {
-                entity.HasIndex(e => e.EmpresaId, "IX_Meta_EmpresaId");
-
+            {                
                 entity.HasIndex(e => e.ExercicioId, "IX_Meta_ExercicioId");
 
                 entity.HasIndex(e => e.IntervaloId, "IX_Meta_IntervaloId");
@@ -193,12 +191,6 @@ namespace Habilitar.Infra.Data
                     .IsRequired()
                     .HasMaxLength(20)
                     .IsUnicode(false);
-
-                entity.HasOne(d => d.Empresa)
-                    .WithMany(p => p.Meta)
-                    .HasForeignKey(d => d.EmpresaId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Meta_Empresa");
 
                 entity.HasOne(d => d.Exercicio)
                     .WithMany(p => p.Meta)

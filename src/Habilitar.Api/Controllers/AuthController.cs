@@ -98,7 +98,7 @@ namespace Habilitar.Api.Controllers
                 Audience = _jwtSettings.Audience,
                 Subject = identityClaims,
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.Expires),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),                
             });
 
             var encodedToken = tokenHandler.WriteToken(token);

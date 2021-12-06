@@ -4,6 +4,7 @@ using Habilitar.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habilitar.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206164112_Alteracoes_Meta")]
+    partial class Alteracoes_Meta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +82,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 1,
                             Ativo = true,
                             Cnpj = "19878404000100",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 126, DateTimeKind.Local).AddTicks(2419),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 41, 11, 879, DateTimeKind.Local).AddTicks(9013),
                             Ip = "localhost",
                             NomeFantasia = "Fundação São Francisco Xavier",
                             RazaoSocial = "Fundação São Francisco Xavier",
@@ -91,7 +93,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 2,
                             Ativo = true,
                             Cnpj = "05815928000148",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 126, DateTimeKind.Local).AddTicks(2434),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 41, 11, 879, DateTimeKind.Local).AddTicks(9022),
                             Ip = "localhost",
                             NomeFantasia = "Fisiocenter",
                             RazaoSocial = "Fisiocenter",
@@ -102,7 +104,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 3,
                             Ativo = true,
                             Cnpj = "04720047000180",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 126, DateTimeKind.Local).AddTicks(2435),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 41, 11, 879, DateTimeKind.Local).AddTicks(9023),
                             Ip = "localhost",
                             NomeFantasia = "Posturar Clinica de Fisioterapia LTDA",
                             RazaoSocial = "Posturar Clinica de Fisioterapia LTDA",
@@ -364,10 +366,6 @@ namespace Habilitar.Infra.Migrations
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime");
-
-                    b.Property<string>("Descricao")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
 
                     b.Property<int>("ExercicioId")
                         .HasColumnType("int");
@@ -647,29 +645,29 @@ namespace Habilitar.Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a6b438e4-95ca-4a4f-94bf-770286734d59"),
-                            ConcurrencyStamp = "9a87e700-8529-4bfa-acf0-d9bc710b6b5b",
+                            Id = new Guid("30636c81-679b-414c-9791-ddaf6b58b1b9"),
+                            ConcurrencyStamp = "c7e1bbec-5b42-4e89-8182-f5550e3a2cd1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c228d922-37c0-48f7-88d5-e1a361d37f29"),
-                            ConcurrencyStamp = "ce85e839-fd43-41c9-82ed-4cd1139d1222",
+                            Id = new Guid("7e81e290-7d5e-4203-8bd6-2733dc46aee4"),
+                            ConcurrencyStamp = "8a3e2a85-a909-4303-92a0-09a4d3de552c",
                             Name = "Auxiliar",
                             NormalizedName = "AUXILIAR"
                         },
                         new
                         {
-                            Id = new Guid("6e3ef3e3-674b-4333-9c70-44503526de85"),
-                            ConcurrencyStamp = "acf3a754-3f74-4071-8551-a757bc297849",
+                            Id = new Guid("7e729b28-7a7e-4952-aa1c-59a671e3b87c"),
+                            ConcurrencyStamp = "7ed19e36-aac3-4714-8582-1173aabeff3d",
                             Name = "Fisioterapeuta",
                             NormalizedName = "FISIOTERAPEUTA"
                         },
                         new
                         {
-                            Id = new Guid("05ff23c0-92cd-4806-b75b-1d71eb2f7a0f"),
-                            ConcurrencyStamp = "e04f5011-d8f1-4514-9156-02122e6dec28",
+                            Id = new Guid("2bd04c45-2d01-4f59-96fd-fee64e8f0df9"),
+                            ConcurrencyStamp = "a9004928-95de-4ba7-8d2a-ce93d9ee8357",
                             Name = "Paciente",
                             NormalizedName = "PACIENTE"
                         });
@@ -779,7 +777,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 1,
                             Ativo = true,
                             Cnes = "2440A",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 128, DateTimeKind.Local).AddTicks(1802),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 41, 11, 881, DateTimeKind.Local).AddTicks(7822),
                             Email = "teste@fsfx.com.br",
                             EmpresaId = 1,
                             Ip = "::1",
@@ -794,7 +792,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 2,
                             Ativo = true,
                             Cnes = "2440A",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 128, DateTimeKind.Local).AddTicks(1808),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 41, 11, 881, DateTimeKind.Local).AddTicks(7827),
                             Email = "teste@fsfx.com.br",
                             EmpresaId = 1,
                             Ip = "::1",

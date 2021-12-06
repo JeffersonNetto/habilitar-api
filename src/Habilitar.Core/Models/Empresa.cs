@@ -9,23 +9,23 @@ namespace Habilitar.Core.Models
     public partial class Empresa
     {
         public Empresa()
-        {
-            Meta = new HashSet<Meta>();
+        {            
             Unidade = new HashSet<Unidade>();
+            User = new HashSet<User>();
         }
 
         public int Id { get; set; }
         public string NomeFantasia { get; set; }
         public string RazaoSocial { get; set; }
         public string Cnpj { get; set; }
-        public string Ip { get; set; } = "::1";
+        public string Ip { get; set; } = "localhost";
         public bool Ativo { get; set; } = true;
         public DateTime DataCriacao { get; set; } = DateTime.Now;
         public Guid UsuarioCriacaoId { get; set; }
         public DateTime? DataAtualizacao { get; set; }
         public Guid? UsuarioAtualizacaoId { get; set; }
-
-        public virtual ICollection<Meta> Meta { get; set; }
+        
         public virtual ICollection<Unidade> Unidade { get; set; }
+        public virtual ICollection<User> User { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using Habilitar.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habilitar.Infra.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206161945_AddEmpresaIdToUser")]
+    partial class AddEmpresaIdToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,8 +82,8 @@ namespace Habilitar.Infra.Migrations
                             Id = 1,
                             Ativo = true,
                             Cnpj = "19878404000100",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 126, DateTimeKind.Local).AddTicks(2419),
-                            Ip = "localhost",
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 19, 45, 407, DateTimeKind.Local).AddTicks(2119),
+                            Ip = "::1",
                             NomeFantasia = "Fundação São Francisco Xavier",
                             RazaoSocial = "Fundação São Francisco Xavier",
                             UsuarioCriacaoId = new Guid("00000000-0000-0000-0000-000000000000")
@@ -91,8 +93,8 @@ namespace Habilitar.Infra.Migrations
                             Id = 2,
                             Ativo = true,
                             Cnpj = "05815928000148",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 126, DateTimeKind.Local).AddTicks(2434),
-                            Ip = "localhost",
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 19, 45, 407, DateTimeKind.Local).AddTicks(2133),
+                            Ip = "::1",
                             NomeFantasia = "Fisiocenter",
                             RazaoSocial = "Fisiocenter",
                             UsuarioCriacaoId = new Guid("00000000-0000-0000-0000-000000000000")
@@ -102,8 +104,8 @@ namespace Habilitar.Infra.Migrations
                             Id = 3,
                             Ativo = true,
                             Cnpj = "04720047000180",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 126, DateTimeKind.Local).AddTicks(2435),
-                            Ip = "localhost",
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 19, 45, 407, DateTimeKind.Local).AddTicks(2134),
+                            Ip = "::1",
                             NomeFantasia = "Posturar Clinica de Fisioterapia LTDA",
                             RazaoSocial = "Posturar Clinica de Fisioterapia LTDA",
                             UsuarioCriacaoId = new Guid("00000000-0000-0000-0000-000000000000")
@@ -365,11 +367,13 @@ namespace Habilitar.Infra.Migrations
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Descricao")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)");
+                    b.Property<int>("EmpresaId")
+                        .HasColumnType("int");
 
                     b.Property<int>("ExercicioId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FisioterapeutaId")
                         .HasColumnType("int");
 
                     b.Property<short>("IntervaloId")
@@ -397,6 +401,8 @@ namespace Habilitar.Infra.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "EmpresaId" }, "IX_Meta_EmpresaId");
 
                     b.HasIndex(new[] { "ExercicioId" }, "IX_Meta_ExercicioId");
 
@@ -647,29 +653,29 @@ namespace Habilitar.Infra.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a6b438e4-95ca-4a4f-94bf-770286734d59"),
-                            ConcurrencyStamp = "9a87e700-8529-4bfa-acf0-d9bc710b6b5b",
+                            Id = new Guid("fe466078-a524-4a78-811b-b5c5d50508fe"),
+                            ConcurrencyStamp = "8075a80d-9876-4613-8332-3d9a22ab4f62",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = new Guid("c228d922-37c0-48f7-88d5-e1a361d37f29"),
-                            ConcurrencyStamp = "ce85e839-fd43-41c9-82ed-4cd1139d1222",
+                            Id = new Guid("ff5b46e5-4501-47a4-a14f-65644d31b2c4"),
+                            ConcurrencyStamp = "159bbc04-bfce-4676-a5d2-4e4322ba3a80",
                             Name = "Auxiliar",
                             NormalizedName = "AUXILIAR"
                         },
                         new
                         {
-                            Id = new Guid("6e3ef3e3-674b-4333-9c70-44503526de85"),
-                            ConcurrencyStamp = "acf3a754-3f74-4071-8551-a757bc297849",
+                            Id = new Guid("fb3df231-9d6d-45d5-8ac9-65fba7fa422e"),
+                            ConcurrencyStamp = "8dcfd796-4bbd-43ed-a0c9-d0c038e7f116",
                             Name = "Fisioterapeuta",
                             NormalizedName = "FISIOTERAPEUTA"
                         },
                         new
                         {
-                            Id = new Guid("05ff23c0-92cd-4806-b75b-1d71eb2f7a0f"),
-                            ConcurrencyStamp = "e04f5011-d8f1-4514-9156-02122e6dec28",
+                            Id = new Guid("3ff20c8e-e4ca-4afb-a859-bcb37509683b"),
+                            ConcurrencyStamp = "0c1100bc-5139-4252-bb41-b10a55da2867",
                             Name = "Paciente",
                             NormalizedName = "PACIENTE"
                         });
@@ -779,7 +785,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 1,
                             Ativo = true,
                             Cnes = "2440A",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 128, DateTimeKind.Local).AddTicks(1802),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 19, 45, 409, DateTimeKind.Local).AddTicks(3667),
                             Email = "teste@fsfx.com.br",
                             EmpresaId = 1,
                             Ip = "::1",
@@ -794,7 +800,7 @@ namespace Habilitar.Infra.Migrations
                             Id = 2,
                             Ativo = true,
                             Cnes = "2440A",
-                            DataCriacao = new DateTime(2021, 12, 6, 13, 44, 49, 128, DateTimeKind.Local).AddTicks(1808),
+                            DataCriacao = new DateTime(2021, 12, 6, 13, 19, 45, 409, DateTimeKind.Local).AddTicks(3678),
                             Email = "teste@fsfx.com.br",
                             EmpresaId = 1,
                             Ip = "::1",
@@ -1056,6 +1062,12 @@ namespace Habilitar.Infra.Migrations
 
             modelBuilder.Entity("Habilitar.Core.Models.Meta", b =>
                 {
+                    b.HasOne("Habilitar.Core.Models.Empresa", "Empresa")
+                        .WithMany("Meta")
+                        .HasForeignKey("EmpresaId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Meta_Empresa");
+
                     b.HasOne("Habilitar.Core.Models.Exercicio", "Exercicio")
                         .WithMany("Meta")
                         .HasForeignKey("ExercicioId")
@@ -1073,6 +1085,8 @@ namespace Habilitar.Infra.Migrations
                         .HasForeignKey("MetricaId")
                         .IsRequired()
                         .HasConstraintName("FK_Meta_Metrica");
+
+                    b.Navigation("Empresa");
 
                     b.Navigation("Exercicio");
 
@@ -1218,6 +1232,8 @@ namespace Habilitar.Infra.Migrations
 
             modelBuilder.Entity("Habilitar.Core.Models.Empresa", b =>
                 {
+                    b.Navigation("Meta");
+
                     b.Navigation("Unidade");
 
                     b.Navigation("User");
