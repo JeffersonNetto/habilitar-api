@@ -19,12 +19,12 @@ namespace Habilitar.Core.Services
 
     public class MetaService : ServiceBase, IMetaService
     {
-        private readonly IRepositoryBase<Meta> _MetaRepository;
+        private readonly IMetaRepository _MetaRepository;
 
         public MetaService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Meta> MetaRepository) : base(notificador, uow) => _MetaRepository = MetaRepository;
+            IMetaRepository MetaRepository) : base(notificador, uow) => _MetaRepository = MetaRepository;
 
         public async Task<bool> Adicionar(Meta Meta)
         {

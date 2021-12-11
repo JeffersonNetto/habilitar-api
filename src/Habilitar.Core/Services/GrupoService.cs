@@ -20,12 +20,12 @@ namespace Habilitar.Core.Services
 
     public class GrupoService : ServiceBase, IGrupoService
     {
-        private readonly IRepositoryBase<Grupo> _grupoRepository;
+        private readonly IGrupoRepository _grupoRepository;
 
         public GrupoService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Grupo> grupoRepository) : base(notificador, uow) => _grupoRepository = grupoRepository;
+            IGrupoRepository grupoRepository) : base(notificador, uow) => _grupoRepository = grupoRepository;
 
         public async Task<bool> Adicionar(Grupo obj)
         {

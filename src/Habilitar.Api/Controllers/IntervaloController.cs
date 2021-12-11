@@ -9,12 +9,12 @@ namespace Habilitar.Api.Controllers
 {
     public class IntervaloController : MainController
     {
-        private readonly IRepositoryBase<Intervalo> _repository;
+        private readonly IIntervaloRepository _repository;
         private readonly IIntervaloService _service;
 
         public IntervaloController(
             INotificador notificador,
-            IRepositoryBase<Intervalo> repository,
+            IIntervaloRepository repository,
             IIntervaloService service,
             IUser user) : base(notificador, user)
         {

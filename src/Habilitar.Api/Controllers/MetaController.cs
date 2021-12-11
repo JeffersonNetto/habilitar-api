@@ -10,12 +10,12 @@ namespace Habilitar.Api.Controllers
 {
     public class MetaController : MainController
     {
-        private readonly IRepositoryBase<Meta> _repository;
+        private readonly IMetaRepository _repository;
         private readonly IMetaService _service;
         
         public MetaController(
             INotificador notificador,
-            IRepositoryBase<Meta> repository,
+            IMetaRepository repository,
             IMetaService service,
             IUser user
             ) : base(notificador, user)

@@ -20,12 +20,12 @@ namespace Habilitar.Core.Services
 
     public class IntervaloService : ServiceBase, IIntervaloService
     {
-        private readonly IRepositoryBase<Intervalo> _intervaloRepository;
+        private readonly IIntervaloRepository _intervaloRepository;
 
         public IntervaloService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Intervalo> intervaloRepository) : base(notificador, uow) => _intervaloRepository = intervaloRepository;
+            IIntervaloRepository intervaloRepository) : base(notificador, uow) => _intervaloRepository = intervaloRepository;
 
         public async Task<bool> Adicionar(Intervalo obj)
         {

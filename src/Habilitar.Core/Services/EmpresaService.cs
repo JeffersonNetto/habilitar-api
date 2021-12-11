@@ -20,12 +20,12 @@ namespace Habilitar.Core.Services
 
     public class EmpresaService : ServiceBase, IEmpresaService
     {
-        private readonly IRepositoryBase<Empresa> _empresaRepository;
+        private readonly IEmpresaRepository _empresaRepository;
 
         public EmpresaService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Empresa> empresaRepository) : base(notificador, uow) => _empresaRepository = empresaRepository;
+            IEmpresaRepository empresaRepository) : base(notificador, uow) => _empresaRepository = empresaRepository;
 
         public async Task<bool> Adicionar(Empresa empresa)
         {

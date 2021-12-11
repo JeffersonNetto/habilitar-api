@@ -10,12 +10,12 @@ namespace Habilitar.Api.Controllers
 {
     public class MetricaController : MainController
     {
-        private readonly IRepositoryBase<Metrica> _repository;
+        private readonly IMetricaRepository _repository;
         private readonly IMetricaService _service;
 
         public MetricaController(
             INotificador notificador,
-            IRepositoryBase<Metrica> repository,
+            IMetricaRepository repository,
             IMetricaService service,
             IUser user) : base(notificador, user)
         {

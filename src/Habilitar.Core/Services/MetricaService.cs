@@ -20,12 +20,12 @@ namespace Habilitar.Core.Services
 
     public class MetricaService : ServiceBase, IMetricaService
     {
-        private readonly IRepositoryBase<Metrica> _metricaRepository;
+        private readonly IMetricaRepository _metricaRepository;
 
         public MetricaService(
             INotificador notificador,
             IUnitOfWork uow,
-            IRepositoryBase<Metrica> metricaRepository) : base(notificador, uow) => _metricaRepository = metricaRepository;
+            IMetricaRepository metricaRepository) : base(notificador, uow) => _metricaRepository = metricaRepository;
 
         public async Task<bool> Adicionar(Metrica empresa)
         {

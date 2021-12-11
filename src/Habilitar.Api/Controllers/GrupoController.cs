@@ -9,12 +9,12 @@ namespace Habilitar.Api.Controllers
 {
     public class GrupoController : MainController
     {
-        private readonly IRepositoryBase<Grupo> _repository;
+        private readonly IGrupoRepository _repository;
         private readonly IGrupoService _service;
 
         public GrupoController(
             INotificador notificador,
-            IRepositoryBase<Grupo> repository,
+            IGrupoRepository repository,
             IGrupoService service,
             IUser user) : base (notificador, user)
         {

@@ -11,12 +11,12 @@ namespace Habilitar.Api.Controllers
 {
     public class EmpresaController : MainController
     {
-        private readonly IRepositoryBase<Empresa> _repository;
+        private readonly IEmpresaRepository _repository;
         private readonly IEmpresaService _service;        
 
         public EmpresaController(
             INotificador notificador,
-            IRepositoryBase<Empresa> repository,
+            IEmpresaRepository repository,
             IEmpresaService service,
             IUser user) : base(notificador, user)
         {
